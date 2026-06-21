@@ -1,0 +1,3020 @@
+IT 331 – Application Development and Emerging Technologies                                      Module 1.2
+
+
+
+                                 BATANGAS STATE UNIVERSITY
+                            College of Informatics and Computing Sciences
+
+
+
+
+                                              MODULE 1.2
+           IT 331 – Application Development and Emerging Technologies
+
+
+ Course                                Application Development and Emerging Technologies
+
+ Course Code                           IT 331
+
+ Duration                              6 Hours Lecture / 9 Hours Laboratory
+
+ Week                                  2
+
+ Prerequisites                         Module 1.1 – Agile Project Initiation and Container Fundamentals
+
+
+
+
+TABLE OF CONTENTS
+
+1. CROSS-PLATFORM APPLICATION DEVELOPMENT
+    1.1 Introduction to Cross-Platform Development
+    1.2 Native versus Cross-Platform Development
+    1.3 Modern Cross-Platform Frameworks
+    1.4 React – A JavaScript Library for Building User Interfaces
+       1.4.1 Libraries vs. Frameworks
+       1.4.2 React – Origin and Philosophy
+       1.4.3 The Virtual DOM – Reconciliation Process
+       1.4.4 React Component Structure and JSX
+       1.4.5 React Hooks – Managing State and Side Effects
+       1.4.6 JavaScript Symbols and Syntax Used in React
+       1.4.7 To-Do List App: Progressive Complexity
+       1.4.8 React Functional Component Lifecycle
+       1.4.9 Setting Up a React Web Project
+    1.5 React Native – Building Native Mobile Applications
+       1.5.1 What Does Native Mean?
+       1.5.2 React JS vs React Native
+       1.5.3 Bridge Architecture and Benefits
+       1.5.4 Expo CLI vs React Native CLI
+       1.5.5 Setup, Core Components, and AsyncStorage
+    1.6 Application Architecture Fundamentals
+2. USER INTERFACE AND USER EXPERIENCE DESIGN
+    2.1 UI and UX Fundamentals
+    2.2 Responsive Design Principles
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                           Page 1
+IT 331 – Application Development and Emerging Technologies                  Module 1.2
+
+
+
+     2.3 Accessibility and Inclusive Design
+     2.4 Design Systems and Reusable Components
+3. STATE MANAGEMENT AND APPLICATION ARCHITECTURE
+    3.1 State Management Concepts
+    3.2 Client-Side and Server-Side Processing
+    3.3 Architectural Patterns
+    3.4 Scalability Considerations
+4. SYSTEMS ANALYSIS AND INFORMATION SYSTEMS DESIGN
+    4.1 The Paradigm Shift: Systems Analysis vs. Screen Painting
+    4.2 The 9-Level Systems Design Audit
+       Level 1 Start with the Stakeholder
+       Level 2 Identify Goals Before Features
+       Level 3 Analyze the Process Before the Screen
+       Level 4 Define the Core Inquiry
+       Level 5 Determine the Appropriate Support Level
+       Level 6 Apply the Law of Attention Density
+       Level 7 Establish a Clear Visual Hierarchy
+       Level 8 Eliminate Visual Redundancy
+       Level 9 Verify Feasibility and Deliver Actionable Insight
+5. LABORATORY EXERCISE 1
+    5.1 Objective
+    5.2 Detailed Requirements
+    5.3 Deliverables
+    5.4 Assessment Rubric
+6. SPRINT 1 – SYSTEM ANALYSIS AND DESIGN
+    6.1 Sprint 1 Objective
+    6.2 Required Deliverables
+    6.3 Diagram Construction Guide
+    6.4 Sprint 1 Presentation Guidelines
+    6.5 Sprint 1 Assessment
+7. PRELIMINARY EXAMINATION REVIEW
+    7.1 Topic Cluster A: Agile and Sprint Concepts
+    7.2 Topic Cluster B: Cross-Platform Development and React Ecosystem
+    7.3 Topic Cluster C: Systems Analysis and the 9-Level Audit
+    7.4 Topic Cluster D: Red Hat OpenShift Development I
+    7.5 Sample Examination Questions
+8. REVIEW AND ASSESSMENT
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences       Page 2
+IT 331 – Application Development and Emerging Technologies                       Module 1.2
+
+
+
+MODULE LEARNING OUTCOMES
+
+At the end of this module, students should be able to:
+
+
+    1. Differentiate between cross-platform and native development approaches, and justify
+       framework selection based on project requirements, team skills, and deployment targets.
+       (Sections 1.1 – 1.3, 1.5)
+    2. Design and implement React and React Native applications using components, hooks,
+       JSX, and the Virtual DOM — progressing from static rendering through state
+       management, lifecycle control, persistent storage, and icon-enhanced interfaces.
+       (Sections 1.4 – 1.5)
+    3. Construct responsive, accessible user interfaces that conform to WCAG 2.1 standards,
+       apply design system principles, and adapt across mobile, tablet, and desktop
+       breakpoints. (Sections 1.6, 2.1 – 2.4)
+    4. Apply state management strategies and architectural patterns (MVC, MVVM, layered
+       architecture) to design scalable, maintainable application structures. (Section 3)
+    5. Evaluate software interface designs using the 9-Level Systems Design Audit — from
+       stakeholder identification and process analysis through attention density, visual
+       hierarchy, feasibility verification, and information transformation. (Section 4)
+    6. Produce Sprint 1 system analysis and design artifacts — including stakeholder analysis,
+       use case diagrams, process flow diagrams, entity relationship diagrams, and system
+       architecture diagrams — and present them in a structured sprint demonstration.
+       (Sections 5 – 6)
+
+
+
+1. CROSS-PLATFORM APPLICATION DEVELOPMENT
+
+
+1.1 Introduction to Cross-Platform Development
+Cross-platform development is the practice of building software applications that can operate
+across multiple operating systems and device types from a single, unified codebase.
+Historically, organizations had to maintain entirely separate development teams and codebases
+for each platform they wanted to support — a costly and time-consuming proposition. The rise
+of modern cross-platform frameworks has dramatically changed this model.
+
+
+Rather than writing native Swift for iOS and native Kotlin for Android (plus separate web and
+desktop implementations), developers can now author one application that compiles or renders
+appropriately on all target environments. This convergence has made cross-platform
+development a first-choice strategy for most product teams.
+
+
+Common Target Platforms:
+  • Android – The dominant global mobile OS, requiring APK/AAB distribution through the
+    Google Play Store.
+
+
+
+Batangas State University | College of Informatics and Computing Sciences            Page 3
+IT 331 – Application Development and Emerging Technologies                                        Module 1.2
+
+
+
+    •    iOS – Apple's mobile platform, requiring App Store review and distribution.
+    •    Web – Browser-based delivery, often via Progressive Web App (PWA) techniques.
+    •    Desktop – Native desktop apps for Windows, macOS, and Linux via Electron or .NET
+         MAUI.
+    •    Embedded Systems – Lightweight runtimes for IoT and smart devices.
+
+
+Business Benefits of Cross-Platform Development:
+   • Reduced Development Cost: A single codebase eliminates duplicated effort across
+      platform-specific teams.
+   • Faster Time-to-Market: Features can be shipped simultaneously across all platforms in
+      a single release cycle.
+   • Improved Maintainability: Bug fixes, security patches, and feature additions need only
+      be applied once.
+   • Consistent User Experience: A unified design system ensures branding and
+      interaction patterns remain coherent across devices.
+   • Broader Market Reach: Targeting multiple platforms simultaneously increases the
+      potential user base from day one.
+
+
+
+1.2 Native versus Cross-Platform Development
+The choice between native and cross-platform development is one of the most consequential
+architectural decisions a product team makes. Both approaches have valid use cases; the right
+choice depends on performance requirements, team skills, release cadence, and long-term
+maintenance strategy.
+
+
+Comparison Overview:
+
+
+ Aspect                             Native Development                      Cross-Platform Development
+
+ Codebase                           Separate per platform                   Single shared codebase
+ Development Time                   Longer – platform-specific skills       Faster – write once, run anywhere
+ Maintenance                        Higher – parallel codebases             Lower – single source of truth
+
+                                                                            Near-native with modern
+ Performance                        Maximum native performance
+                                                                            frameworks
+
+                                                                            Multi-platform simultaneous
+ Deployment                         Platform-specific stores/builds
+                                                                            release
+
+ Resource Use                       Higher memory & CPU footprint           More efficient with bridge or AOT
+
+ Community                          Strong per-platform communities         Broad cross-platform ecosystems
+
+
+Native Technologies:
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                              Page 4
+IT 331 – Application Development and Emerging Technologies                                         Module 1.2
+
+
+
+    •    Swift / SwiftUI – Apple's first-party language and declarative UI framework for iOS and
+         macOS development. Tight integration with Xcode and the Apple ecosystem.
+    •    Kotlin / Jetpack Compose – Google's preferred language for Android, with Compose
+         providing a modern declarative UI approach mirroring SwiftUI in philosophy.
+
+
+Cross-Platform Technologies:
+   • Flutter – Google's widget-tree framework using the Dart language. Compiles to native
+      ARM code; renders its own GPU-accelerated canvas rather than using native widgets.
+   • React Native – Meta's framework using JavaScript/TypeScript that bridges to native UI
+      components. Backed by the vast npm ecosystem.
+   • .NET MAUI – Microsoft's successor to Xamarin.Forms, using C# and XAML to target
+      iOS, Android, Windows, and macOS from a single project.
+   • Ionic – An HTML/CSS/JavaScript framework that wraps web content in a native shell
+      using Capacitor or Cordova.
+   • Progressive Web Applications (PWA) – Web apps enhanced with Service Workers,
+      manifests, and push notifications, enabling near-native experiences in any browser.
+
+
+
+1.3 Modern Cross-Platform Frameworks
+Understanding the technical characteristics of each major framework is essential for making
+informed architectural decisions. The table below summarizes the leading options available to
+development teams today.
+
+
+ Framework                Language                  Target Platforms        Performance       Best For
+
+                                                    iOS, Android,           Near-native       Pixel-perfect
+ Flutter                  Dart
+                                                    Web, Desktop            (AOT)             custom UIs
+
+                                                    iOS, Android,                             JS-ecosystem
+ React Native             JavaScript/TS                                     Good (JSBridge)
+                                                    Web                                       teams
+
+                                                    iOS, Android,                             Enterprise
+ .NET MAUI                C#                                                High (.NET AOT)
+                                                    Windows, Mac                              Windows teams
+                                                    iOS, Android,           Moderate          Rapid web-to-
+ Ionic                    HTML/JS/TS
+                                                    Web                     (WebView)         mobile
+
+                                                    All browsers /          Browser-          Lightweight web-
+ PWA                      HTML/CSS/JS
+                                                    Web                     dependent         first apps
+
+
+The framework comparison above summarizes the five major options. Flutter and PWA are
+covered at the conceptual level in this section. React and React Native receive dedicated deep-
+dive treatment in Sections 1.4 and 1.5 respectively, covering setup, architecture, hooks,
+components, and full application examples.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                                Page 5
+IT 331 – Application Development and Emerging Technologies                                           Module 1.2
+
+
+
+1.4 React – A JavaScript Library for Building User Interfaces
+
+
+ React in the Local Job Market                                  Agile / Scrum – Another Core Hiring Signal
+
+ Nearly 1,000 React-specific roles are listed on                More than 3,000 Agile/Scrum-related positions
+ local platforms (JobStreet PH, Kalibrr, LinkedIn               are listed on local platforms, making Scrum the
+ PH) as of 2024-2025 — covering Frontend                        most in-demand project methodology for software
+ Developer, Full-Stack Developer, UI Engineer,                  teams in the Philippines.
+ and Web Application Developer positions across                 Scrum is a lightweight Agile framework. Common
+ Metro Manila and regional tech hubs.                           roles: Scrum Master, Agile Coach, Scrum
+ Median listed salary range: PHP 40,000 –                       Developer. Scrum certification (PSM I / CSM) is
+ 90,000/month for mid-level React developers in                 frequently listed as preferred alongside technical
+ Philippine tech companies and BPO firms. React                 skills like React, making Agile + React a highly
+ proficiency is consistently listed alongside                   employable combination.
+ Node.js, TypeScript, and REST API integration.
+
+
+
+1.4.1 Libraries vs. Frameworks
+Before diving into React, it is important to clarify where it sits in the JavaScript ecosystem. A
+library is a collection of reusable code modules that a program calls when needed — the
+program remains in control. A framework is a structured environment that provides a pre-
+defined skeleton for an application and dictates the flow of execution (Inversion of Control — the
+framework calls your code). React is a library, specifically for the View layer only.
+
+
+ Concept                         Library                                     Framework
+
+                                 A collection of reusable code               A structured environment that
+ Definition                      modules your program calls when             dictates the flow and skeleton of
+                                 needed.                                     your application.
+
+                                 Your code calls the library (you            The framework calls your code —
+ Who is in control?
+                                 control the flow).                          Inversion of Control.
+
+                                 High — integrate into any project           Lower — must follow the
+ Flexibility
+                                 structure freely.                           framework's conventions.
+                                                                             Angular, Next.js, Vue (opinionated
+ Examples                        React, Lodash, Axios, D3.js
+                                                                             mode), Laravel, Django
+
+                                 Gradual — learn only what you               Steeper upfront — must learn the full
+ Learning Curve
+                                 need.                                       scaffold.
+
+
+
+1.4.2 React – Origin and Philosophy
+    •    Built by Meta (Facebook), 2011: Created internally to solve the problem of building
+         large-scale, dynamic UIs where data changes frequently. Open-sourced in 2013.
+    •    Component-Based Architecture: React UIs are composed of self-contained, reusable
+         components — functioning like Lego bricks. Each component manages its own
+         structure, logic, and styling. Encourages modular design, making large codebases easier
+         to navigate and maintain.
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                                 Page 6
+IT 331 – Application Development and Emerging Technologies                                          Module 1.2
+
+
+
+     •   Declarative Programming: You describe what the UI should look like for a given state.
+         React determines how and when to update the DOM. This contrasts with imperative
+         manipulation: document.getElementById().innerHTML = ... where every step must be
+         specified.
+     •   Automatic Re-rendering: When component state or data changes, React automatically
+         re-renders the affected components — developers never manually track which DOM
+         nodes need updating.
+     •   Virtual DOM for Performance: React maintains a lightweight in-memory copy of the
+         real DOM. Changes are first applied to the Virtual DOM; only the minimal necessary real
+         DOM mutations are then applied. See the reconciliation diagram below.
+
+
+ Imperative (Vanilla JS) — Describe HOW to                      Declarative (React) — Describe WHAT it
+ update                                                         should look like
+ const el =                                                     function Greeting({ isLoggedIn }) {
+ document.getElementById('msg');                                  return isLoggedIn
+ el.style.display = isLoggedIn ? 'block' :                           ? <p>Welcome back!</p>
+ 'none';                                                             : null;
+ el.textContent = 'Welcome back!';                              React determines how and when to update the DOM
+ Developer manually selects and manipulates each                automatically.
+ DOM node.
+
+
+
+1.4.3 The Virtual DOM – Reconciliation Process
+A key performance advantage of React is the Virtual DOM — an in-memory, lightweight
+JavaScript representation of the real browser DOM. React never directly manipulates the real
+DOM on every state change. It updates the Virtual DOM first and then applies only the minimum
+necessary changes to the real DOM.
+
+
+ #       Phase                        What Happens
+
+                                      A user action or async data update triggers a state change in a
+ 1       State Change
+                                      component (e.g., clicking a button updates a counter).
+
+         Virtual Tree                 React creates a new Virtual DOM tree — a fresh JavaScript object
+ 2
+         Creation                     graph representing what the UI should look like with the new state.
+
+                                      React's diffing algorithm compares the new Virtual DOM tree with the
+ 3       Diffing                      previous snapshot, identifying exactly which nodes changed, were
+                                      added, or were removed.
+
+                                      React calculates the minimal set of real DOM operations needed to
+ 4       Reconciliation
+                                      synchronize the browser DOM with the new Virtual DOM state.
+
+                                      React batches all necessary DOM mutations and applies them in a
+ 5       Batch Update                 single pass — avoiding expensive reflows and repaints that would
+                                      result from individual DOM updates.
+
+
+Developer Benefits Summary:
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                                Page 7
+IT 331 – Application Development and Emerging Technologies                                               Module 1.2
+
+
+
+    •    Declarative: Tell React what the UI should look like — not how to update it. React
+         resolves the path.
+    •    Automatic: React determines when and how to update the real DOM. No manual
+         querySelector or innerHTML calls.
+    •    Abstracted: DOM manipulation complexity is hidden behind React's API. Component
+         code stays clean and logic-focused.
+    •    Performant: Only changed nodes are updated. Batch processing prevents cascading
+         reflows — measurably faster for large, frequently-updating UIs.
+
+
+1.4.4 React Component Structure and JSX
+Everything in a React application is a component — a self-contained unit of UI that combines
+structure, logic, and (optionally) styling in one reusable Lego-like block. A React application is a
+tree of nested components with a single root (<App />) at the top.
+
+
+Typical React Component Layout:
+Header → Body (contains: Title div → p → ul → li items)
+
+
+ JSX Element                     Maps to HTML                               Purpose in React
+
+                                                                            Custom component — encapsulates
+ <Header />                      <header>...</header>                       header logic and markup in one reusable
+                                                                            unit.
+
+                                                                            Generic container for grouping elements
+ <div>                           <div>
+                                                                            or creating layout sections.
+
+                                                                            Paragraph text. Used for body copy,
+ <p>                             <p>
+                                                                            descriptions, or instructional text.
+
+                                                                            Unordered list. In React, rendered with
+ <ul> / <li>                     <ul> / <li>                                .map() over arrays. Each <li> requires a
+                                                                            unique key prop.
+
+                                                                            Curly braces embed any JavaScript
+ {expression}                    Dynamic value                              expression — variables, function calls,
+                                                                            ternary operators — inside JSX.
+
+                                                                            CSS class attribute in JSX. class is a
+ className=                      class="..."                                reserved JS keyword, so React uses
+                                                                            className instead.
+
+
+What is JSX?
+JSX (JavaScript XML) is a syntax extension that allows HTML-like code to be written inside
+JavaScript files. It is not valid HTML nor valid JavaScript on its own — a build tool (Babel or the
+React compiler) transforms JSX into React.createElement() calls before the browser executes it.
+JSX exists for developer ergonomics: it co-locates structure with logic and makes component
+templates immediately readable.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                                    Page 8
+IT 331 – Application Development and Emerging Technologies                                          Module 1.2
+
+
+
+ JSX (what you write)                                           Compiled JS (what the browser runs)
+
+ function Button({ label }) {                                   function Button({ label }) {
+   return (                                                       return React.createElement(
+      <button className="btn">                                       "button",
+        {label}                                                      { className: "btn" },
+      </button>                                                      label
+   );                                                             );
+ }                                                              }
+
+
+
+1.4.5 React Hooks – Managing State and Side Effects
+Hooks are functions that let functional components access React features — state, lifecycle
+events, context, and more — without writing class-based components. Introduced in React 16.8,
+hooks are now the standard approach. All hook names begin with use.
+
+
+ Hook                 Purpose                      When to Use                         Key Behaviour
+
+                                                                                       Re-renders component
+                      Track and display            Counter, form input value, toggle
+ useState                                                                              every time state value
+                      dynamic UI data              open/closed, current selected tab
+                                                                                       changes.
+
+                      Handle side effects:         Fetch API data on mount, start or   Runs after render.
+ useEffect            fetching,                    clear a timer, subscribe to a       Controlled by the
+                      subscriptions, timers        WebSocket                           dependency array.
+
+                      Persist a value                                                  Ref object is stable
+                                                   Store previous state value,
+                      without re-render;                                               across renders.
+ useRef                                            programmatically focus an input,
+                      access DOM nodes                                                 Mutation does NOT
+                                                   hold a timer ID
+                      directly                                                         cause re-render.
+
+                      Read a value from
+                                                   App theme, locale, authenticated    Re-renders when
+ useContext           React Context
+                                                   user object, global settings        context value changes.
+                      without prop-drilling
+
+                                                                                       Returns cached result
+                      Cache an expensive           Filtering a large list, computing
+ useMemo                                                                               until dependencies
+                      computed value               summary statistics from a dataset
+                                                                                       change.
+                                                                                       Stable function
+                                                   Prevent unnecessary child re-
+                      Cache a function                                                 reference across
+ useCallback                                       renders when passing callbacks
+                      reference                                                        renders when deps
+                                                   as props
+                                                                                       unchanged.
+
+
+useEffect Dependency Array – Controlling When Effects Run:
+
+
+ Dependency Array                          Behaviour                           Typical Use Case
+
+                                           Runs once only — on mount
+                                                                               Initial API data fetch, setting up
+ [] (empty array)                          (when component first appears
+                                                                               event listeners or subscriptions.
+                                           in the DOM).
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                               Page 9
+IT 331 – Application Development and Emerging Technologies                                               Module 1.2
+
+
+
+ Dependency Array                          Behaviour                              Typical Use Case
+
+                                           Runs on mount, then again
+                                                                                  Re-fetch data when a search
+ [value1, value2]                          whenever value1 or value2
+                                                                                  term, filter, or user ID changes.
+                                           changes.
+
+                                                                                  Rarely useful; frequently causes
+                                           Runs on every render. Usually a
+ Omitted (no array)                                                               infinite render loops if the effect
+                                           bug — avoid unless intentional.
+                                                                                  also updates state.
+
+
+
+1.4.6 JavaScript Symbols and Syntax Used in React
+React code uses several JavaScript operators and syntax constructs that are frequently
+encountered but may be unfamiliar to developers coming from other languages. Mastering
+these is prerequisite to reading any production React codebase.
+
+
+ Symbol         Name                         Purpose in JavaScript / React                Example
+
+                                             Function parameters and calls;
+ ()             Parentheses                  grouping for operator precedence             fn(a, b)
+                                             (order of operations).
+
+                                             Blocks, object literals, destructuring,
+ {}             Curly Braces                                                              const {name} = user
+                                             and JSX expression embedding.
+
+                                             Arrays, array indexing, and array
+ []             Square Brackets              destructuring. Also useState hook            const [a, b] = arr
+                                             return value.
+
+                                             Unpacks values from an array or
+ ...            Spread Operator              object. Used in immutable state              [...arr, 4] // [1,2,3,4]
+                                             updates and props spreading.
+
+                                             Concise function syntax. Lexically
+ =>             Arrow Function               binds this — critical inside event           (x) => x * 2
+                                             handlers and hooks.
+
+                                             Inline conditional: condition ?
+                                                                                          isOpen ? <Modal/> :
+ ?              Ternary Operator             valueIfTrue : valueIfFalse. Heavily
+                                                                                          null
+                                             used in JSX conditional rendering.
+
+                                             Returns right-hand value only if left is
+ ??             Nullish Coalescing           null or undefined (not just any falsy        name ?? 'Guest'
+                                             value).
+
+                                             In JSX: renders right-hand expression
+                                                                                          isLoggedIn &&
+ &&             Short-circuit AND            only if left-hand side is truthy. Common
+                                                                                          <Dashboard/>
+                                             for optional UI sections.
+
+                                             Compares with type coercion. '5' == 5
+ ==             Loose Equality               is true. Avoid in React — use ===            "5" == 5 → true
+                                             instead.
+
+                                             Compares value AND type — no
+ ===            Strict Equality              coercion. Preferred in all React             "5" === 5 → false
+                                             condition checks and comparisons.
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                                   Page 10
+IT 331 – Application Development and Emerging Technologies                                        Module 1.2
+
+
+
+ Symbol         Name                         Purpose in JavaScript / React            Example
+
+                                             Annotations applied to classes or
+                                             methods. Seen in TypeScript and
+ @              Decorator                                                             @Component
+                                             class-based frameworks (Angular). Not
+                                             standard in functional React.
+
+                                             Escapes special characters in strings:
+ \              Escape Character             \n (newline), \\ (backslash),            "line1\nline2"
+                                             \'(apostrophe).
+
+
+Type Coercion — Why == is Dangerous in React:
+JavaScript automatically converts one data type into another when using the loose equality
+operator (==). For example: '5' == 5 evaluates to true because JS coerces the string to a
+number. null == undefined is also true under loose equality. This implicit conversion is a source
+of subtle, hard-to-debug errors. Always use === (strict equality) in React — it compares both
+value and type without any coercion, eliminating this entire class of bug.
+
+
+1.4.7 Practical Example – To-Do List App: Progressive Complexity
+The To-Do List is the canonical beginner React project because it exercises all core concepts in
+a minimal, relatable context. The progression below takes the app from a single static
+component through to a production-quality, accessible, icon-enhanced application.
+
+
+ #       Feature Added                   React Concepts Practiced              New Hook / Pattern
+
+                                         JSX syntax, props, functional
+         Static component
+ 1                                       components, component tree            None — pure JSX
+         rendering
+                                         structure
+
+                                         Controlled inputs, list rendering
+         Add and display tasks
+ 2                                       with .map(), unique key prop          useState
+         dynamically
+                                         requirement
+
+                                         Conditional className styling,
+         Mark tasks complete /
+ 3                                       immutable state update pattern        useState (array update)
+         toggle
+                                         with spread
+
+         Fetch tasks from a              Async/await data fetching, loading
+ 4                                                                             useEffect + useState
+         mock API                        and error state, cleanup
+
+         Refactor into smaller           Component composition, lifting
+ 5                                                                             Custom hook (useTasks)
+         components with hooks           state up, prop drilling vs context
+
+                                         Conditional rendering, event
+         Delete confirmation
+ 6                                       propagation (stopPropagation),        useRef for focus management
+         modal
+                                         portal pattern
+
+                                         Timeout-based UI state, side-effect
+         Toast notification on                                                 useEffect cleanup, useRef for
+ 7                                       cleanup, setTimeout +
+         task complete                                                         timer ID
+                                         clearTimeout
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                              Page 11
+IT 331 – Application Development and Emerging Technologies                                    Module 1.2
+
+
+
+ #       Feature Added                   React Concepts Practiced           New Hook / Pattern
+
+         Material Icons +                Third-party library integration
+                                                                            aria-label, onKeyDown, role
+ 8       accessibility                   (@mui/icons-material), ARIA
+                                                                            attributes
+         improvements                    labels, keyboard handlers
+
+
+Why This Progression Matters:
+  • Each stage introduces exactly one new concept — preventing cognitive overload while
+     building genuine understanding.
+  • By Stage 4, students have applied all three foundational hooks (useState, useEffect,
+     useRef) in a meaningful, real-scenario context.
+  • By Stage 5, students practice the professional pattern of extracting custom hooks — the
+     same approach used in production React codebases at any scale.
+  • By Stage 8, students have a portfolio-quality component that demonstrates UI
+     sophistication, accessibility awareness, and third-party library integration.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                        Page 12
+IT 331 – Application Development and Emerging Technologies                                           Module 1.2
+
+
+
+1.4.8 React Functional Component Lifecycle
+
+Every React functional component goes through a predictable set of lifecycle phases.
+Understanding these phases is critical for knowing when to initialize data, when to run side
+effects, and when to clean up resources. React exposes lifecycle control through hooks —
+especially useState and useEffect.
+
+
+ Phase                           Description
+
+                                 Component is created and added to the UI for the first time. Initial state is
+ Mount
+                                 set; useEffect with [] runs once here.
+
+                                 React runs the component function to produce JSX (the DOM or native UI).
+ Render
+                                 Happens on mount and every time state or props change.
+
+                                 State or props change triggers a re-render. useEffect with dependencies
+ Update
+                                 runs again if its dependencies changed.
+
+                                 Component is removed from the UI. Cleanup functions returned from
+ Unmount
+                                 useEffect run at this point (remove listeners, clear timers).
+
+
+
+How useState, useEffect, and useRef Map to the Lifecycle
+
+
+ Hook                 Purpose                              Triggers             Lifecycle Phase Used
+                                                           Render?
+
+                                                           Yes — every
+                      Store and change                                          All phases (Mount: initial value;
+                                                           state change
+ useState             component data (e.g.,                                     Render: drives UI; Update:
+                                                           causes a re-
+                      counter, form value, toggle)                              triggers re-render)
+                                                           render
+
+                      Run side effects: data               No — does not
+                                                                                Mount, Update, Unmount
+ useEffect            fetching, subscriptions,             directly trigger a
+                                                                                (controlled by dependency array)
+                      timers, DOM manipulation             re-render
+
+                      Hold a mutable value that
+                                                           No — mutation
+                      persists without causing a                                All (mostly Render + Unmount
+ useRef                                                    never triggers a
+                      re-render; access DOM                                     cleanup)
+                                                           re-render
+                      nodes
+
+
+
+useState — Lifecycle Relation
+    •    Mount: Sets the initial state value — e.g., const [count, setCount] = useState(0)
+         initializes count to 0 when the component first appears.
+    •    Render: The current state value is read during render to decide what the UI should
+         show — e.g., which tab is active, whether a modal is open.
+    •    Update: Calling the setter function (setCount, setNotes, etc.) triggers a re-render. React
+         re-runs the component function with the new state value.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                               Page 13
+IT 331 – Application Development and Emerging Technologies                            Module 1.2
+
+
+
+  // Initialized during Mount:
+  const [count, setCount] = useState(0);
+
+
+
+useEffect — Lifecycle Relation
+    •    Mount: Effect runs once when the component first appears (if dependency array is []).
+    •    Update: Effect re-runs whenever specified dependencies change.
+    •    Unmount: The cleanup function returned from useEffect runs when the component is
+         removed — stops timers, removes event listeners, cancels fetch requests.
+
+
+  useEffect(() => {
+    // Mount: fetch data, start timer
+    return () => {
+       // Unmount: cleanup (remove listener, stop timer)
+    };
+  }, []); // [] = run once on Mount
+
+
+
+useRef — Lifecycle Relation
+    •    Mount: The ref is initialized — e.g., const inputRef = useRef(null). The .current value is
+         set to the initial argument.
+    •    Render: The ref object stays identical across every render. Reading or writing .current is
+         safe without causing re-renders.
+    •    Unmount: Often used for cleanup — storing timer IDs, keeping the last known state
+         value, or tracking whether the component has mounted.
+    •    Think of useRef as a box that survives all lifecycle phases. Its .current contents can
+         change, but the box itself never changes identity.
+
+
+  // Stays the same through Mount / Render / Unmount:
+  const inputRef = useRef(null);
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences               Page 14
+IT 331 – Application Development and Emerging Technologies                           Module 1.2
+
+
+
+1.4.9 Setting Up a React Web Project
+
+Before writing React code, a development environment must be configured. The minimum
+requirements are Node.js (which includes npm), a code editor (VS Code is strongly
+recommended), and a project scaffold tool. Two scaffolding options are commonly used: the
+legacy create-react-app and the modern, faster Vite.
+
+
+Prerequisites
+    •    JavaScript Fundamentals: Functions, arrays, objects, ES6 features (arrow functions,
+         destructuring, template literals, spread operator). React code is JavaScript-first.
+    •    HTML: React uses HTML-like JSX syntax — understanding element nesting, attributes,
+         and the DOM structure is required.
+    •    CSS: For styling components. React does not provide styling by default — CSS, CSS
+         Modules, Tailwind, or styled-components are used.
+    •    Node.js: A backend JavaScript runtime that executes JavaScript outside the browser.
+         Comes bundled with npm (Node Package Manager) — essential for installing React and
+         all its dependencies.
+
+
+Step 1 – Install Node.js
+    •    Visit https://nodejs.org and download the latest LTS (Long-Term Support) version.
+    •    Run the installer, click Next through the wizard, accept the license agreement, and keep
+         all default settings.
+    •    Verify installation: Open a terminal and run: node -v (should return 12.x or higher) and
+         npm -v.
+
+
+Option A – Create React App (Beginner-Friendly, Legacy)
+create-react-app is the original official scaffolding tool. It is beginner-friendly and well-
+documented but slower than modern alternatives and is no longer actively maintained. Use it for
+learning exercises only.
+
+
+  npx create-react-app my-app                  # scaffold the project
+  cd my-app                                    # enter the project folder
+  npm start                                    # open http://localhost:3000
+
+
+
+Option B – Vite (Modern, Fast — Recommended)
+Vite is the modern replacement for create-react-app. It is significantly faster for both initial
+startup and hot module replacement, making development noticeably more responsive. Vite is
+the recommended tool for new projects.
+
+
+  npm create vite@latest my-react-app                    # scaffold
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences              Page 15
+IT 331 – Application Development and Emerging Technologies                                        Module 1.2
+
+
+
+  # Choose: Framework → React, Variant → JavaScript
+  cd my-react-app
+  npm install                           # install deps
+  npm run dev                           # open http://localhost:5173
+
+
+
+ Use Case                                  Recommended Tool                   Dev Server URL
+
+ Beginner exercises, following
+                                           create-react-app                   http://localhost:3000
+ official docs
+
+ Modern apps, fast startup,
+                                           Vite                               http://localhost:5173
+ production
+
+ TypeScript, modular enterprise
+                                           Vite (TypeScript variant)          http://localhost:5173
+ apps
+
+
+
+React Project Structure — What Each File Does
+Both create-react-app and Vite generate a similar folder structure. Understanding what each file
+and folder is responsible for is essential for navigating and modifying a React project
+confidently.
+
+
+ File / Folder                      Purpose
+
+                                    Main HTML entry point. Contains <div id="root"></div> — the single DOM
+ index.html
+                                    node React mounts the entire app into.
+
+                                    React root entry point. Calls ReactDOM.createRoot().render(<App />) to
+ src/main.jsx
+                                    mount the root component into #root.
+
+                                    The root application component. The starting point for all UI — all other
+ src/App.jsx
+                                    components are nested inside App.
+
+                                    Main source code folder. All components, hooks, utilities, and styles live
+ src/
+                                    here. This is where development happens.
+
+                                    Static assets accessible directly via URL (images, fonts, favicon). Not
+ public/
+                                    processed by Vite or Webpack — served as-is.
+                                    External libraries and packages the project depends on: build tools,
+ node_modules/
+                                    routing, utilities. Never manually edited. Added via npm install.
+
+                                    Project metadata and dependency list. Defines npm scripts (start, dev,
+ package.json
+                                    build, test), the dependency versions, and project name.
+
+
+Important: Custom components must start with a capital letter — <Board />, <NoteScreen />,
+<Header />. Lowercase names are treated as built-in HTML/native elements by React.
+Components cannot be adjacent without a single container (use a <div> or an empty fragment
+<> </> to wrap siblings).
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                             Page 16
+IT 331 – Application Development and Emerging Technologies                                          Module 1.2
+
+
+
+1.5 React Native – Building Native Mobile Applications
+
+React Native is a framework for building native mobile applications using the React JS
+paradigm. Unlike web-only React, React Native code does not run in a browser — it compiles to
+real, platform-native code that runs directly on iOS and Android hardware. This is fundamentally
+different from hybrid approaches such as Cordova or Ionic, which wrap a web view inside a
+mobile shell.
+
+
+What Does 'Native' Mean?
+In the context of mobile development, 'native' means an application that is built using the
+platform's own programming language and APIs — Swift/Objective-C for iOS, Kotlin/Java for
+Android — and runs with full access to the device's hardware and OS capabilities. Native apps
+deliver the best performance and deepest platform integration but require separate codebases
+per platform.
+    • React Native bridges this gap: you write JavaScript/TypeScript once, and React
+        Native compiles it to call real native APIs and render real native components on each
+        platform — not a web view in disguise.
+    • Compare to Cordova/Ionic: those frameworks render HTML/CSS inside a WebView
+        container. React Native skips the WebView entirely and communicates directly with
+        native platform components.
+
+
+React JS vs React Native — Key Differences
+ Aspect                          React JS (Web)                             React Native (Mobile)
+                                                                            iOS, Android, (and Web with React
+ Target Platform                 Web browsers
+                                                                            Native Web)
+
+                                                                            Real native UI components (UIView,
+ Output                          HTML/CSS DOM elements
+                                                                            TextView)
+
+                                                                            StyleSheet API (JavaScript objects,
+ Styling                         CSS, CSS Modules, Tailwind
+                                                                            no CSS units)
+                                                                            Flexbox only (FlexDirection default is
+ Layout                          CSS Flexbox + Grid
+                                                                            column)
+
+                                                                            React Navigation (Stack, Tab,
+ Navigation                      React Router, Next.js router
+                                                                            Drawer)
+
+                                                                            <View>, <Text>, <TextInput>,
+ UI Elements                     <div>, <p>, <input>, <button>
+                                                                            <TouchableOpacity>
+
+                                                                            Single — compiles to iOS and
+ Code Base                       Single — runs in any browser
+                                                                            Android
+
+
+
+How React Native Works – The Bridge Architecture
+React Native operates through a bridge (or in its modern New Architecture, JSI — JavaScript
+Interface) that connects JavaScript logic with native platform components and device APIs.
+
+
+Batangas State University | College of Informatics and Computing Sciences                              Page 17
+IT 331 – Application Development and Emerging Technologies                                        Module 1.2
+
+
+
+
+ UI Components                   →       JS Logic + React               →   Native Components         Platform
+ (React/JSX)                             Native Bridge
+
+ FlatList, View,                         useState, useEffect,                                         iOS +
+                                                                            UIView (iOS),
+ TextInput, Modal,               →       event handlers, async          →                             Android
+                                                                            ViewGroup (Android)
+ TouchableOpacity                        functions                                                    APIs
+
+
+    •    UI Components: The React/JSX layer — what you write. FlatList, View, TextInput,
+         Modal, TouchableOpacity, etc.
+    •    JS Logic: Your business logic — state management, API calls, event handling — runs
+         in the JavaScript thread.
+    •    React Native Bridge (middle layer): Translates JavaScript calls into native API calls
+         asynchronously. The New Architecture (JSI) removes this bridge for direct, synchronous
+         communication.
+    •    Native Components: On iOS: UIView, UILabel, UITextView. On Android: ViewGroup,
+         TextView, EditText. These are the actual platform widgets the user sees and interacts
+         with.
+    •    Android/iOS APIs: Camera, GPS, Bluetooth, file system, push notifications —
+         accessed through native modules or community libraries.
+
+
+Benefits of React Native
+ Benefit                             Explanation
+
+ Cross-Platform & Single             One JavaScript codebase compiles to both iOS and Android. Platform-
+ Codebase                            specific branches written only where necessary.
+
+                                     Eliminates the need for two separate native teams (Swift/iOS +
+ Cost Effective
+                                     Kotlin/Android). One team, one codebase, two platforms.
+
+                                     Business logic, API calls, state management, and many UI components
+ Reusable Codebase
+                                     are shared across platforms with minimal modification.
+
+                                     Fast Refresh shows code changes on the device in under a second
+ Fast Development                    without losing application state. Shake the device to open the developer
+                                     menu.
+
+                                     Animations, gestures, custom rendering, and native-feel interactions are
+ Strong UI Capabilities
+                                     all achievable. Not limited to web-view constraints.
+
+                                     Bug fixes and feature updates apply to both platforms simultaneously.
+ Easy to Maintain
+                                     Consistent version management through npm.
+
+
+
+Real Companies Using React Native
+    •    Meta (Facebook & Instagram): React Native was created at Meta and powers parts of
+         Facebook and Instagram for iOS and Android.
+    •    Tesla: The Tesla mobile app for controlling vehicles uses React Native.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                             Page 18
+IT 331 – Application Development and Emerging Technologies                                            Module 1.2
+
+
+
+    •    Bloomberg: The Bloomberg mobile app, handling financial data at scale, was rebuilt in
+         React Native.
+    •    Walmart: Walmart's mobile shopping app is built with React Native, serving millions of
+         users.
+    •    Shopify: Shopify's merchant mobile app uses React Native, and Shopify is also a major
+         contributor to the framework's open-source development.
+
+
+Two Ways to Build React Native Apps – Expo CLI vs React Native CLI
+ Aspect                          Expo CLI                                   React Native CLI
+
+                                 A set of tools and frameworks that
+                                                                            The official bare-bones React Native
+ What It Is                      sits above React Native, abstracting
+                                                                            toolchain. Full access to native code.
+                                 away native configuration.
+
+                                 Easy — minimal setup, no Android           Complex — requires Android Studio,
+ Setup Difficulty                Studio or Xcode required for basic         Xcode, SDKs, and environment
+                                 development.                               variable configuration.
+
+                                 Limited to Expo SDK libraries.
+                                                                            Full access — any native module
+ Native Modules                  Custom native modules require
+                                                                            can be added.
+                                 ejecting to bare workflow.
+
+                                 Supported via Expo Updates —
+                                                                            Not built-in; requires third-party
+ OTA Updates                     push JS changes without App Store
+                                                                            solutions (CodePush).
+                                 review.
+
+                                 Beginners, rapid prototyping,              Apps requiring deep native
+ Best For                        capstone projects, most app use            integration (Bluetooth, custom
+                                 cases.                                     camera, proprietary SDKs).
+
+                                 npm install -g expo-cli then npx
+ Install Command                                                            npx react-native init my-app
+                                 create-expo-app my-app
+
+
+
+Setting Up a React Native Project with Expo
+Prerequisites:
+    •    Node.js v12 or higher — verify with: node -v
+    •    Expo Go app installed on your physical iOS or Android device (from App Store / Google
+         Play).
+    •    VS Code with recommended extensions: React Native Tools (Microsoft), React
+         Native/React/Redux Snippets (EQuimper), Prettier (code formatter), Material Icon
+         Theme (Philipp Kief).
+    •    Enable Format On Save in VS Code settings to allow Prettier to auto-format on every file
+         save.
+
+
+Scaffold and Run a New Expo Project:
+  npx create-expo-app notes-app                           # scaffold with blank template
+  code notes-app                                          # open in VS Code
+  npm start (or npx expo start)                           # start Metro Bundler
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                                Page 19
+IT 331 – Application Development and Emerging Technologies                                          Module 1.2
+
+
+
+  npm run reset-project                                   # clear blank template boilerplate
+  npx expo start --clear                                  # clear Metro cache if issues arise
+
+
+
+Template Options (--template flag):
+    •    blank: Minimal JS app — best for learning from scratch.
+    •    blank (TypeScript): Same but with TypeScript configured — recommended for
+         production apps.
+    •    tabs (TypeScript): Sample app with tabs and screen navigation pre-configured —
+         useful for starting a multi-screen app.
+    •    minimal (Bare Workflow): A bare native project — more manual control, closer to
+         React Native CLI. Requires Xcode/Android Studio.
+
+
+Expo Project Folder Structure:
+ Folder / File                      Purpose
+
+                                    File-based routing folder (Expo Router). Each file becomes a
+ app/
+                                    screen/route automatically.
+
+                                    Images, fonts, videos, and other multimedia resources bundled into the
+ assets/
+                                    app.
+
+                                    Reusable UI components (buttons, cards, headers, modals) shared
+ components/
+                                    across screens.
+
+ node_modules/                      External packages installed via npm. Never manually edited.
+
+                                    Dependency list and npm scripts. Defines support for web, android, and
+ package.json
+                                    ios platforms via Expo.
+
+                                    Expo configuration: app name, icon, splash screen, permissions, and
+ app.json / app.config.js
+                                    build settings.
+
+
+
+React Native Core Components and APIs
+React Native provides a set of cross-platform built-in components that map to native UI
+elements on each platform. These replace HTML elements — there are no <div>, <p>, or
+<input> tags. Always wrap text content in a <Text> component; placing raw text outside <Text>
+causes a runtime error.
+
+
+ Component / API                 Purpose                                    Key Props / Notes
+
+                                 Generic container — equivalent to
+ View                                                                       style, onLayout, accessible
+                                 <div>. Used for layout and grouping.
+
+                                 Renders text. All text must be
+ Text                            wrapped in <Text> — raw string             style, numberOfLines, onPress
+                                 literals are not allowed outside it.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                                 Page 20
+IT 331 – Application Development and Emerging Technologies                                            Module 1.2
+
+
+
+ Component / API                 Purpose                                    Key Props / Notes
+
+                                 Accepts user keyboard input.
+                                                                            placeholder, value, onChangeText,
+ TextInput                       Controlled via value and
+                                                                            secureTextEntry
+                                 onChangeText props.
+
+                                 Efficiently renders large, scrollable
+                                                                            data, keyExtractor, renderItem,
+ FlatList                        lists using virtualization — renders
+                                                                            contentContainerStyle
+                                 only visible items.
+
+                                 Renders all children at once inside a
+ ScrollView                      scrollable container. Use for short        horizontal, contentContainerStyle
+                                 lists; use FlatList for long ones.
+
+                                 Creates a touchable element that
+ TouchableOpacity                fades on press. Replaces <button>          onPress, style, activeOpacity
+                                 for interactive elements.
+
+                                 Displays content on top of the
+                                                                            visible, animationType, transparent,
+ Modal                           existing screen, overlaying the
+                                                                            onRequestClose
+                                 background.
+
+                                 Displays local or remote images.
+                                                                            source, style (width/height required
+ Image                           Network images require explicit
+                                                                            for network images)
+                                 width and height in style.
+
+                                 Displays a native OS dialog with
+ Alert                           buttons. Used for confirmations and        Alert.alert(title, message, buttons[])
+                                 error messages.
+
+                                 Toggles a boolean value on and off
+ Switch                          — the native equivalent of a               value, onValueChange, trackColor
+                                 checkbox toggle.
+
+                                 Wraps content to avoid overlap with
+                                                                            Required for cross-platform screen
+ SafeAreaView                    device notches, status bars, and
+                                                                            edge safety.
+                                 rounded corners.
+
+                                 Android-only API for brief notification
+                                                                            ToastAndroid.show(message,
+ ToastAndroid                    messages at the bottom of the
+                                                                            duration)
+                                 screen.
+
+
+
+Styling in React Native – StyleSheet API
+React Native uses a JavaScript-based styling system rather than CSS. Styles are defined as
+plain JavaScript objects and applied via the style prop. StyleSheet.create() validates and
+optimizes styles at app startup.
+    • No CSS Units: Numeric values represent density-independent pixels (dp). No px, em,
+        rem, or % units — just numbers.
+    • Flexbox Default: React Native uses Flexbox for all layout. The default flexDirection is
+        column (vertical stacking) — the opposite of CSS default (row).
+    • No Cascade: Styles do not cascade between components. Each component manages
+        its own styles explicitly.
+    • Platform-Specific Code: Use Platform.OS === 'ios' ? ... : ... or Platform.select({}) to
+        apply different styles or logic per platform.
+
+
+Batangas State University | College of Informatics and Computing Sciences                                Page 21
+IT 331 – Application Development and Emerging Technologies                                             Module 1.2
+
+
+
+    •    Dimensions API: Dimensions.get('window') returns the device screen width and height
+         for responsive sizing.
+
+
+screenOptions – React Navigation Configuration
+screenOptions is a React Navigation configuration prop applied to a navigator (Stack.Navigator,
+Tab.Navigator) that controls how screens look and behave — specifically the header/navigation
+bar that sits above each screen. It does not affect styles of components inside the screen body.
+
+
+ Property                        Controls                                   Example Value
+
+                                 Background color and size of the top
+ headerStyle                                                                { backgroundColor: '#2196F3' }
+                                 navigation header bar.
+                                 Font size, weight, and color of the
+ headerTitleStyle                                                           { fontWeight: 'bold', color: 'white' }
+                                 header title text.
+                                 Color of the back arrow and header
+ headerTintColor                                                            'white'
+                                 icon buttons.
+
+                                 Horizontal alignment of the title
+ headerTitleAlign                                                           'center' or 'left'
+                                 within the header.
+
+                                 Whether the screen supports swipe-
+ gestureEnabled                                                             true (default on iOS)
+                                 to-go-back gesture.
+
+                                 Background color and padding of the
+ contentStyle                                                               { backgroundColor: '#fff' }
+                                 entire screen area below the header.
+
+
+Key distinction: screenOptions controls the navigator's container UI (the header/tab bar) which
+is outside your screen JSX. The style prop on View, Text, and other components inside your
+screen controls the content area. These two styling systems do not overlap.
+
+
+AsyncStorage – Persistent Local Data
+AsyncStorage is the React Native equivalent of localStorage in the browser — a simple,
+unencrypted key-value storage system that persists data on the device across app restarts. It is
+asynchronous (Promise-based) and must be awaited.
+
+
+  npm install @react-native-async-storage/async-storage
+
+  // Save data:
+  await AsyncStorage.setItem('NOTES_KEY', JSON.stringify(notes));
+
+  // Load data:
+  const raw = await AsyncStorage.getItem('NOTES_KEY');
+  if (raw) setNotes(JSON.parse(raw));
+
+
+
+    •    Always JSON.stringify: AsyncStorage only stores strings. Convert arrays and objects
+         to JSON before saving, and JSON.parse after loading.
+
+
+Batangas State University | College of Informatics and Computing Sciences                                 Page 22
+IT 331 – Application Development and Emerging Technologies                                           Module 1.2
+
+
+
+    •    Load on Mount: Call loadNotes() inside useEffect(() => { loadNotes(); }, []) so notes are
+         restored when the app starts.
+    •    Save on Change: Call saveNotes(updatedNotes) inside every CRUD function (add,
+         update, delete) to keep storage synchronized.
+    •    Error Handling: Always wrap AsyncStorage calls in try-catch — storage can fail due to
+         device storage limits or permissions.
+
+
+Notes App – Complete Lab Exercise Walkthrough (NoteScreen.js)
+The NoteScreen component is a complete React Native CRUD application demonstrating all
+core concepts covered in this section. It uses AsyncStorage for persistence, Modal for add/edit
+dialogs, FlatList for the notes list, Alert for delete confirmation, ToastAndroid for user feedback,
+and MaterialIcons for icon buttons.
+
+
+Feature Inventory of the NoteScreen Implementation:
+ Feature                         Implementation                             Hooks / APIs Used
+
+                                 FlatList with keyExtractor and
+ Display notes list                                                         useState (notes array)
+                                 renderItem
+
+                                 Add Modal with TextInput; addNote()        useState (newNote,
+ Add new note
+                                 appends to state                           addModalVisible)
+
+                                 Edit Modal pre-filled with selected        useState (editNote,
+ Edit existing note
+                                 note; updateNote() maps over array         editModalVisible)
+
+ Delete with                     Alert.alert() shows native OS dialog
+                                                                            Alert API, filter()
+ confirmation                    before deleteNote()
+
+                                 saveNotes() on every mutation;
+ Persistent storage                                                         AsyncStorage, useEffect([], [])
+                                 loadNotes() on mount
+
+                                 ToastAndroid.show() after add,
+ Toast notification                                                         ToastAndroid (Android only)
+                                 update, delete operations
+
+                                 MaterialIcons from @expo/vector-
+ Icon buttons                                                               @expo/vector-icons
+                                 icons for edit and delete actions
+
+
+
+1.6 Application Architecture Fundamentals
+Software architecture is the high-level blueprint that defines how system components are
+organized, how they communicate, and how responsibilities are divided. A well-chosen
+architecture reduces coupling between components, makes the system easier to test, and
+allows individual layers to evolve independently.
+
+
+The Five-Layer Model of Modern Applications:
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                              Page 23
+IT 331 – Application Development and Emerging Technologies                                       Module 1.2
+
+
+
+ Layer                                 Responsibility & Examples
+
+                                       Renders the UI; handles user gestures and input events. Example:
+ Presentation Layer
+                                       React components, Flutter widgets.
+
+                                       Coordinates use cases; orchestrates calls between the UI and
+ Application Layer
+                                       business logic. Example: Service classes, use-case interactors.
+
+                                       Encodes domain rules and calculations that are independent of any
+ Business Logic Layer
+                                       framework or database. Example: Pricing engines, validation rules.
+
+                                       Abstracts the source of data (REST API, local SQLite, cache).
+ Data Access Layer
+                                       Example: Repository pattern implementations.
+
+                                       Persists data: relational (PostgreSQL), document (MongoDB), key-
+ Database / Storage
+                                       value (Redis), or device-local (SQLite, Hive).
+
+
+Key Architectural Benefits:
+   • Separation of Concerns: Each layer has one clearly-defined responsibility, reducing
+      the risk of unintended side effects when code changes.
+   • Testability: Business logic isolated in its own layer can be unit-tested without spinning
+      up a UI or a database.
+   • Replaceability: The data access layer can be swapped from a REST API to a local
+      cache without touching business logic.
+   • Scalability: Individual layers can be scaled horizontally (application layer on multiple
+      servers) without scaling the entire stack.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                           Page 24
+IT 331 – Application Development and Emerging Technologies                           Module 1.2
+
+
+
+2. USER INTERFACE AND USER EXPERIENCE DESIGN
+
+
+2.1 UI and UX Fundamentals
+UI and UX are frequently conflated but represent distinct disciplines that must work in concert to
+produce software that people love to use. The difference is not merely semantic — confusing
+them leads to products that look polished but are frustrating to operate, or that are functionally
+excellent but visually inconsistent and off-putting.
+
+
+User Interface (UI) Design
+UI design is concerned with the visual and interactive surface of an application. It asks: How
+does each screen look? UI designers make decisions about:
+    •    Visual Hierarchy: Guiding the user's eye to the most important element first through
+         size, weight, color, and contrast.
+    •    Layout and Spacing: Using grids, gutters, and whitespace to create organized,
+         scannable interfaces.
+    •    Color and Typography: Selecting a palette and typeface system that reflects brand
+         identity while ensuring legibility.
+    •    Component Design: Defining the visual and interactive behavior of buttons, forms,
+         cards, modals, and navigation patterns.
+
+
+User Experience (UX) Design
+UX design takes a broader view, asking: How does the user feel throughout their entire journey?
+A UX designer's toolkit includes:
+   • User Research: Interviews, surveys, and usability tests that surface real user needs and
+      pain points.
+   • Information Architecture: Organizing content and navigation in a way that matches
+      users' mental models.
+   • Journey Mapping: Visualizing every touchpoint a user has with the product, from
+      discovery through task completion.
+   • Usability Heuristics: Applying Nielsen's 10 principles — such as error prevention,
+      recognition over recall, and consistency — as a design quality checklist.
+   • Prototyping and Testing: Building low-fidelity (paper) or high-fidelity (Figma)
+      prototypes and iterating based on user feedback before a single line of code is written.
+
+
+
+2.2 Responsive Design Principles
+Responsive design is the practice of building interfaces that detect and adapt to the device's
+screen size, orientation, and input method, providing an optimal experience across the full
+spectrum of device types. A responsive application does not merely scale content up or down; it
+thoughtfully reorganizes, shows, or hides elements based on the available viewport.
+
+
+Responsive Breakpoints:
+
+
+Batangas State University | College of Informatics and Computing Sciences               Page 25
+IT 331 – Application Development and Emerging Technologies                                      Module 1.2
+
+
+
+
+ Device Category                 Typical Width Range            Layout Behavior       Common
+                                                                                      Components
+
+                                                                                      Bottom nav, hamburger
+ Mobile                          < 768 px                       Single-column stack
+                                                                                      menu
+
+                                                                                      Sidebar, collapsible
+ Tablet                          768 – 1024 px                  Two-column grid
+                                                                                      panels
+
+                                                                                      Full navbar,
+ Desktop                         1025 – 1440 px                 Multi-column grid
+                                                                                      dashboards
+
+                                                                                      Fixed sidebars, data
+ Large Desktop                   > 1440 px                      Wide-layout content
+                                                                                      grids
+
+
+Core Responsive Design Techniques:
+   • Fluid Grids: Column-based layouts where element widths are expressed in percentages
+      rather than fixed pixels, allowing them to scale proportionally.
+   • Flexible Images: Using max-width: 100% in CSS ensures images never overflow their
+      containers; the srcset attribute serves appropriately-sized images to each device.
+   • CSS Media Queries: @media (max-width: 768px) { ... } blocks apply different styles at
+      defined breakpoints.
+   • CSS Flexbox and Grid: Modern layout modules that natively support responsive
+      arrangement — Flexbox for one-dimensional layouts, Grid for two-dimensional control.
+   • Mobile-First Strategy: Begin by designing the mobile layout, then progressively add
+      complexity for larger screens. This approach keeps the codebase lean and ensures core
+      functionality works everywhere.
+   • Viewport Meta Tag: <meta name="viewport" content="width=device-width, initial-
+      scale=1.0"> — essential in every HTML document to prevent mobile browsers from
+      rendering at desktop width.
+
+
+
+2.3 Accessibility and Inclusive Design
+Accessibility (often abbreviated a11y — 'a' + 11 letters + 'y') is the practice of designing software
+so that it can be used by people with disabilities including visual, auditory, motor, and cognitive
+impairments. The Web Content Accessibility Guidelines (WCAG) 2.1, published by the W3C,
+are the international standard for digital accessibility, defining three conformance levels: A, AA,
+and AAA.
+In many jurisdictions, accessibility is a legal requirement. In the Philippines, the Magna Carta for
+Disabled Persons (Republic Act 7277) and its amendments mandate accessible digital services
+in public-facing systems.
+
+
+Key Accessibility Considerations and Best Practices:
+    •     Color Contrast: WCAG AA requires a minimum contrast ratio of 4.5:1 for normal text
+          and 3:1 for large text. Use tools such as the WebAIM Contrast Checker to audit color
+          pairs.
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                            Page 26
+IT 331 – Application Development and Emerging Technologies                              Module 1.2
+
+
+
+    •    Keyboard Navigation: Every interactive element (buttons, form fields, links, modals)
+         must be reachable and operable using only the keyboard. Visible focus indicators must
+         never be suppressed.
+    •    Alternative Text: Images that convey information must carry descriptive alt attributes.
+         Decorative images use alt="" to signal screen readers to skip them.
+    •    ARIA Roles and Labels: WAI-ARIA attributes (role, aria-label, aria-describedby)
+         communicate semantic meaning to screen reader software when native HTML elements
+         are insufficient.
+    •    Readable Typography: Body text should be at least 16px, line-height 1.5 or greater,
+         and line length (measure) kept between 50–75 characters for optimal readability.
+    •    Screen Reader Compatibility: Test with NVDA (Windows), VoiceOver (macOS/iOS),
+         and TalkBack (Android) to ensure the application's content and controls are announced
+         correctly.
+    •    Error Identification: Form errors must be described in text, not only by color change,
+         and should be associated with the relevant input using aria-describedby.
+
+
+Business Case for Accessibility:
+   • Broadens the user base — approximately 15% of the global population lives with some
+      form of disability (WHO).
+   • Reduces legal and compliance risk.
+   • Improves overall usability for all users (the 'curb-cut effect': features built for accessibility
+      often benefit everyone).
+   • Enhances SEO — semantic HTML and descriptive alt text are also best practices for
+      search engine indexing.
+
+
+
+2.4 Design Systems and Reusable Components
+A design system is a single source of truth for a product's visual language and interaction
+patterns. It combines a component library, a style guide, and documented usage guidelines into
+a shared resource that both designers and developers reference. Companies such as Google
+(Material Design), Apple (Human Interface Guidelines), and IBM (Carbon Design) have
+published comprehensive public design systems that serve as industry benchmarks.
+
+
+Design System Layers:
+   • Design Tokens: Named variables that encode the fundamental decisions: primary color
+      (#2E75B6), base font size (16px), spacing unit (8px), border radius (4px). Tokens are
+      the atoms of the system.
+   • Component Library: A catalog of pre-built, documented UI components — buttons,
+      inputs, cards, navigation bars, modals — with variants for different states (default, hover,
+      disabled, error).
+   • Layout Patterns: Approved grid systems, page templates, and content patterns that
+      ensure structural consistency across screens.
+   • Documentation and Governance: Guidelines on when and how to use each
+      component, and a process for proposing additions or modifications.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                  Page 27
+IT 331 – Application Development and Emerging Technologies                        Module 1.2
+
+
+
+Popular Component Libraries:
+   • Material UI (MUI) – React implementation of Material Design with extensive theming
+      support.
+   • Tailwind CSS – A utility-first CSS framework that enables rapid, consistent styling
+      without leaving HTML.
+   • shadcn/ui – A collection of copy-paste React components built on Radix UI primitives
+      and Tailwind.
+   • Flutter Widget Catalog – Flutter's own library of Material and Cupertino widgets covering
+      every common pattern.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences           Page 28
+IT 331 – Application Development and Emerging Technologies                            Module 1.2
+
+
+
+3. STATE MANAGEMENT AND APPLICATION
+ARCHITECTURE
+
+
+3.1 State Management Concepts
+State is any data whose change causes the application's interface to update. Managing state
+correctly — knowing what data exists, where it lives, who can modify it, and how changes
+propagate — is one of the most challenging and consequential aspects of application
+development. Poorly managed state is the leading cause of hard-to-reproduce bugs and poor
+application performance.
+
+
+Types of Application State:
+    •    UI State (Ephemeral State): Transient, widget-level data that does not need to persist
+         across sessions. Examples: whether a dropdown is open, the current tab index, loading
+         spinner visibility.
+    •    Application State (Shared State): Data that multiple components or screens need to
+         access. Examples: authenticated user profile, shopping cart contents, notification count.
+    •    Server State: Data fetched from a remote API that must be cached, synchronized, and
+         invalidated. Examples: product catalog, user feed, dashboard metrics.
+    •    URL / Navigation State: The current route and query parameters. Deep-linking
+         depends on keeping URL state synchronized with the application state.
+
+
+Common State Management Approaches:
+    •    setState / useState: Framework-native local state. Appropriate for UI state; does not
+         scale to cross-component shared state.
+    •    Provider / InheritedWidget (Flutter): Passes state down the widget tree using
+         dependency injection. Low boilerplate; suitable for small-to-medium apps.
+    •    BLoC (Flutter): Business Logic Component pattern that separates UI from logic via
+         Streams. Highly testable; preferred for large Flutter apps.
+    •    Redux / Zustand (React/React Native): Centralized immutable store with explicit
+         actions and reducers. Redux offers powerful dev tools; Zustand is a lightweight modern
+         alternative.
+    •    MobX: Observable state that automatically re-renders components when observed data
+         changes. Less boilerplate than Redux.
+
+
+
+3.2 Client-Side and Server-Side Processing
+A critical architectural decision in any application is where computation occurs — in the user's
+browser/device (client side) or on a remote server. Modern applications are typically hybrid: the
+frontend handles rendering and interaction, while the backend handles data integrity, security,
+and heavy computation.
+
+
+Client-Side Processing:
+
+
+Batangas State University | College of Informatics and Computing Sciences               Page 29
+IT 331 – Application Development and Emerging Technologies                                          Module 1.2
+
+
+
+    •    Definition: Code executed on the user's device — in the browser (JavaScript/WASM) or
+         in the mobile app runtime (Dart/JS/C#).
+    •    Input validation and real-time form feedback.
+    •    UI rendering, animations, and transitions.
+    •    Client-side routing and navigation management.
+    •    Caching and offline data access via Service Workers or local storage.
+    •    Advantages: Low latency interactions; reduces server load; enables offline functionality.
+    •    Disadvantages: Code is visible and reversible; cannot trust client-side validation alone
+         for security.
+
+
+Server-Side Processing:
+    •    Definition: Code executed on a remote server controlled by the development team.
+    •    Authentication and session management (JWT / OAuth 2.0).
+    •    Authoritative business logic — pricing, tax calculations, eligibility rules.
+    •    Database operations, complex queries, and data aggregation.
+    •    File processing (image resize, document generation, ML inference).
+    •    Advantages: Secure; trusted; can handle computationally expensive operations.
+    •    Disadvantages: Network latency; requires backend infrastructure and DevOps.
+
+
+
+3.3 Architectural Patterns
+Architectural patterns are reusable, proven solutions to recurring problems in software structure.
+Selecting the correct pattern for an application's characteristics — team size, feature complexity,
+testability requirements, and deployment model — dramatically affects long-term maintainability.
+
+
+ Pattern                         MVC (Model-View-Controller)                MVVM (Model-View-ViewModel)
+
+ Layers                          Model, View, Controller                    Model, View, ViewModel
+
+                                 Controller mediates between View           ViewModel exposes data streams;
+ Data Flow
+                                 and Model                                  View binds to them
+                                 Server-rendered web apps, REST             Mobile apps, React/Vue/Angular
+ Use Cases
+                                 backends                                   frontends
+
+                                                                            ViewModel is fully unit-testable
+ Testability                     Controller logic is unit-testable
+                                                                            without UI
+
+                                                                            Flutter (BLoC), Android (Jetpack),
+ Examples                        Laravel, Spring MVC, Ruby on Rails
+                                                                            Vue.js
+
+                                 Can lead to fat controllers in
+ Trade-off                                                                  Learning curve for reactive bindings
+                                 complex apps
+
+
+When to Choose MVC:
+    •    Server-rendered web applications where HTML templates are generated on the
+         backend.
+
+
+Batangas State University | College of Informatics and Computing Sciences                              Page 30
+IT 331 – Application Development and Emerging Technologies                          Module 1.2
+
+
+
+    •    Applications with a clear separation between HTTP routing, business logic, and data
+         models.
+    •    Teams comfortable with frameworks like Laravel (PHP), Spring MVC (Java), or Django
+         (Python).
+
+
+When to Choose MVVM:
+  • Single-page applications (React, Vue, Angular) where the UI is component-driven and
+      data-bound.
+  • Mobile apps (Flutter with BLoC/Provider, Android with Jetpack ViewModel) requiring
+      offline-first patterns.
+  • Projects with rigorous unit-testing requirements, since the ViewModel contains no UI
+      dependencies.
+
+
+Other Notable Patterns:
+   • Clean Architecture: Uncle Bob's concentric-ring architecture that enforces strict inward
+      dependency rules — outer layers depend on inner layers, never the reverse.
+   • Hexagonal Architecture (Ports & Adapters): Isolates the core domain from external
+      systems (databases, APIs, UI) via well-defined port interfaces.
+   • Micro-frontend Architecture: Decomposes a frontend monolith into independently
+      deployable feature modules — analogous to microservices for the backend.
+
+
+
+3.4 Scalability Considerations
+Scalability is the capacity of a system to handle growing amounts of work by adding resources
+proportionally. A system that works well for 100 users may collapse under 10,000 if scalability
+was not considered during design. There are two dimensions of scalability:
+    •    Vertical Scaling (Scale Up): Adding more CPU, RAM, or storage to an existing server.
+         Simple but has physical limits and creates a single point of failure.
+    •    Horizontal Scaling (Scale Out): Adding more server instances behind a load balancer.
+         Requires stateless application design (session state externalized to Redis or a
+         database).
+
+
+Architectural Decisions for Scalability:
+   • Modular Architecture: Decompose the application into independent modules that can
+       be scaled, deployed, and tested in isolation. The foundation for microservices.
+   • API-First Development: Define and version API contracts before implementation.
+       Enables frontend and backend teams to develop in parallel and supports third-party
+       integrations.
+   • Caching Strategy: Reduce database load by caching frequently-read data in Redis or
+       Memcached. Apply cache invalidation carefully to avoid stale data.
+   • Database Optimization: Index frequently-queried columns, normalize data
+       appropriately, and consider read replicas for high-read-volume workloads.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences             Page 31
+IT 331 – Application Development and Emerging Technologies                      Module 1.2
+
+
+
+    •    Cloud Deployment Readiness: Containerize with Docker; orchestrate with Kubernetes
+         or OpenShift. Cloud-native apps can be auto-scaled based on CPU and memory
+         metrics.
+    •    Asynchronous Processing: Offload long-running tasks (email sending, report
+         generation, file processing) to job queues (Bull, Celery, RabbitMQ) to keep the API
+         responsive.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences          Page 32
+IT 331 – Application Development and Emerging Technologies                                            Module 1.2
+
+
+
+4. SYSTEMS ANALYSIS AND INFORMATION SYSTEMS
+DESIGN
+
+
+4.1 The Paradigm Shift: Systems Analysis vs. Screen Painting
+Many student developers begin a project by asking: What database fields do we need? What
+pages should we create? What should the dashboard look like? These questions are important
+— but they should not come first.
+
+
+When a system is designed from available data or from interface mockups alone, it often
+becomes an information dump rather than a useful application. Users are forced to search for
+information, interpret data themselves, and determine what actions to take — without any
+support from the system itself.
+
+
+Effective systems are designed differently. A successful Information System begins with
+understanding the people who will use it, the problems they face, the decisions they must make,
+and the processes they perform. The interface is simply a bridge between human goals and
+system capabilities.
+
+
+ Design Starting Point                                          Typical Outcome
+
+                                                                Information dump. Users manually filter, interpret,
+ Data-first: What fields do we have?
+                                                                and decide with no system support.
+
+                                                                Beautiful mockup, broken workflow. UI looks good
+ Screen-first: What pages do we need?
+                                                                but does not match how users actually work.
+
+                                                                Systems that reduce cognitive load, support
+ Stakeholder-first: Who uses this, and what do
+                                                                decisions, and align with real organizational
+ they need to accomplish?
+                                                                processes.
+
+
+Before approving any design, evaluate it using the 9-Level Systems Design Audit. This audit is a
+structured quality checkpoint — not a checklist to complete once, but a lens to apply
+continuously throughout design and development.
+
+
+
+4.2 The 9-Level Systems Design Audit
+The 9-Level Systems Design Audit provides a structured framework for evaluating whether a
+software system is genuinely useful — or merely functional. Each level represents a quality
+checkpoint that separates information dumps from high-impact systems that help people work
+better. Apply this audit to every screen, dashboard, and workflow you design.
+
+
+Level 1: Start with the Stakeholder
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                                Page 33
+IT 331 – Application Development and Emerging Technologies                                             Module 1.2
+
+
+
+Before designing a single screen, identify who will use the system. Different stakeholders carry
+entirely different responsibilities, goals, and perspectives. A system that presents the same
+information to every role has not been designed — it has been assembled.
+
+
+ Stakeholder                     Primary Concern                              What Success Looks Like
+
+                                 Completing requirements and                  Knows exactly what is pending, what
+ Student
+                                 tracking personal academic progress          is at risk, and what to do next
+
+                                 Managing learning activities,
+                                                                              Quickly identifies struggling students
+ Instructor                      assessments, and student
+                                                                              and adjusts delivery accordingly
+                                 engagement
+
+                                 Monitoring program performance,              Sees program-level trends and
+ Program Chair
+                                 learning outcomes, and faculty load          intervenes before problems escalate
+
+                                                                              Makes resource and policy decisions
+                                 Managing institutional operations,
+ Administrator                                                                backed by accurate, timely system
+                                 compliance, and resource allocation
+                                                                              data
+
+
+The Rule:
+Do not design a screen until you understand: who will use it, what responsibilities they hold,
+what decisions they must make, and what success looks like for them. Different stakeholders
+rarely need identical workspaces.
+
+
+Level 2: Identify Goals Before Features
+Many systems fail because they begin with features rather than objectives. Teams ask what
+widgets to place on the dashboard before asking what the stakeholder is trying to accomplish.
+Features built without a connected goal become interface clutter — things the system can do
+but users do not need.
+
+
+ Stage                    Question to Answer                                Example — Student Portal
+
+ 1. Stakeholder           Who is using this screen?                         A currently enrolled student
+                                                                            Complete all requirements and pass
+ 2. Goals                 What is this person trying to achieve?
+                                                                            this semester
+
+                          What specific tasks does that goal                Check grades, view deadlines, submit
+ 3. Tasks
+                          involve?                                          assignments, see attendance
+
+                                                                            Current grade per subject, upcoming
+ 4. Information           What data must be available to support
+                                                                            due dates, submission status, absence
+ Needed                   those tasks?
+                                                                            count
+
+                                                                            Grade summary cards, deadline
+                          What components best present that
+ 5. Interface                                                               timeline, submission checklist,
+                          information?
+                                                                            attendance indicator
+
+
+The Rule:
+
+
+Batangas State University | College of Informatics and Computing Sciences                                  Page 34
+IT 331 – Application Development and Emerging Technologies                                          Module 1.2
+
+
+
+Every feature must support a stakeholder goal. If a feature cannot be connected to a specific
+goal in this chain, reconsider whether it belongs in the system.
+
+
+Level 3: Analyze the Process Before the Screen
+A beautiful interface cannot fix a broken process. Before designing pages or components, map
+the workflow the system is being built to support. Process analysis reveals the real problems —
+bottlenecks, delays, redundant steps, and manual handoffs that the system should eliminate.
+Designing the interface first and fixing the process later is one of the most common and costly
+mistakes in student system development.
+
+
+ What to Identify                Why It Matters                             Example in Academic Systems
+
+                                                                            Enrollment: Apply, validate
+                                 Establishes the full workflow scope
+ Steps involved                                                             prerequisites, pay, confirm, generate
+                                 the system must support end to end.
+                                                                            class list.
+
+                                 Identifies where the process slows         Advisor approval is manual —
+ Bottlenecks                     down, causes waiting, or creates a         students wait 3-5 days before
+                                 queue.                                     enrollment is confirmed.
+
+                                 Reveals gaps between steps where           Grade encoding happens at end of
+ Delays                          time is lost without value being           semester — students have no mid-
+                                 added.                                     term visibility.
+
+                                                                            Faculty submitting attendance data
+                                 Surfaces manual, duplicated work
+ Redundant activities                                                       into both a paper sheet and the
+                                 that automation can eliminate.
+                                                                            LMS.
+
+                                                                            Automatically flag a student as at-
+ Automation                      Identifies where system logic can
+                                                                            risk when grade drops below the
+ opportunities                   replace manual decision-making.
+                                                                            threshold.
+
+
+The Rule:
+A system should improve a process before it improves a screen. If the underlying workflow is
+inefficient, a redesigned interface alone will not solve the problem — it will just make the broken
+process faster.
+
+
+Level 4: Define the Core Inquiry
+Every component on a screen — every card, table, chart, button, and notification — must exist
+because it answers a specific question for the user. Users visit a screen because they need
+information or need to perform an action. If a component does not clearly serve either purpose,
+it consumes attention without returning value.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                              Page 35
+IT 331 – Application Development and Emerging Technologies                                            Module 1.2
+
+
+
+ Weak Component (No Clear Inquiry)                              Strong Component (Answers a Specific
+                                                                Question)
+
+                                                                At-Risk Students — Which students have a grade
+ Student List table showing all enrolled students
+                                                                below 75% in any subject right now?
+
+                                                                Assessment Completion Rate — What
+ Assessment Results chart                                       percentage submitted on time vs. late vs.
+                                                                missing?
+
+                                                                Courses Requiring Intervention — Which courses
+ Course Information card
+                                                                have averages below the program threshold?
+
+                                                                Urgent Approvals — What requires my action
+ Notifications panel listing all system events
+                                                                today, sorted by deadline?
+
+
+The Rule:
+If you cannot clearly state the question answered by a component, that component is likely
+unnecessary. Before placing any element on a screen, write its question explicitly. Every card,
+table, chart, and notification should have a single, articulable purpose.
+
+
+Level 5: Determine the Appropriate Support Level
+Information Systems provide different levels of support to different types of users. A critical
+design mistake is applying the wrong level of support to the wrong role — building complex
+analytics for users who need simple transaction forms, or overwhelming front-line operators with
+dashboards when they just need to complete a task.
+
+
+ Support Level                   Purpose                        Typical User               Academic System
+                                                                                           Examples
+
+                                                                                           Registration forms,
+                                 Supports routine,
+ Transaction                                                    Students, clerks, front-   assessment
+                                 repetitive operational
+ Processing (TPS)                                               line staff                 submission,
+                                 tasks.
+                                                                                           attendance entry
+
+                                 Supports monitoring                                       Progress dashboards,
+ Management                                                     Instructors, section
+                                 and structured                                            attendance summaries,
+ Information (MIS)                                              advisers, dept. heads
+                                 reporting.                                                grade reports
+
+                                                                                           At-risk prediction,
+                                 Supports analysis and
+ Decision Support                                               Program chairs,            intervention
+                                 semi-structured
+ (DSS)                                                          academic coordinators      prioritization, course
+                                 decisions.
+                                                                                           analytics
+
+                                                                                           Institutional
+                                 Supports strategic
+ Executive Information                                          Dean, VP Academic          dashboards, program
+                                 planning and
+ (EIS)                                                          Affairs, President         analytics, accreditation
+                                 institutional oversight.
+                                                                                           indicators
+
+
+The Rule:
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                                Page 36
+IT 331 – Application Development and Emerging Technologies                                           Module 1.2
+
+
+
+Know what type of support your component provides and confirm it matches the role you are
+designing for. Not every screen needs advanced analytics. Sometimes a simple transaction
+form is exactly what the user needs.
+
+
+Level 6: Apply the Law of Attention Density
+Users have limited attention. Adding more information to a screen does not automatically make
+it more useful — it often makes it less usable. The goal is not to display everything the system
+knows. The goal is to display what matters right now, for this role, in this context.
+
+
+ Classification                  Definition                                 Action
+
+                                 Directly answers a primary question
+                                                                            Keep. Place in the primary visual
+ Necessary                       for this role. Cannot be removed
+                                                                            zone.
+                                 without breaking the workflow.
+
+                                 Provides useful supplementary              Move to a secondary panel,
+ Helpful but Optional            context but is not required for the        collapsible section, or drill-down
+                                 primary task.                              view.
+
+                                 Presents the same insight already
+                                                                            Remove immediately. It consumes
+ Redundant                       available from another element on
+                                                                            attention without returning value.
+                                 the screen.
+
+
+The Rule:
+Classify every component as Necessary, Helpful but Optional, or Redundant. Remove items
+that do not improve understanding or decision-making. The goal is not to display everything — it
+is to display what matters.
+
+
+Level 7: Establish a Clear Visual Hierarchy
+Users should immediately understand where to focus their attention when they open a screen.
+The most important information must be visually dominant — larger, higher contrast, positioned
+first. When every element competes at the same visual weight, the screen communicates
+everything and prioritizes nothing.
+
+
+ Role / Screen                   Primary Focal Area (Hero)                  Supporting Sections
+
+                                 How many of my students are                Subject-level breakdown, recent
+ Instructor Dashboard            currently at risk? (Prominent count,       submissions, upcoming
+                                 color-coded, clickable)                    assessments
+
+                                 What do I need to do next?
+                                                                            Grade summary, attendance status,
+ Student Portal                  (Prioritized to-do: overdue first, then
+                                                                            announcements
+                                 upcoming)
+
+                                 Are program outcomes being
+ Program Chair                                                              Faculty load, enrollment trends,
+                                 achieved? (Pass/fail rate vs. target,
+ Dashboard                                                                  section performance
+                                 flagged subjects)
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                               Page 37
+IT 331 – Application Development and Emerging Technologies                                           Module 1.2
+
+
+
+ Role / Screen                   Primary Focal Area (Hero)                   Supporting Sections
+
+                                 What requires my approval right
+                                                                             System activity log, scheduled tasks,
+ Admin Operations                now? (Urgent queue sorted by
+                                                                             resource utilization
+                                 deadline)
+
+
+The Rule:
+The user's primary task or concern should be visible within seconds of opening the screen. If
+users must search extensively to find what matters most, the visual hierarchy is broken.
+
+
+Level 8: Eliminate Visual Redundancy
+A common design mistake is presenting the same information multiple times in different formats.
+A count card showing 12 At-Risk Students, followed by a chart of the same count, followed by a
+table listing those same 12 students — each felt useful in isolation but together they crowd the
+screen without adding insight or enabling new decisions.
+
+
+ Redundant Design                                               Non-Redundant Replacement
+
+ 12 At-Risk Students card + pie chart of same                   Summary badge (count: 12) that expands the
+ count + table of same students — all on one                    detail table in-place when clicked. One element,
+ screen                                                         two modes.
+
+                                                                Progress bar with embedded percentage label.
+ Attendance % bar + attendance % label +
+                                                                Communicates both proportion and precise
+ attendance status text all showing 78%
+                                                                number in one element.
+
+                                                                Card = today's total. Chart = enrollment trend
+ Total Enrollees: 240 card + bar chart with 240 as
+                                                                over time. These answer different questions —
+ current bar + table with 240 rows
+                                                                both justified.
+
+
+The Rule:
+Every component must contribute a new perspective, new insight, or new available action. The
+test: if you removed this component, would the user lose the ability to answer any question or
+take any action? If no — remove it.
+
+
+Level 9: Verify Feasibility and Deliver Actionable Insight
+A system should only present information that can be realistically collected, calculated, and
+maintained. Never design around data that does not exist, cannot be computed from available
+sources, or cannot be kept accurate over time. A metric that is always stale or always estimated
+erodes user trust faster than having no metric at all.
+
+
+Feasibility Check — Before Placing Any Metric on Screen:
+    •    Source: Which database table or API endpoint does this data come from?
+    •    Calculation: If derived, what is the exact formula or query?
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                               Page 38
+IT 331 – Application Development and Emerging Technologies                                      Module 1.2
+
+
+
+    •    Freshness: How current is this data? Is it real-time, daily, or weekly — and is that
+         acceptable for this use case?
+    •    Maintainability: Can this data be reliably kept accurate as the system grows?
+
+
+The Information Transformation Chain:
+Once data is confirmed as feasible, the goal is to transform it as far up the value chain as
+possible. The maturity of an Information System is measured by how far it moves raw data
+toward empowering user action.
+
+
+ Stage                Transformation           Academic System Example          User Cognitive Load
+
+                                                                                HIGH — user must compare
+ Data                 Raw Fact                 Student Grade = 72               manually and decide if this is
+                                                                                a problem.
+
+                                                                                MEDIUM — problem
+                      Contextualized           Grade is below the 75% passing
+ Information                                                                    identified, but impact and
+                      Fact                     threshold.
+                                                                                remedy are still unclear.
+
+                                                                                LOW — pattern and severity
+                      Aggregated               Student is underperforming
+ Knowledge                                                                      are clear. User understands
+                      Impact                   across 3 prerequisite courses.
+                                                                                the urgency.
+
+                                               Recommend intervention. Notify   MINIMAL — system
+                      Empowered
+ Action                                        instructor and adviser           prescribes the next step.
+                      Resolution
+                                               automatically.                   User reviews and approves.
+
+
+The Rule:
+The highest-value systems do not merely display data. They help users understand what is
+happening, why it matters, and what should be done next. Every system you build should aspire
+to move as far along this chain as your data model and project scope allow.
+
+
+
+                                                 Final Takeaway
+   Great software is not measured by the number of screens created, the complexity of the
+   database, or the visual appeal of a prototype.
+   Great software reduces cognitive effort, supports organizational processes, and enables
+   better decisions.
+   As future system analysts and developers, your goal is not to build screens.
+        Stakeholders use systems to achieve goals — not to admire interfaces.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                          Page 39
+IT 331 – Application Development and Emerging Technologies                            Module 1.2
+
+
+
+5. LABORATORY EXERCISE 1
+
+Responsive and Dynamic Cross-Platform User Interface
+
+
+5.1 Objective
+Develop a fully responsive and interactive user interface for your capstone project using your
+chosen cross-platform framework — React (web), React Native with Expo, or Flutter. The
+interface must demonstrate mastery of responsive layout principles, dynamic component
+rendering, accessible design, and — where applicable — persistent local storage.
+
+
+
+5.2 Detailed Requirements
+
+1. Authentication Interface
+    •    Login screen with email/password form fields and client-side validation (required fields,
+         email format, minimum password length).
+    •    Registration screen with matching password confirmation validation.
+    •    Forgot Password link navigating to a password recovery screen (static mockup
+         accepted).
+    •    Inline error messages must be accessible — announced by screen readers via ARIA
+         attributes.
+
+2. Dashboard Interface
+    • A summary screen displaying at least three data categories (recent activity, statistics,
+       notifications, or equivalent).
+    • Data rendered dynamically from a static JSON file or live API call.
+    • At least one chart or data visualization (bar chart, line chart, or doughnut chart).
+    • Apply at least one principle from the 9-Level Systems Design Audit: define the core
+       inquiry for each dashboard widget and ensure the primary question for this user role is
+       answered by the hero section.
+
+3. Responsive Navigation
+    •    Web: navigation adapts between mobile hamburger drawer and desktop persistent
+         sidebar or top nav.
+    •    React Native: bottom tab navigator on mobile; drawer navigator on tablet/desktop where
+         applicable.
+    •    Active route is visually indicated. Navigation state is maintained on resize.
+
+4. Dynamic Components
+    •    At least one modal dialog (confirmation, detail view, or form).
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                Page 40
+IT 331 – Application Development and Emerging Technologies                              Module 1.2
+
+
+
+    •    At least one FlatList (React Native) or mapped list/table (React Web) rendering dynamic
+         data.
+    •    Loading state indicator — skeleton screen or spinner — visible during data fetch.
+
+5. Persistent Storage (React Native track)
+    •    Use AsyncStorage to save and load data on app start.
+    •    Add, edit, and delete operations must persist across app restarts.
+    •    Toast or Alert confirmation displayed after each mutation.
+
+6. Cross-Platform Compatibility
+    •    Web: renders correctly at 375px (mobile), 768px (tablet), and 1280px (desktop). Submit
+         screenshots for all three breakpoints.
+    •    React Native: tested on both Android emulator and physical device via Expo Go.
+
+
+
+5.3 Deliverables
+    7. Source Code — GitHub repository link or ZIP archive with a README containing setup,
+       install, and run instructions.
+    8. Screenshots — minimum 6: login, registration, dashboard, navigation (mobile and
+       desktop/device), and at least one dynamic component.
+    9. Technical Documentation (1–2 pages) — technology stack chosen, component
+       architecture overview, known issues or limitations.
+
+
+
+5.4 Assessment Rubric
+
+ Criterion                                 Description                         Points
+
+                                           Functional login and registration
+ Authentication Interface                  with client-side validation and     20
+                                           accessible error messages
+                                           Renders dynamic data; applies
+ Dashboard Interface                       9-Level Audit (core inquiry per     20
+                                           widget, hero section defined)
+
+                                           Adapts correctly between
+ Responsive Navigation                     mobile and desktop/tablet;          20
+                                           active route indicated
+
+                                           Modal, list/FlatList, loading
+ Dynamic Components +
+                                           indicator; AsyncStorage             20
+ Storage
+                                           persistence (React Native track)
+
+                                           Organized source code;
+                                           README present;
+ Technical Documentation                                                       20
+                                           documentation covers stack,
+                                           architecture, and issues
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                 Page 41
+IT 331 – Application Development and Emerging Technologies                           Module 1.2
+
+
+
+ Criterion                                 Description                      Points
+
+                                           TOTAL                            100
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences              Page 42
+IT 331 – Application Development and Emerging Technologies                                           Module 1.2
+
+
+
+6. SPRINT 1 – SYSTEM ANALYSIS AND DESIGN
+
+Sprint 1 is the first formal iteration of the capstone project development cycle. Its primary
+objective is to produce a complete, validated set of system analysis and design artifacts that will
+serve as the blueprint for all subsequent sprints. Sprint 1 runs concurrently with Week 2 of the
+course.
+
+
+
+6.1 Sprint 1 Objective
+Construct, validate, and present software design artifacts for the proposed capstone solution. All
+artifacts must be internally consistent — entities in the ER Diagram must align with workflows in
+the Process Flow Diagram, which must align with use cases in the Use Case Diagram, which
+must align with the architecture in the Architecture Diagram. Every design decision must also be
+defensible using the 9-Level Systems Design Audit: stakeholder role, goals-before-features, and
+feasibility must be traceable for each major component.
+
+
+
+6.2 Required Deliverables
+
+ Category                           Deliverable                             Tool / Description
+
+ Project Planning                   Updated Product Backlog                 Refined with story points in Jira
+
+                                                                            Kanban view of Sprint 1 tasks in
+ Project Planning                   Sprint Board
+                                                                            Jira
+
+                                                                            Diagramming tool (e.g., draw.io,
+                                                                            Figma, or any UML tool) — actors,
+ Design Artifacts                   Use Case Diagram
+                                                                            system boundary, use cases,
+                                                                            include/extend relationships
+
+                                                                            Diagramming tool — swimlane
+ Design Artifacts                   Process Flow Diagram                    flowchart of at least two critical
+                                                                            workflows with decision points
+                                                                            Diagramming tool — Crow's Foot
+ Design Artifacts                   Entity Relationship Diagram             notation; min. 5 entities with PKs,
+                                                                            FKs, cardinality
+
+                                                                            Diagramming tool — Context
+ Design Artifacts                   System Architecture Diagram             Diagram, Application Architecture,
+                                                                            Technology Stack, Deployment
+
+                                                                            Document — roles mapped using
+                                    Stakeholder Analysis (9-Level
+ Design Artifacts                                                           Level 1-3 of the audit; core inquiry
+                                    Audit)
+                                                                            per screen
+
+                                                                            Written rationale for each
+ Technical Docs                     Technology Stack Justification
+                                                                            framework, library, and tool chosen
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                               Page 43
+IT 331 – Application Development and Emerging Technologies                                         Module 1.2
+
+
+
+ Category                           Deliverable                             Tool / Description
+
+                                                                            Sprint timeline, team roles,
+ Technical Docs                     Development Plan
+                                                                            milestones
+
+                                                                            10–15 minute structured
+ Presentation                       Sprint Demonstration                    walkthrough — see guidelines
+                                                                            below
+
+
+
+6.3 Diagram Construction Guide
+All Sprint 1 design artifacts must be created using a diagramming tool (recommended: draw.io,
+Figma, or any UML-capable tool your team prefers). Submit as a single multi-page document
+with clearly labeled pages, exported to PDF for LMS submission.
+
+
+Use Case Diagram:
+   • Enable the UML shape library (Shapes > UML). Use Actor (stick figure), Use Case
+      (oval), System Boundary (rectangle), and Relationship (line/dashed arrow) shapes.
+   • Name all use cases with a verb phrase: Register Account, Submit Assessment,
+      Generate Report.
+   • Add «include» (dashed arrow with label) for use cases always performed as part of
+      another. Add «extend» for optional augmentations.
+   • Minimum: 3 actors, 8 use cases, at least 2 include/extend relationships.
+
+Process Flow Diagram:
+    •    Use the Flowchart template. Apply swimlanes to separate responsibilities between
+         actors (User, System, Database).
+    •    Oval = Start/End. Rectangle = Process step. Diamond = Decision (label branches
+         Yes/No). Parallelogram = Input/Output.
+    •    Cover at least 2 critical workflows (authentication + primary transaction). Number each
+         step for documentation cross-reference.
+
+Entity Relationship Diagram:
+   • Use Crow's Foot notation (ERD shape library). Each entity is a table-style rectangle; list
+       attributes with PK/FK prefixes.
+   • Draw cardinality markers on each relationship line. Minimum: 5 entities, all PKs and FKs
+       labeled.
+   • Color-code: light blue for core entities, light green for junction/associative tables.
+
+System Architecture Diagram:
+   • Context Diagram (Level 0 DFD): system as a single box with external actors and data
+      flows labeled.
+   • Application Architecture: layers (Presentation → Application → Business Logic → Data
+      Access → Database) with technology labels.
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                             Page 44
+IT 331 – Application Development and Emerging Technologies                                               Module 1.2
+
+
+
+    •    Technology Stack Diagram: lists chosen tools at each layer — e.g., React Native
+         (Presentation), Node.js/Express (Application), PostgreSQL (Database).
+    •    Deployment Diagram: client devices, API servers, database servers, OpenShift/cloud
+         hosting, CDN — with protocol labels (HTTPS, JDBC, etc.).
+
+
+
+6.4 Sprint 1 Presentation Guidelines
+The Sprint Demonstration is a 10–15 minute structured presentation. Each team member must
+present at least one artifact. The audience includes the instructor, peer teams, and optionally a
+client stakeholder.
+
+
+ Slot       Content                                                         What Evaluators Look For
+
+            Project Overview — problem domain, proposed                     Clear problem statement; stakeholders
+ 2 min
+            solution, target stakeholders                                   identified per Level 1 of the audit
+                                                                            Evidence of goals-before-features
+            Stakeholder Analysis — roles, goals, core inquiry
+ 2 min                                                                      thinking; screens mapped to stakeholder
+            per screen (Levels 1–4)
+                                                                            questions
+
+            Use Case Walkthrough — actors, system                           Complete actor coverage; use case
+ 2 min
+            boundary, include/extend relationships                          naming follows verb-phrase convention
+
+            Process Flow Walkthrough — at least two                         Bottlenecks identified; automation
+ 2 min
+            workflows with decision points and swimlanes                    opportunities noted per Level 3
+
+            ER Diagram Walkthrough — entities, attributes,                  All PKs/FKs labeled; cardinality correct;
+ 2 min
+            cardinality, normalization rationale                            at least 5 entities
+
+            Architecture Walkthrough — technology stack,                    All 4 diagram types present; feasibility
+ 2 min
+            deployment model, justification                                 defensible per Level 9
+
+            Q&A — design decisions, limitations, audit                      Team can justify every design choice
+ 2 min
+            application                                                     using audit principles
+
+
+
+6.5 Sprint 1 Assessment
+ Criterion                                            Points                   Notes
+
+ Completeness and correctness of all 5                                         All required diagrams present;
+                                                      40
+ artifacts                                                                     notation correct
+
+                                                                               ERD entities match process flows;
+ Internal consistency across artifacts                20
+                                                                               use cases match architecture
+
+ 9-Level Audit application (stakeholder                                        Levels 1–4 and Level 9 demonstrably
+                                                      20
+ analysis doc)                                                                 applied
+
+                                                                               All members present; design
+ Presentation delivery and Q&A                        20
+                                                                               decisions defensible
+
+ TOTAL                                                100
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                                    Page 45
+IT 331 – Application Development and Emerging Technologies                  Module 1.2
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences     Page 46
+IT 331 – Application Development and Emerging Technologies                           Module 1.2
+
+
+
+7. PRELIMINARY EXAMINATION REVIEW
+
+The Preliminary Examination covers all material from Module 1.1 and Module 1.2. The
+examination format includes multiple choice, short answer, and a practical/case-based section.
+Below is a structured review organized by topic cluster.
+
+
+
+7.1 Topic Cluster A: Agile and Sprint Concepts (Module 1.1)
+    •    Agile Manifesto Principles: Individuals over processes, working software over
+         documentation, customer collaboration, responding to change.
+    •    Scrum Framework: Roles (Product Owner, Scrum Master, Development Team), Events
+         (Sprint Planning, Daily Scrum, Sprint Review, Retrospective), Artifacts (Product Backlog,
+         Sprint Backlog, Increment).
+    •    Jira: Creating epics, user stories, tasks; estimating with story points; managing sprint
+         boards.
+    •    Sprint Planning: Selecting backlog items within team velocity; defining the Sprint Goal.
+
+
+
+7.2 Topic Cluster B: Cross-Platform Development and React Ecosystem
+    •    Native vs. Cross-Platform: performance, codebase, deployment, and maintenance trade-
+         offs.
+    •    Framework comparison: Flutter (widget tree, AOT, Skia), React Native (bridge/JSI,
+         native components), PWA (Service Workers, Lighthouse).
+    •    React as a library vs. framework: who controls the flow; Inversion of Control.
+    •    JSX: what it is, how it compiles (React.createElement), why it exists.
+    •    Virtual DOM: State Change → Virtual Tree → Diffing → Reconciliation → Batch Update.
+    •    Hooks: useState (triggers re-render), useEffect (dependency array: [], [val], omitted),
+         useRef (persistent, no re-render).
+    •    Component lifecycle: Mount, Render, Update, Unmount — and which hook phase maps
+         to each.
+    •    React Native vs React JS: output (native widgets vs DOM), styling (StyleSheet API vs
+         CSS), layout (Flexbox column-default vs CSS), navigation (React Navigation vs React
+         Router).
+    •    Expo CLI vs React Native CLI: setup complexity, native module access, OTA updates.
+    •    Core RN components: View, Text, TextInput, FlatList, ScrollView, TouchableOpacity,
+         Modal, Alert, SafeAreaView.
+    •    AsyncStorage: JSON.stringify/parse pattern; load on mount; save on every mutation.
+    •    Application layering: Presentation → Application → Business Logic → Data Access →
+         Database.
+    •    Responsive design: breakpoints (mobile <768px, tablet 768–1024px, desktop >1024px),
+         fluid grids, CSS media queries, mobile-first strategy.
+    •    Accessibility: WCAG 2.1, color contrast ratio (4.5:1 for normal text), ARIA roles,
+         keyboard navigation.
+
+
+
+Batangas State University | College of Informatics and Computing Sciences              Page 47
+IT 331 – Application Development and Emerging Technologies                          Module 1.2
+
+
+
+    •    State management: types (UI, app, server, URL state), patterns (BLoC, Redux, Zustand,
+         Provider).
+    •    Architectural patterns: MVC vs. MVVM — components, data flow, and use cases.
+
+
+
+7.3 Topic Cluster C: Systems Analysis and the 9-Level Audit
+    •    Paradigm Shift: Why data-first and screen-first design produce information dumps.
+         Stakeholder-centered architecture as the correct starting point.
+    •    Level 1 – Stakeholder: Role identification and differentiation. Students, instructors,
+         program chairs, and administrators have different concerns and require different
+         workspaces.
+    •    Level 2 – Goals Before Features: The Stakeholder → Goals → Tasks → Information
+         Needed → Interface cascade. Every feature must trace to a stakeholder goal.
+    •    Level 3 – Process Before Screen: Mapping workflows to identify bottlenecks, delays,
+         redundant activities, and automation opportunities before designing UI.
+    •    Level 4 – Core Inquiry: Every component must answer a specific, articulable question.
+         If the question cannot be stated, the component is removed.
+    •    Level 5 – Support Level: TPS (routine transactions), MIS (monitoring and reports),
+         DSS (analysis and semi-structured decisions), EIS (strategic oversight). Match the level
+         to the role.
+    •    Level 6 – Attention Density: Classify every component as Necessary, Helpful but
+         Optional, or Redundant. Remove redundant items. More information ≠ better system.
+    •    Level 7 – Visual Hierarchy: Primary concern visible within seconds. The Hero Section
+         answers the single most important question for the role. Subordinate all other elements.
+    •    Level 8 – Eliminate Redundancy: Removal test: if removing a component leaves the
+         user with the same information and same decision-making ability, remove it.
+    •    Level 9 – Feasibility and Transformation Chain: Data → Information → Knowledge →
+         Action. Verify every metric has a real data source. Maximize the chain: do not stop at
+         Data.
+
+
+
+7.4 Topic Cluster D: Red Hat OpenShift Development I (Module 1.1)
+    •    Containers: What they are; how they differ from VMs; union file systems; namespace
+         and cgroup isolation.
+    •    Podman: Daemonless container engine; key commands: podman pull, run, ps, stop, rm,
+         build.
+    •    Container Images: Dockerfile/Containerfile syntax; layering; image registries (Quay.io,
+         Docker Hub).
+    •    Kubernetes: Pods, ReplicaSets, Deployments, Services, ConfigMaps, Secrets; kubectl
+         basics.
+    •    OpenShift Fundamentals: Projects, Routes, DeploymentConfigs; oc CLI; image
+         streams; OpenShift vs. vanilla Kubernetes.
+
+
+
+7.5 Sample Examination Questions
+
+
+Batangas State University | College of Informatics and Computing Sciences             Page 48
+IT 331 – Application Development and Emerging Technologies                               Module 1.2
+
+
+
+
+Q1 (Conceptual): What is the fundamental difference between Flutter and React Native in
+terms of how they render UI?
+Answer: Flutter renders its own pixels using the Skia/Impeller GPU engine, bypassing the
+platform's native widget system entirely. React Native communicates with the platform's native
+UI components via a JavaScript bridge (or the newer JSI), resulting in truly native widgets that
+inherit the platform's look and feel. Flutter produces pixel-identical output across platforms;
+React Native inherits each platform's visual conventions.
+
+
+Q2 (Scenario): A team building a university portal has a JavaScript-centric React
+background. They need to target iOS, Android, and web simultaneously. What is the
+most appropriate cross-platform strategy?
+Answer: React Native for iOS/Android combined with a responsive React web application
+shares the most code — business logic, API integration, and many component patterns —
+across all targets. If native device features are not required, a PWA-first approach using Next.js
+with mobile-responsive design may suffice. The team's existing JavaScript expertise makes
+both options lower-risk than adopting Flutter (Dart) or .NET MAUI (C#).
+
+
+Q3 (React): A useEffect runs every time the component renders, causing an infinite loop.
+What is the most likely cause, and how do you fix it?
+Answer: The dependency array has been omitted, which causes the effect to run after every
+render. If the effect also updates state, it triggers another render — creating the loop. Fix: add a
+dependency array. Use [] if the effect should run once on mount, or [specificValue] if it should
+re-run only when that value changes. Only omit the dependency array when the effect genuinely
+must run on every render, which is rarely correct.
+
+
+Q4 (9-Level Audit): A student presents a dashboard with five widgets: Total Users,
+Monthly Revenue chart, Revenue by Region pie chart, Revenue by Region table, and a
+'Latest Transaction' list. Apply Levels 4, 6, and 8 of the 9-Level Audit. Which components
+are justified and which should be removed?
+Answer: Level 4 (Core Inquiry) — each component needs an articulable question. 'Total Users'
+answers 'How many users do we have?' (justified if that is a primary question for this role).
+Monthly Revenue chart answers 'Is revenue trending up or down?' (justified). Level 6 (Attention
+Density) and Level 8 (Redundancy) — Revenue by Region as both a pie chart and a table on
+the same screen is redundant: they answer the same question with the same data.
+Recommendation: keep the pie chart for proportional comparison (faster to read); move the
+table to a drill-down view accessible on click. The 'Latest Transaction' list is justified only if this
+role's primary task involves monitoring recent activity; otherwise it is optional and should be
+moved to a secondary panel.
+
+
+Q5 (Accessibility): A button in your UI reads 'Click here'. Why is this a WCAG failure, and
+how would you fix it?
+Answer: 'Click here' is non-descriptive — a screen reader user navigating by button will hear
+'Click here' with no context about the action's purpose. WCAG 2.4.6 and 2.4.9 require link and
+button text to be self-describing. Fix: replace with a label that describes the action and target:
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                   Page 49
+IT 331 – Application Development and Emerging Technologies                          Module 1.2
+
+
+
+'Submit Grade Appeal', 'Download Transcript', or 'Register for CS 201'. If an icon-only button
+must be used, add an aria-label attribute with the descriptive text.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences              Page 50
+IT 331 – Application Development and Emerging Technologies                                         Module 1.2
+
+
+
+8. REVIEW AND ASSESSMENT
+
+
+8.1 Key Terms Glossary
+
+ Term                                  Definition
+
+ Cross-Platform                        The practice of building applications that run on multiple operating
+ Development                           systems from a single shared codebase.
+
+ Responsive Design                     A web/app design approach that makes layouts adapt gracefully to
+                                       different screen sizes and orientations.
+
+ Accessibility (a11y)                  The design practice of ensuring applications are usable by people with
+                                       disabilities. Governed by WCAG 2.1 (minimum AA conformance
+                                       required).
+
+ State Management                      The set of strategies for tracking, organizing, and updating application
+                                       data shared across components or screens.
+
+ MVC                                   Model-View-Controller — an architectural pattern separating data
+                                       (Model), presentation (View), and interaction logic (Controller).
+
+ MVVM                                  Model-View-ViewModel — the ViewModel exposes observable state
+                                       that the View binds to reactively, enabling automatic UI updates.
+
+ Virtual DOM                           A lightweight in-memory representation of the real browser DOM.
+                                       React uses it to calculate minimal update sets before touching the real
+                                       DOM.
+
+ JSX                                   JavaScript XML — a syntax extension that allows HTML-like markup
+                                       inside JavaScript files, compiled to React.createElement() calls by a
+                                       build tool.
+ React Hook                            A function prefixed with 'use' that lets functional components access
+                                       React features: state (useState), side effects (useEffect), refs (useRef),
+                                       context, memoization.
+
+ Reconciliation                        React's process of comparing a new Virtual DOM tree with the previous
+                                       one (diffing) and computing the minimal set of real DOM updates
+                                       needed.
+
+ Expo CLI                              A toolchain that sits above React Native, abstracting away native
+                                       configuration and enabling rapid development without Xcode or
+                                       Android Studio.
+
+ AsyncStorage                          A React Native API for asynchronous, persistent key-value storage on
+                                       the device. Values must be serialized as strings using
+                                       JSON.stringify/JSON.parse.
+
+ TPS                                   Transaction Processing System — an information system tier
+                                       supporting routine, repetitive operational tasks such as data entry and
+                                       form submission.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                              Page 51
+IT 331 – Application Development and Emerging Technologies                                       Module 1.2
+
+
+
+ Term                                  Definition
+
+ MIS                                   Management Information System — a tier supporting monitoring and
+                                       structured reporting through summaries, dashboards, and progress
+                                       views.
+
+ DSS                                   Decision Support System — a tier supporting analysis and semi-
+                                       structured decision-making through prediction tools, comparisons, and
+                                       recommendations.
+
+ EIS                                   Executive Information System — a tier supporting strategic planning
+                                       and institutional oversight through high-level KPI dashboards and trend
+                                       analysis.
+
+ Information                           Data → Information → Knowledge → Action. The maturity of an
+ Transformation Chain                  information system is measured by how far it moves raw data toward
+                                       empowering user decisions.
+
+ Attention Density                     The principle that every element on a screen consumes finite user
+                                       mental bandwidth. Maximize decision value per unit of attention by
+                                       classifying elements as Necessary, Optional, or Redundant.
+
+ Hero Section                          The primary focal area of a screen — the single most visually dominant
+                                       element that answers the most important question for the user opening
+                                       that screen.
+
+ Stakeholder-Centered                  A design philosophy that begins with understanding who uses the
+ Architecture                          system, what they are trying to accomplish, and what processes they
+                                       perform — before any screen is drawn.
+
+ BLoC                                  Business Logic Component — a Flutter state management pattern
+                                       using Streams to separate business logic from the UI layer. Highly
+                                       testable.
+
+ AOT Compilation                       Ahead-of-Time compilation — translating source code to native
+                                       machine code before execution, used by Flutter for high-performance
+                                       release builds.
+
+ Sprint                                A time-boxed iteration (typically 1–4 weeks) in Scrum during which a
+                                       team delivers a potentially shippable product increment.
+
+
+
+8.2 Reflection Questions
+Answer the following in writing (minimum 3 sentences per response). These may be discussed
+in class and may appear in examination short-answer sections.
+
+
+    10. Cross-platform frameworks are increasingly adopted in industry. Based on the
+        framework comparison in Section 1.3, which framework would you recommend for a
+        startup building a social media application targeting both iOS and Android? Justify your
+        recommendation with at least three specific technical and business reasons.
+
+    11. React uses a Virtual DOM and reconciliation process instead of directly updating the real
+        DOM. Explain in your own words why this approach improves performance for large,
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                           Page 52
+IT 331 – Application Development and Emerging Technologies                                           Module 1.2
+
+
+
+         frequently-updating interfaces. Under what conditions might the Virtual DOM overhead
+         actually be a disadvantage?
+
+     12. Software architecture plays a critical role in system scalability. Explain the difference
+         between vertical and horizontal scaling. Which architectural decisions in Section 3.4 are
+         prerequisites for horizontal scaling, and why?
+
+     13. Accessibility is a legal and ethical obligation. Research one Philippine national
+         government digital service. Identify two WCAG 2.1 compliance issues and two areas
+         where the service succeeds. Propose one specific, implementable improvement.
+
+     14. Apply the 9-Level Systems Design Audit to a screen in your capstone system. For any
+         one screen: identify the stakeholder, state the goal it serves (Level 2), list the process it
+         supports (Level 3), write the core inquiry for each widget (Level 4), classify each
+         component as Necessary/Optional/Redundant (Level 6), and identify where the system
+         sits on the Information Transformation Chain (Level 9).
+
+
+
+8.3 Practical Activity – Sprint 1 Design Portfolio
+Prepare and present the following Sprint 1 artifacts for your capstone project. All deliverables
+must be submitted as a single consolidated package through the course LMS prior to the Sprint
+1 Demonstration.
+
+
+ #          Deliverable                               Minimum Requirements
+
+                                                      Min. 3 actors, 8 use cases, at least 2 include/extend
+ 1          Use Case Diagram
+                                                      relationships. Use any UML-capable diagramming tool.
+
+                                                      Min. 2 critical workflows with swimlanes, decision points,
+ 2          Process Flow Diagram
+                                                      and numbered steps.
+
+                                                      Min. 5 entities, all PKs and FKs labeled, Crow's Foot
+ 3          Entity Relationship Diagram
+                                                      cardinality notation throughout.
+
+                                                      All 4 types: Context Diagram, Application Architecture,
+ 4          System Architecture Diagram
+                                                      Technology Stack, Deployment Diagram.
+
+            Stakeholder Analysis (9-Level             Document applying Levels 1–4 and Level 9 to the
+ 5
+            Audit)                                    proposed system. Core inquiry per screen.
+
+            Updated Product Backlog +                 Jira screenshots showing backlog items with story points
+ 6
+            Sprint Board                              and Sprint 1 board status.
+
+
+Submission:
+Single document package (pages labeled per artifact) exported to PDF + Jira screenshots +
+Stakeholder Analysis document. Submit via course LMS. Total: 100 Points.
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                               Page 53
+IT 331 – Application Development and Emerging Technologies                                            Module 1.2
+
+
+
+                      Module 1.2: IT 331 – Application Development and Emerging Technologies
+                          Batangas State University | College of Informatics and Computing Sciences
+
+
+
+
+Batangas State University | College of Informatics and Computing Sciences                               Page 54
+

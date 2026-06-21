@@ -1,0 +1,2298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>IT 331 – Module 1.2 | Lecture Material</title>
+<style>
+  /* ── Design Tokens ─────────────────────────────────────── */
+  :root {
+    --bg:         #0f1117;
+    --surface:    #181c26;
+    --surface2:   #1f2535;
+    --border:     #2a3148;
+    --accent:     #4f8ef7;
+    --accent2:    #7c5cfc;
+    --green:      #22d3a0;
+    --yellow:     #f5c842;
+    --red:        #f25c5c;
+    --text:       #e2e8f7;
+    --muted:      #7a8aaa;
+    --tab-h:      54px;
+    --radius:     10px;
+    --mono:       'Fira Mono', 'Consolas', monospace;
+    --sans:       'Inter', 'Segoe UI', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ── Header ──────────────────────────────────────────────*/
+  header {
+    background: linear-gradient(135deg, #131828 0%, #1a1f35 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 22px 32px 18px;
+  }
+  header .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  header h1 {
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.25;
+  }
+  header .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  header .badge {
+    display: inline-block;
+    background: var(--accent2);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin-left: 10px;
+    vertical-align: middle;
+    letter-spacing: .05em;
+  }
+
+  /* ── Tab Bar ─────────────────────────────────────────────*/
+  .tab-bar {
+    display: flex;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 0;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    height: var(--tab-h);
+    padding: 0 20px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: color .2s, border-color .2s;
+    position: relative;
+  }
+  .tab-btn .tab-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--border);
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--muted);
+    transition: background .2s, color .2s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .tab-btn.active .tab-num {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  /* ── Layout ──────────────────────────────────────────────*/
+  .layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: calc(100vh - var(--tab-h) - 90px);
+  }
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  /* ── Sidebar ─────────────────────────────────────────────*/
+  .sidebar {
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    height: calc(100vh - var(--tab-h) - 90px);
+    overflow-y: auto;
+  }
+  .sidebar-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 16px 12px;
+  }
+  .sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12.5px;
+    border-left: 3px solid transparent;
+    transition: all .15s;
+  }
+  .sidebar a:hover { color: var(--text); background: var(--surface2); }
+  .sidebar a.active { color: var(--accent); border-left-color: var(--accent); background: rgba(79,142,247,.07); }
+  .sidebar a .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+  /* ── Content Area ────────────────────────────────────────*/
+  .content-area {
+    padding: 32px;
+    max-width: 860px;
+    min-width: 0;
+  }
+  @media (max-width: 600px) { .content-area { padding: 20px 16px; } }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .tab-panel [id] { scroll-margin-top: 24px; }
+
+  /* ── Section Labels ──────────────────────────────────────*/
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .section-label .num {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--accent);
+    background: rgba(79,142,247,.12);
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: .06em;
+  }
+  .section-label h2 {
+    font-size: clamp(18px, 2.5vw, 22px);
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  /* ── Cards ───────────────────────────────────────────────*/
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 20px;
+    min-width: 0;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .icon { font-size: 16px; }
+
+  h3 {
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 20px 0 10px;
+  }
+  h3:first-child { margin-top: 0; }
+
+  p { margin-bottom: 12px; color: #c5cedf; }
+  p:last-child { margin-bottom: 0; }
+
+  ul, ol { padding-left: 20px; margin-bottom: 12px; }
+  li { margin-bottom: 6px; color: #c5cedf; }
+
+  strong { color: var(--text); font-weight: 700; }
+
+  /* ── Table ───────────────────────────────────────────────*/
+  .table-wrap { max-width: 100%; overflow-x: auto; margin-bottom: 16px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    background: var(--surface2);
+    color: var(--accent);
+    font-weight: 700;
+    padding: 9px 12px;
+    text-align: left;
+    border: 1px solid var(--border);
+    font-size: 11px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  td {
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    color: #c5cedf;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: rgba(31,37,53,.6); }
+
+  /* ── Code ────────────────────────────────────────────────*/
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #7dd3fc;
+  }
+  pre {
+    max-width: 100%;
+    background: #0d1020;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    overflow-x: auto;
+    margin: 14px 0;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+    color: #c5cedf;
+  }
+  pre .k  { color: #c084fc; }
+  pre .s  { color: #86efac; }
+  pre .cm { color: #6b7280; font-style: italic; }
+  pre .n  { color: #7dd3fc; }
+  pre .fn { color: #f9a8d4; }
+
+  /* ── Callout ─────────────────────────────────────────────*/
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: rgba(79,142,247,.07);
+    padding: 14px 18px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 16px 0;
+    font-size: 13.5px;
+    color: #c5cedf;
+  }
+  .callout.green { border-color: var(--green); background: rgba(34,211,160,.07); }
+  .callout.yellow { border-color: var(--yellow); background: rgba(245,200,66,.07); }
+  .callout.red { border-color: var(--red); background: rgba(242,92,92,.07); }
+  .callout strong { color: var(--accent); }
+  .callout.green strong { color: var(--green); }
+  .callout.yellow strong { color: var(--yellow); }
+
+  /* ── Subheading ──────────────────────────────────────────*/
+  .subsection {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 28px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── Demo Block ──────────────────────────────────────────*/
+  .demo-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 14px 0;
+  }
+  .demo-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+  .demo-header .dot-row { display: flex; gap: 5px; }
+  .demo-header .dot-row span {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .demo-header .dot-row span:nth-child(1) { background: #f25c5c; }
+  .demo-header .dot-row span:nth-child(2) { background: var(--yellow); }
+  .demo-header .dot-row span:nth-child(3) { background: var(--green); }
+  .demo-body { padding: 20px; }
+
+  /* ── Interactive Demo ────────────────────────────────────*/
+  .demo-interactive {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 16px 0;
+  }
+  .demo-interactive iframe {
+    width: 100%;
+    border: none;
+    background: #fff;
+    display: block;
+  }
+
+  /* React Lifecycle Playground */
+  .lifecycle-playground {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 16px 0;
+    background: #0d1020;
+  }
+  .lifecycle-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+  .demo-button {
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 8px 14px;
+    background: var(--surface);
+    color: var(--text);
+    font: 700 12px var(--sans);
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .demo-button:hover:not(:disabled) { border-color: var(--accent); }
+  .demo-button.run { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .demo-button:disabled { cursor: not-allowed; opacity: .45; }
+  .lifecycle-status { margin-left: auto; color: var(--muted); font-size: 12px; }
+  .lifecycle-status.running { color: var(--green); }
+  .lifecycle-stage { padding: 16px; }
+  .lifecycle-empty { color: var(--muted); font-size: 13px; }
+  .lifecycle-component {
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+  .lifecycle-component label { color: var(--text); font-size: 13px; font-weight: 700; }
+  .lifecycle-component input {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 9px 11px;
+    background: var(--surface2);
+    color: var(--text);
+    font: 13px var(--sans);
+    outline: none;
+  }
+  .lifecycle-component input:focus { border-color: var(--accent); }
+  .lifecycle-component .demo-button { align-self: flex-start; }
+  .lifecycle-value { color: #c5cedf; font-size: 13px; }
+  .lifecycle-log {
+    list-style: none;
+    padding: 12px 16px;
+    margin: 0;
+    border-top: 1px solid var(--border);
+    max-height: 190px;
+    overflow-y: auto;
+    font: 12px/1.55 var(--mono);
+  }
+  .lifecycle-log li { margin: 0 0 4px; color: #c5cedf; }
+  .lifecycle-log .phase-mount { color: var(--accent); }
+  .lifecycle-log .phase-render { color: var(--green); }
+  .lifecycle-log .phase-update { color: var(--yellow); }
+  .lifecycle-log .phase-unmount { color: #c084fc; }
+  @media (max-width: 520px) {
+    .lifecycle-status { width: 100%; margin-left: 0; }
+  }
+
+  /* ── Pill Tags ───────────────────────────────────────────*/
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin: 2px;
+    letter-spacing: .04em;
+  }
+  .tag-blue { background: rgba(79,142,247,.18); color: var(--accent); }
+  .tag-purple { background: rgba(124,92,252,.18); color: #c084fc; }
+  .tag-green { background: rgba(34,211,160,.18); color: var(--green); }
+  .tag-yellow { background: rgba(245,200,66,.18); color: var(--yellow); }
+
+  /* ── Level Cards (Section 4) ─────────────────────────────*/
+  .level-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    background: var(--surface);
+    transition: border-color .2s;
+    cursor: default;
+  }
+  .level-card:hover { border-color: var(--accent); }
+  .level-card .lnum {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    color: var(--accent2);
+    text-transform: uppercase;
+  }
+  .level-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 4px 0 8px;
+    color: var(--text);
+  }
+  .level-card p { font-size: 13.5px; margin: 0; }
+
+  /* ── Design Examples (Section 4) ────────────────────────*/
+  .design-example-gallery {
+    display: grid;
+    gap: 22px;
+    margin-top: 18px;
+  }
+  .design-example {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface2);
+  }
+  .design-example a {
+    display: block;
+    background: #fff;
+    line-height: 0;
+  }
+  .design-example img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .design-example figcaption {
+    padding: 12px 16px;
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .design-example figcaption strong { color: var(--accent); }
+
+  /* ── Quiz ────────────────────────────────────────────────*/
+  .quiz-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    margin-top: 10px;
+  }
+  .quiz-title {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .question-block { margin-bottom: 26px; }
+  .question-block:last-of-type { margin-bottom: 0; }
+  .question-text {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.55;
+  }
+  .question-num {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .opt {
+    width: 100%;
+    text-align: left;
+    font-family: var(--sans);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 15px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all .15s;
+    font-size: 13.5px;
+    color: #c5cedf;
+  }
+  .opt:hover { border-color: var(--accent); color: var(--text); }
+  .opt.correct { border-color: var(--green) !important; background: rgba(34,211,160,.1); color: var(--green); }
+  .opt.wrong   { border-color: var(--red)   !important; background: rgba(242,92,92,.1);  color: var(--red);   }
+  .opt.disabled { pointer-events: none; opacity: .6; }
+  .opt .letter {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800;
+    flex-shrink: 0;
+    transition: background .15s;
+  }
+  .opt.correct .letter { background: var(--green); color: #001a0f; }
+  .opt.wrong .letter   { background: var(--red);   color: #fff; }
+  .feedback {
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    display: none;
+    line-height: 1.55;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok  { background: rgba(34,211,160,.1); border: 1px solid var(--green); color: var(--green); }
+  .feedback.err { background: rgba(242,92,92,.1);  border: 1px solid var(--red);   color: var(--red);  }
+  .quiz-reset {
+    margin-top: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 20px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .quiz-reset:hover { border-color: var(--accent); color: var(--accent); }
+  .score-badge {
+    display: none;
+    margin-top: 18px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    font-weight: 800;
+    font-size: 15px;
+    text-align: center;
+  }
+  .score-badge.show { display: block; }
+  .score-badge.full { background: rgba(34,211,160,.15); border: 1px solid var(--green); color: var(--green); }
+  .score-badge.partial { background: rgba(245,200,66,.15); border: 1px solid var(--yellow); color: var(--yellow); }
+  .score-badge.low { background: rgba(242,92,92,.12); border: 1px solid var(--red); color: var(--red); }
+
+  /* ── Cycle Flow (virtual DOM) ─────────────────────────────*/
+  .flow-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px 0;
+  }
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .flow-step .box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .flow-arrow { color: var(--accent); font-weight: 900; font-size: 16px; }
+
+  /* ── Hook Demo ───────────────────────────────────────────*/
+  .hook-demo {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 14px 0;
+  }
+  .hook-tabs {
+    display: flex;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .htab {
+    padding: 9px 18px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all .15s;
+  }
+  .htab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .hook-content { padding: 0; }
+  .hpanel { display: none; }
+  .hpanel.active { display: block; }
+
+  /* ── Audit Meter ──────────────────────────────────────────*/
+  .audit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 14px 0;
+  }
+
+  /* ── Info Chip ───────────────────────────────────────────*/
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .chip {
+    padding: 5px 13px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid;
+  }
+  .chip-blue { border-color: var(--accent); color: var(--accent); background: rgba(79,142,247,.08); }
+  .chip-green { border-color: var(--green); color: var(--green); background: rgba(34,211,160,.08); }
+  .chip-purple { border-color: #c084fc; color: #c084fc; background: rgba(192,132,252,.08); }
+  .chip-yellow { border-color: var(--yellow); color: var(--yellow); background: rgba(245,200,66,.08); }
+
+  /* ── Compare Table ────────────────────────────────────────*/
+  .compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+  @media (max-width: 600px) { .compare-row { grid-template-columns: 1fr; } }
+  .compare-col {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .compare-col .col-head {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-col.left .col-head { color: var(--accent); }
+  .compare-col.right .col-head { color: var(--accent2); }
+  .compare-col ul { padding-left: 16px; }
+  .compare-col li { font-size: 12.5px; margin-bottom: 5px; }
+
+  /* -- Student practice and progress -------------------------------- */
+  :focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+  .learning-progress { display: flex; align-items: center; gap: 12px; max-width: 520px; margin-top: 14px; font-size: 12px; color: var(--muted); }
+  .progress-track { flex: 1; height: 8px; overflow: hidden; border-radius: 999px; background: var(--border); }
+  .progress-fill { width: 0; height: 100%; background: var(--green); transition: width .25s; }
+  .practice-card { border-color: rgba(79,142,247,.55); }
+  .practice-intro { color: var(--muted); font-size: 13px; }
+  .control-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 16px 0; }
+  .field { display: grid; gap: 6px; }
+  .field label { color: var(--text); font-size: 12px; font-weight: 700; }
+  .field select, .field textarea { width: 100%; border: 1px solid var(--border); border-radius: 7px; padding: 10px 11px; background: var(--surface2); color: var(--text); font: 13px var(--sans); }
+  .activity-result { min-height: 58px; margin-top: 14px; padding: 13px 15px; border-left: 3px solid var(--accent); background: rgba(79,142,247,.07); color: #c5cedf; font-size: 13px; }
+  .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin: 14px 0; }
+  .choice-btn { text-align: left; min-height: 58px; }
+  .choice-btn.selected { border-color: var(--accent); background: rgba(79,142,247,.12); }
+  .discussion-box { margin-top: 18px; padding: 16px; border: 1px dashed var(--border); border-radius: 8px; }
+  .discussion-box summary { color: var(--yellow); font-weight: 700; cursor: pointer; }
+  .discussion-box ol { margin-top: 12px; }
+  .audit-builder { display: grid; gap: 10px; margin: 14px 0; }
+  .audit-row { display: grid; grid-template-columns: 145px 1fr; gap: 10px; align-items: center; }
+  .checklist { list-style: none; padding: 0; display: grid; gap: 9px; }
+  .checklist label { display: flex; gap: 10px; align-items: flex-start; padding: 11px; border: 1px solid var(--border); border-radius: 7px; cursor: pointer; }
+  .checklist input { margin-top: 4px; accent-color: var(--green); }
+  .checklist label:has(input:checked) { border-color: var(--green); background: rgba(34,211,160,.07); }
+  .scope-note { color: var(--yellow); font-size: 12px; font-weight: 700; margin-top: 8px; }
+  .progress-reset { margin-top: 10px; padding: 6px 10px; background: transparent; border: 1px solid var(--border); border-radius: 6px; color: var(--muted); font: 700 11px var(--sans); cursor: pointer; }
+  .progress-reset:hover { border-color: var(--accent); color: var(--text); }
+  @media (max-width: 620px) {
+    .control-grid, .choice-grid { grid-template-columns: 1fr; }
+    .audit-row { grid-template-columns: 1fr; }
+  }
+
+  /* ── Scrollbar ───────────────────────────────────────────*/
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Batangas State University · College of Informatics and Computing Sciences</div>
+  <h1>IT 331 – Application Development and Emerging Technologies <span class="badge">Module 1.2</span></h1>
+  <div class="subtitle">Week 2 &nbsp;·&nbsp; 6 Hours Lecture / 9 Hours Laboratory</div>
+  <div class="learning-progress" aria-label="Learning activity progress">
+    <span id="progress-label">0 of 5 activities completed</span>
+    <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+  <div class="scope-note">Scope: Sections 1-5 only. Section 6 and later content are intentionally excluded.</div>
+  <button class="progress-reset" type="button" onclick="resetLearningProgress()">Reset learning progress</button>
+</header>
+
+<!-- Tab Bar -->
+<div class="tab-bar" role="tablist">
+  <button class="tab-btn active" onclick="switchTab(0)" role="tab">
+    <span class="tab-num">1</span> Cross-Platform Dev
+  </button>
+  <button class="tab-btn" onclick="switchTab(1)" role="tab">
+    <span class="tab-num">2</span> UI / UX Design
+  </button>
+  <button class="tab-btn" onclick="switchTab(2)" role="tab">
+    <span class="tab-num">3</span> State Management
+  </button>
+  <button class="tab-btn" onclick="switchTab(3)" role="tab">
+    <span class="tab-num">4</span> Systems Analysis
+  </button>
+  <button class="tab-btn" onclick="switchTab(4)" role="tab">
+    <span class="tab-num">5</span> Laboratory Exercise
+  </button>
+</div>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-title">On this page</div>
+  </nav>
+
+  <!-- Panels -->
+  <main class="content-area">
+
+    <!-- ═══════════ SECTION 1 ═══════════ -->
+    <div class="tab-panel active" id="panel-0">
+
+      <div class="section-label">
+        <span class="num">Section 1</span>
+        <h2>Cross-Platform Application Development</h2>
+      </div>
+
+      <!-- Theory -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📖</span> Theory</div>
+
+        <h3 id="s1-intro">1.1 Introduction to Cross-Platform Development</h3>
+        <p>Cross-platform development is the practice of building software that operates across multiple operating systems and device types from a <strong>single, unified codebase</strong>. Instead of maintaining separate Swift, Kotlin, and web codebases, teams author one application that renders appropriately everywhere.</p>
+        <div class="chip-row">
+          <span class="chip chip-blue">Android</span>
+          <span class="chip chip-green">iOS</span>
+          <span class="chip chip-purple">Web (PWA)</span>
+          <span class="chip chip-yellow">Desktop</span>
+          <span class="chip chip-blue">Embedded / IoT</span>
+        </div>
+        <div class="callout">
+          <strong>Business Benefits:</strong> Reduced cost · Faster time-to-market · Easier maintenance · Consistent UX · Broader market reach
+        </div>
+
+        <h3 id="s1-native">1.2 Native vs Cross-Platform</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Aspect</th><th>Native</th><th>Cross-Platform</th></tr>
+            <tr><td>Codebase</td><td>Separate per platform</td><td>Single shared codebase</td></tr>
+            <tr><td>Dev Time</td><td>Longer — platform-specific skills</td><td>Faster — write once, run anywhere</td></tr>
+            <tr><td>Performance</td><td>Maximum native</td><td>Near-native with modern frameworks</td></tr>
+            <tr><td>Maintenance</td><td>Higher — parallel codebases</td><td>Lower — single source of truth</td></tr>
+            <tr><td>Deployment</td><td>Platform-specific builds</td><td>Multi-platform simultaneous release</td></tr>
+          </table>
+        </div>
+
+        <h3 id="s1-frameworks">1.3 Modern Cross-Platform Frameworks</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Framework</th><th>Language</th><th>Performance</th><th>Best For</th></tr>
+            <tr><td><strong>Flutter</strong></td><td>Dart</td><td>Near-native (AOT)</td><td>Pixel-perfect custom UIs</td></tr>
+            <tr><td><strong>React Native</strong></td><td>JS / TS</td><td>Good (JSBridge)</td><td>JS-ecosystem teams</td></tr>
+            <tr><td><strong>.NET MAUI</strong></td><td>C#</td><td>High (.NET AOT)</td><td>Enterprise Windows teams</td></tr>
+            <tr><td><strong>Ionic</strong></td><td>HTML/JS/TS</td><td>Moderate (WebView)</td><td>Rapid web-to-mobile</td></tr>
+            <tr><td><strong>PWA</strong></td><td>HTML/CSS/JS</td><td>Browser-dependent</td><td>Lightweight web-first apps</td></tr>
+          </table>
+        </div>
+
+        <h3 id="s1-react">1.4 React – A JavaScript Library for UI</h3>
+        <div class="compare-row">
+          <div class="compare-col left">
+            <div class="col-head">Library (React)</div>
+            <ul>
+              <li>Your code calls the library</li>
+              <li>You control the flow</li>
+              <li>High flexibility</li>
+              <li>Gradual learning curve</li>
+            </ul>
+          </div>
+          <div class="compare-col right">
+            <div class="col-head">Framework (Angular)</div>
+            <ul>
+              <li>Framework calls your code (IoC)</li>
+              <li>Framework controls the flow</li>
+              <li>Lower flexibility</li>
+              <li>Steeper upfront learning</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="subsection">React Core Principles</div>
+        <ul>
+          <li><strong>Component-Based Architecture</strong> — Self-contained, reusable UI blocks (like Lego bricks)</li>
+          <li><strong>Declarative Programming</strong> — Describe <em>what</em> the UI should look like; React decides <em>how</em> to update</li>
+          <li><strong>Virtual DOM</strong> — In-memory copy of the DOM; only minimal real DOM changes are applied</li>
+          <li><strong>Automatic Re-rendering</strong> — React handles UI updates when state changes</li>
+        </ul>
+
+        <div class="subsection">Virtual DOM – Reconciliation Flow</div>
+        <div class="flow-steps">
+          <div class="flow-step"><div class="box">① State Change</div><span class="flow-arrow">→</span></div>
+          <div class="flow-step"><div class="box">② New Virtual Tree</div><span class="flow-arrow">→</span></div>
+          <div class="flow-step"><div class="box">③ Diffing</div><span class="flow-arrow">→</span></div>
+          <div class="flow-step"><div class="box">④ Reconciliation</div><span class="flow-arrow">→</span></div>
+          <div class="flow-step"><div class="box">⑤ Batch DOM Update</div></div>
+        </div>
+
+        <div class="subsection">React Hooks</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Hook</th><th>Purpose</th><th>Triggers Re-render?</th></tr>
+            <tr><td><code>useState</code></td><td>Track dynamic UI data</td><td>✅ Yes</td></tr>
+            <tr><td><code>useEffect</code></td><td>Side effects: fetch, timers, subscriptions</td><td>❌ No</td></tr>
+            <tr><td><code>useRef</code></td><td>Persist value without re-render; DOM access</td><td>❌ No</td></tr>
+            <tr><td><code>useContext</code></td><td>Read from React Context (avoid prop drilling)</td><td>✅ On context change</td></tr>
+            <tr><td><code>useMemo</code></td><td>Cache expensive computed values</td><td>❌ No</td></tr>
+            <tr><td><code>useCallback</code></td><td>Cache function references for child components</td><td>❌ No</td></tr>
+          </table>
+        </div>
+
+        <div class="subsection" id="s1-react-native">1.5 React Native – Key Differences from React JS</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Aspect</th><th>React JS (Web)</th><th>React Native (Mobile)</th></tr>
+            <tr><td>Output</td><td>HTML/CSS DOM elements</td><td>Real native UI components</td></tr>
+            <tr><td>Styling</td><td>CSS</td><td>StyleSheet API (JS objects)</td></tr>
+            <tr><td>Layout</td><td>CSS Flexbox + Grid</td><td>Flexbox only (column default)</td></tr>
+            <tr><td>UI Elements</td><td><code>&lt;div&gt; &lt;p&gt; &lt;button&gt;</code></td><td><code>&lt;View&gt; &lt;Text&gt; &lt;TouchableOpacity&gt;</code></td></tr>
+            <tr><td>Navigation</td><td>React Router</td><td>React Navigation</td></tr>
+          </table>
+        </div>
+
+        <div class="callout green">
+          <strong>Expo CLI vs React Native CLI:</strong> Expo is beginner-friendly with no Android Studio / Xcode needed. React Native CLI gives full native module access but requires complex setup.
+        </div>
+
+        <h3 id="s1-architecture">1.6 Application Architecture Fundamentals</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Layer</th><th>Responsibility</th></tr>
+            <tr><td><strong>Presentation</strong></td><td>Renders UI; handles user input. React components, Flutter widgets.</td></tr>
+            <tr><td><strong>Application</strong></td><td>Coordinates use cases; orchestrates calls between UI and business logic.</td></tr>
+            <tr><td><strong>Business Logic</strong></td><td>Domain rules independent of any framework. Pricing engines, validations.</td></tr>
+            <tr><td><strong>Data Access</strong></td><td>Abstracts data source (REST API, SQLite, cache). Repository pattern.</td></tr>
+            <tr><td><strong>Database / Storage</strong></td><td>Persists data: PostgreSQL, MongoDB, Redis, SQLite, Hive.</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Demo -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🧪</span> Demo – React Hooks in Action</div>
+        <p>Study each hook and its typical usage pattern:</p>
+
+        <div class="hook-demo">
+          <div class="hook-tabs">
+            <div class="htab active" onclick="switchHook(this,'h0')">useState</div>
+            <div class="htab" onclick="switchHook(this,'h1')">useEffect</div>
+            <div class="htab" onclick="switchHook(this,'h2')">useRef</div>
+          </div>
+          <div class="hook-content">
+            <div class="hpanel active" id="h0">
+<pre><span class="cm">// useState — tracks counter value; every setCount() triggers a re-render</span>
+<span class="k">import</span> { useState } <span class="k">from</span> <span class="s">'react'</span>;
+
+<span class="k">function</span> <span class="fn">Counter</span>() {
+  <span class="k">const</span> [count, setCount] = <span class="fn">useState</span>(0); <span class="cm">// initial value: 0</span>
+
+  <span class="k">return</span> (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}&lt;/p&gt;
+      &lt;button onClick={() =&gt; <span class="fn">setCount</span>(count + 1)}&gt;+&lt;/button&gt;
+      &lt;button onClick={() =&gt; <span class="fn">setCount</span>(count - 1)}&gt;−&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+            </div>
+            <div class="hpanel" id="h1">
+<pre><span class="cm">// useEffect — runs after render; [] = run ONCE on mount only</span>
+<span class="k">import</span> { useState, useEffect } <span class="k">from</span> <span class="s">'react'</span>;
+
+<span class="k">function</span> <span class="fn">DataFetcher</span>() {
+  <span class="k">const</span> [data, setData] = <span class="fn">useState</span>(null);
+
+  <span class="fn">useEffect</span>(() =&gt; {
+    <span class="cm">// Runs on mount — fetch initial data</span>
+    <span class="fn">fetch</span>(<span class="s">'/api/tasks'</span>)
+      .then(r =&gt; r.<span class="fn">json</span>())
+      .then(d =&gt; <span class="fn">setData</span>(d));
+
+    <span class="k">return</span> () =&gt; { <span class="cm">/* cleanup on unmount */</span> };
+  }, []); <span class="cm">// [] = mount only</span>
+
+  <span class="k">return</span> &lt;p&gt;{data ? <span class="s">'Loaded!'</span> : <span class="s">'Loading…'</span>}&lt;/p&gt;;
+}</pre>
+            </div>
+            <div class="hpanel" id="h2">
+<pre><span class="cm">// useRef — stores a value WITHOUT causing a re-render</span>
+<span class="k">import</span> { useRef } <span class="k">from</span> <span class="s">'react'</span>;
+
+<span class="k">function</span> <span class="fn">FocusInput</span>() {
+  <span class="k">const</span> inputRef = <span class="fn">useRef</span>(null);
+
+  <span class="k">const</span> <span class="fn">focusField</span> = () =&gt; {
+    inputRef.current.<span class="fn">focus</span>(); <span class="cm">// direct DOM access</span>
+  };
+
+  <span class="k">return</span> (
+    &lt;div&gt;
+      &lt;input ref={inputRef} placeholder=<span class="s">"Type here"</span> /&gt;
+      &lt;button onClick={focusField}&gt;Focus&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">React Functional Component Lifecycle</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Phase</th><th>Description</th><th>Hook Used</th></tr>
+            <tr><td><span class="tag tag-blue">Mount</span></td><td>Component appears in UI for the first time</td><td><code>useEffect(fn, [])</code></td></tr>
+            <tr><td><span class="tag tag-green">Render</span></td><td>Component function runs; produces JSX</td><td><code>useState</code> (drives UI)</td></tr>
+            <tr><td><span class="tag tag-yellow">Update</span></td><td>State or props change triggers re-render</td><td><code>useState</code> setter; <code>useEffect([dep])</code></td></tr>
+            <tr><td><span class="tag tag-purple">Unmount</span></td><td>Component removed; cleanup runs</td><td>Return value of <code>useEffect</code></td></tr>
+          </table>
+        </div>
+
+        <div class="subsection">Run the Lifecycle</div>
+        <p>Click <strong>Run</strong> to mount and render the component, <strong>Update state</strong> (or type) to trigger an update and re-render, then <strong>Unmount</strong> to run cleanup. This built-in simulation uses plain JavaScript and works without an internet connection.</p>
+        <div class="lifecycle-playground" aria-label="React lifecycle interactive demonstration">
+          <div class="lifecycle-toolbar">
+            <button class="demo-button run" id="lifecycle-run" type="button" onclick="runLifecycleDemo()">&#9654; Run</button>
+            <button class="demo-button" id="lifecycle-unmount" type="button" onclick="unmountLifecycleDemo()" disabled>Unmount</button>
+            <button class="demo-button" type="button" onclick="clearLifecycleLog()">Clear log</button>
+            <span class="lifecycle-status" id="lifecycle-status" role="status">Not mounted</span>
+          </div>
+          <div class="lifecycle-stage" id="lifecycle-root">
+            <div class="lifecycle-empty">The test component will appear here.</div>
+          </div>
+          <ol class="lifecycle-log" id="lifecycle-log" aria-live="polite">
+            <li>Waiting for Run...</li>
+          </ol>
+        </div>
+
+        <div class="subsection">Setting Up a React Project</div>
+<pre><span class="cm"># Option A – Vite (Recommended for modern apps)</span>
+<span class="n">npm</span> create vite@latest my-react-app
+<span class="cm"># Choose: Framework → React, Variant → JavaScript</span>
+<span class="k">cd</span> my-react-app
+<span class="n">npm</span> install
+<span class="n">npm</span> run dev    <span class="cm"># opens http://localhost:5173</span>
+
+<span class="cm"># Option B – Create React App (Beginner-friendly, legacy)</span>
+<span class="n">npx</span> create-react-app my-app
+<span class="k">cd</span> my-app
+<span class="n">npm</span> start       <span class="cm"># opens http://localhost:3000</span></pre>
+
+        <div class="subsection">Expo (React Native) Setup</div>
+<pre><span class="n">npx</span> create-expo-app notes-app   <span class="cm"># scaffold blank template</span>
+<span class="k">cd</span> notes-app
+<span class="n">npm</span> start                        <span class="cm"># starts Metro Bundler</span>
+<span class="cm"># Scan QR with Expo Go on your phone</span></pre>
+      </div>
+
+      <div class="card practice-card" id="activity-framework">
+        <div class="card-title"><span class="icon">&#9881;</span> Practice - Choose a Development Approach</div>
+        <p class="practice-intro">Use project constraints, not popularity, to justify an architectural choice. Change the inputs, then compare the recommendation with your own reasoning.</p>
+        <div class="control-grid">
+          <div class="field"><label for="team-skill">Strongest team skill</label><select id="team-skill"><option value="web">HTML, CSS, JavaScript</option><option value="native">Swift and Kotlin</option><option value="csharp">C# and .NET</option><option value="dart">Dart</option></select></div>
+          <div class="field"><label for="project-priority">Highest project priority</label><select id="project-priority"><option value="speed">Fast multi-platform release</option><option value="performance">Maximum device performance</option><option value="visual">Pixel-perfect custom UI</option><option value="webfirst">Installable web-first delivery</option></select></div>
+        </div>
+        <button class="demo-button run" type="button" onclick="recommendApproach()">Generate recommendation</button>
+        <div class="activity-result" id="framework-result" role="status">Select the constraints and generate a recommendation.</div>
+        <details class="discussion-box"><summary>Discuss with a partner</summary><ol><li>Which requirement could overturn the recommendation?</li><li>What long-term maintenance cost does the choice create?</li><li>When is a shared codebase not worth the trade-off?</li></ol></details>
+      </div>
+
+      <!-- Checkpoint -->
+      <div class="quiz-section" id="quiz-0">
+        <div class="quiz-title">✅ Checkpoint — Section 1 (3 Questions)</div>
+        <div id="questions-0"></div>
+        <button class="quiz-reset" onclick="resetQuiz(0)">↺ Reset Quiz</button>
+        <div class="score-badge" id="score-0"></div>
+      </div>
+
+    </div><!-- /panel-0 -->
+
+
+    <!-- ═══════════ SECTION 2 ═══════════ -->
+    <div class="tab-panel" id="panel-1">
+      <div class="section-label">
+        <span class="num">Section 2</span>
+        <h2>User Interface and User Experience Design</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📖</span> Theory</div>
+
+        <h3 id="s2-uiux">2.1 UI vs UX Fundamentals</h3>
+        <div class="compare-row">
+          <div class="compare-col left">
+            <div class="col-head">UI Design (Visual Surface)</div>
+            <ul>
+              <li>Visual Hierarchy — guide the eye</li>
+              <li>Layout and Spacing — grids, gutters, whitespace</li>
+              <li>Color and Typography — brand identity</li>
+              <li>Component Design — buttons, forms, cards</li>
+            </ul>
+          </div>
+          <div class="compare-col right">
+            <div class="col-head">UX Design (Full Journey)</div>
+            <ul>
+              <li>User Research — interviews, usability tests</li>
+              <li>Information Architecture — mental models</li>
+              <li>Journey Mapping — every touchpoint</li>
+              <li>Prototyping and Testing — Figma → feedback</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 id="s2-responsive">2.2 Responsive Design Principles</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Device</th><th>Width Range</th><th>Layout</th><th>Common Components</th></tr>
+            <tr><td>Mobile</td><td>&lt; 768px</td><td>Single-column stack</td><td>Bottom nav, hamburger menu</td></tr>
+            <tr><td>Tablet</td><td>768 – 1024px</td><td>Two-column grid</td><td>Sidebar, collapsible panels</td></tr>
+            <tr><td>Desktop</td><td>1025 – 1440px</td><td>Multi-column grid</td><td>Full navbar, dashboards</td></tr>
+            <tr><td>Large Desktop</td><td>&gt; 1440px</td><td>Wide-layout content</td><td>Fixed sidebars, data grids</td></tr>
+          </table>
+        </div>
+        <div class="callout">
+          <strong>Mobile-First Strategy:</strong> Design the mobile layout first, then progressively add complexity for larger screens. This keeps code lean and ensures core functionality works everywhere.
+        </div>
+        <div class="callout yellow">
+          <strong>Essential Viewport Tag:</strong> Every HTML document must include <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code>
+        </div>
+
+        <h3 id="s2-accessibility">2.3 Accessibility and Inclusive Design</h3>
+        <p>Accessibility <strong>(a11y)</strong> is governed by <strong>WCAG 2.1</strong> (W3C) with three conformance levels: A, AA, and AAA. In the Philippines, RA 7277 (Magna Carta for Disabled Persons) mandates accessible digital services.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Concern</th><th>Requirement</th></tr>
+            <tr><td>Color Contrast</td><td>WCAG AA: 4.5:1 ratio for normal text; 3:1 for large text</td></tr>
+            <tr><td>Keyboard Navigation</td><td>All interactive elements must be keyboard-reachable with visible focus indicators</td></tr>
+            <tr><td>Alternative Text</td><td>Informative images need descriptive <code>alt</code>; decorative images use <code>alt=""</code></td></tr>
+            <tr><td>ARIA Roles</td><td><code>role</code>, <code>aria-label</code>, <code>aria-describedby</code> communicate meaning to screen readers</td></tr>
+            <tr><td>Typography</td><td>Body text ≥ 16px, line-height ≥ 1.5, line length 50–75 chars</td></tr>
+            <tr><td>Error Identification</td><td>Errors described in text (not color only); associated via <code>aria-describedby</code></td></tr>
+          </table>
+        </div>
+
+        <h3 id="s2-design-systems">2.4 Design Systems and Reusable Components</h3>
+        <p>A design system is a <strong>single source of truth</strong> for a product's visual language. It combines a component library, style guide, and documentation.</p>
+        <ul>
+          <li><strong>Design Tokens</strong> — Named variables: <code>primary-color: #2E75B6</code>, <code>spacing-unit: 8px</code></li>
+          <li><strong>Component Library</strong> — Pre-built, documented UI components with state variants</li>
+          <li><strong>Layout Patterns</strong> — Approved grid systems and page templates</li>
+          <li><strong>Documentation &amp; Governance</strong> — Guidelines on when and how to use components</li>
+        </ul>
+        <div class="chip-row">
+          <span class="chip chip-blue">Material UI (MUI)</span>
+          <span class="chip chip-green">Tailwind CSS</span>
+          <span class="chip chip-purple">shadcn/ui</span>
+          <span class="chip chip-yellow">Flutter Widget Catalog</span>
+        </div>
+      </div>
+
+      <!-- Demo -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🧪</span> Demo – Responsive Breakpoints in CSS</div>
+<pre><span class="cm">/* Mobile-first approach */</span>
+.container {
+  display: flex;
+  flex-direction: column;  <span class="cm">/* stacked on mobile */</span>
+  padding: 16px;
+}
+
+<span class="cm">/* Tablet — 768px and above */</span>
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row;
+    padding: 24px;
+  }
+}
+
+<span class="cm">/* Desktop — 1025px and above */</span>
+@media (min-width: 1025px) {
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px;
+  }
+}</pre>
+
+        <div class="subsection">Accessible Button Example</div>
+<pre><span class="cm">/* ❌ BAD — non-descriptive, WCAG failure */</span>
+&lt;button onClick={submit}&gt;Click here&lt;/button&gt;
+
+<span class="cm">/* ✅ GOOD — self-describing, screen reader friendly */</span>
+&lt;button onClick={submit} aria-label=<span class="s">"Submit grade appeal"</span>&gt;
+  Submit Grade Appeal
+&lt;/button&gt;
+
+<span class="cm">/* ✅ Icon-only button with aria-label */</span>
+&lt;button aria-label=<span class="s">"Delete task"</span>&gt;
+  &lt;TrashIcon /&gt;
+&lt;/button&gt;</pre>
+      </div>
+
+      <div class="card practice-card" id="activity-accessibility">
+        <div class="card-title"><span class="icon">A11Y</span> Practice - Accessibility Triage</div>
+        <p class="practice-intro">A form uses light-gray text, placeholder-only labels, mouse-only clickable cards, and red borders as its only error signal. Choose the first correction you would make and explain why.</p>
+        <div class="choice-grid" id="a11y-choices">
+          <button class="demo-button choice-btn" type="button" data-answer="contrast">Increase text contrast to at least 4.5:1</button>
+          <button class="demo-button choice-btn" type="button" data-answer="labels">Add persistent programmatic labels</button>
+          <button class="demo-button choice-btn" type="button" data-answer="keyboard">Use keyboard-operable native buttons</button>
+          <button class="demo-button choice-btn" type="button" data-answer="errors">Add text errors linked with aria-describedby</button>
+        </div>
+        <div class="activity-result" id="a11y-result" role="status">Choose a correction. All four are required; your task is to defend the priority.</div>
+        <details class="discussion-box"><summary>Discussion prompt: accessible by design</summary><p>Why is responsive design not automatically accessible design? Give one example where an interface adapts to mobile width but still excludes a user.</p></details>
+      </div>
+
+      <!-- Checkpoint -->
+      <div class="quiz-section" id="quiz-1">
+        <div class="quiz-title">✅ Checkpoint — Section 2 (3 Questions)</div>
+        <div id="questions-1"></div>
+        <button class="quiz-reset" onclick="resetQuiz(1)">↺ Reset Quiz</button>
+        <div class="score-badge" id="score-1"></div>
+      </div>
+    </div><!-- /panel-1 -->
+
+
+    <!-- ═══════════ SECTION 3 ═══════════ -->
+    <div class="tab-panel" id="panel-2">
+      <div class="section-label">
+        <span class="num">Section 3</span>
+        <h2>State Management and Application Architecture</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📖</span> Theory</div>
+
+        <h3 id="s3-state">3.1 State Management Concepts</h3>
+        <p><strong>State</strong> is any data whose change causes the UI to update. Poorly managed state is the leading cause of hard-to-reproduce bugs.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>State Type</th><th>Description</th><th>Examples</th></tr>
+            <tr><td><span class="tag tag-blue">UI State</span></td><td>Transient widget-level data; no persistence needed</td><td>Dropdown open, tab index, spinner</td></tr>
+            <tr><td><span class="tag tag-green">App State</span></td><td>Shared across multiple components/screens</td><td>Authenticated user, cart contents</td></tr>
+            <tr><td><span class="tag tag-purple">Server State</span></td><td>Fetched from remote API; must be cached &amp; synced</td><td>Product catalog, user feed</td></tr>
+            <tr><td><span class="tag tag-yellow">URL State</span></td><td>Current route and query parameters</td><td>Deep-linking, filter params</td></tr>
+          </table>
+        </div>
+        <div class="subsection">Common State Management Approaches</div>
+        <ul>
+          <li><code>useState</code> — Local state; appropriate for UI state only</li>
+          <li><strong>Provider / InheritedWidget</strong> — Flutter; low boilerplate; small-to-medium apps</li>
+          <li><strong>BLoC</strong> — Flutter; separates UI from logic via Streams; highly testable</li>
+          <li><strong>Redux / Zustand</strong> — React; centralized immutable store with actions and reducers</li>
+          <li><strong>MobX</strong> — Observable state that auto-re-renders; less boilerplate than Redux</li>
+        </ul>
+
+        <h3 id="s3-processing">3.2 Client-Side vs Server-Side Processing</h3>
+        <div class="compare-row">
+          <div class="compare-col left">
+            <div class="col-head">Client-Side</div>
+            <ul>
+              <li>Input validation &amp; form feedback</li>
+              <li>UI rendering, animations</li>
+              <li>Client-side routing</li>
+              <li>Offline via Service Workers</li>
+              <li>⚠ Code is visible and reversible</li>
+            </ul>
+          </div>
+          <div class="compare-col right">
+            <div class="col-head">Server-Side</div>
+            <ul>
+              <li>Authentication (JWT / OAuth 2.0)</li>
+              <li>Authoritative business logic</li>
+              <li>Database operations</li>
+              <li>File processing, ML inference</li>
+              <li>✅ Secure and trusted</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 id="s3-patterns">3.3 Architectural Patterns</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th></th><th>MVC</th><th>MVVM</th></tr>
+            <tr><td>Layers</td><td>Model, View, Controller</td><td>Model, View, ViewModel</td></tr>
+            <tr><td>Data Flow</td><td>Controller mediates View ↔ Model</td><td>ViewModel exposes streams; View binds</td></tr>
+            <tr><td>Use Cases</td><td>Server-rendered web, REST backends</td><td>Mobile apps, React/Vue/Angular frontends</td></tr>
+            <tr><td>Testability</td><td>Controller logic unit-testable</td><td>ViewModel fully testable without UI</td></tr>
+            <tr><td>Examples</td><td>Laravel, Spring MVC, Django</td><td>Flutter (BLoC), Android Jetpack, Vue</td></tr>
+            <tr><td>Trade-off</td><td>Can lead to fat controllers</td><td>Learning curve for reactive bindings</td></tr>
+          </table>
+        </div>
+
+        <h3 id="s3-scalability">3.4 Scalability Considerations</h3>
+        <div class="compare-row">
+          <div class="compare-col left">
+            <div class="col-head">Vertical Scaling (Scale Up)</div>
+            <ul>
+              <li>Add CPU, RAM, or storage to existing server</li>
+              <li>Simple to implement</li>
+              <li>Has physical limits</li>
+              <li>Single point of failure</li>
+            </ul>
+          </div>
+          <div class="compare-col right">
+            <div class="col-head">Horizontal Scaling (Scale Out)</div>
+            <ul>
+              <li>Add more server instances with load balancer</li>
+              <li>Requires stateless app design</li>
+              <li>Sessions externalized to Redis</li>
+              <li>Foundation for microservices</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout">
+          <strong>Key Strategies:</strong> API-First Development · Caching (Redis) · Database Indexing · Read Replicas · Docker + Kubernetes · Async Job Queues (Bull, RabbitMQ)
+        </div>
+      </div>
+
+      <!-- Demo -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🧪</span> Demo – State Management Patterns</div>
+
+        <div class="subsection">useState — Local State (React)</div>
+<pre><span class="k">const</span> [isOpen, setIsOpen] = <span class="fn">useState</span>(<span class="k">false</span>);
+<span class="k">const</span> [user, setUser]     = <span class="fn">useState</span>(null);
+<span class="k">const</span> [cart, setCart]     = <span class="fn">useState</span>([]);
+
+<span class="cm">// Immutable update pattern — ALWAYS spread to avoid mutation</span>
+<span class="fn">setCart</span>(prev =&gt; [...prev, newItem]);     <span class="cm">// add item</span>
+<span class="fn">setCart</span>(prev =&gt; prev.<span class="fn">filter</span>(i =&gt; i.id !== id)); <span class="cm">// remove item</span></pre>
+
+        <div class="subsection">Zustand — Lightweight Global Store</div>
+<pre><span class="k">import</span> { create } <span class="k">from</span> <span class="s">'zustand'</span>;
+
+<span class="k">const</span> useStore = <span class="fn">create</span>((set) =&gt; ({
+  count: 0,
+  increment: () =&gt; <span class="fn">set</span>((s) =&gt; ({ count: s.count + 1 })),
+  decrement: () =&gt; <span class="fn">set</span>((s) =&gt; ({ count: s.count - 1 })),
+}));
+
+<span class="cm">// In any component:</span>
+<span class="k">const</span> { count, increment } = <span class="fn">useStore</span>();</pre>
+
+        <div class="subsection">AsyncStorage — React Native Persistence</div>
+<pre><span class="k">import</span> AsyncStorage <span class="k">from</span> <span class="s">'@react-native-async-storage/async-storage'</span>;
+
+<span class="cm">// Save (always JSON.stringify arrays/objects)</span>
+<span class="k">await</span> AsyncStorage.<span class="fn">setItem</span>(<span class="s">'NOTES_KEY'</span>, JSON.<span class="fn">stringify</span>(notes));
+
+<span class="cm">// Load on mount via useEffect</span>
+<span class="fn">useEffect</span>(() =&gt; {
+  <span class="k">const</span> <span class="fn">load</span> = <span class="k">async</span> () =&gt; {
+    <span class="k">const</span> raw = <span class="k">await</span> AsyncStorage.<span class="fn">getItem</span>(<span class="s">'NOTES_KEY'</span>);
+    <span class="k">if</span> (raw) <span class="fn">setNotes</span>(JSON.<span class="fn">parse</span>(raw));
+  };
+  <span class="fn">load</span>();
+}, []);</pre>
+      </div>
+
+      <div class="card practice-card" id="activity-state">
+        <div class="card-title"><span class="icon">&#8644;</span> Practice - Classify the State</div>
+        <p class="practice-intro">For each example, decide where its source of truth belongs. A correct design avoids duplication and unclear ownership.</p>
+        <div class="control-grid">
+          <div class="field"><label for="state-example">Example</label><select id="state-example"><option value="modal">Whether a modal is open</option><option value="profile">Authenticated user profile</option><option value="products">Products fetched from an API</option><option value="filter">Search filter in the URL</option><option value="draft">Unsaved form input</option></select></div>
+          <div class="field"><label for="state-category">State category</label><select id="state-category"><option value="ui">UI state</option><option value="application">Application state</option><option value="server">Server state</option><option value="url">URL state</option><option value="form">Form state</option></select></div>
+        </div>
+        <button class="demo-button run" type="button" onclick="checkStateClassification()">Check classification</button>
+        <div class="activity-result" id="state-result" role="status">Classify an example, then check your reasoning.</div>
+        <details class="discussion-box"><summary>Discuss the architecture</summary><p>What bug can occur if server state is copied into multiple local component states? How would caching or a shared data layer change the design?</p></details>
+      </div>
+
+      <!-- Checkpoint -->
+      <div class="quiz-section" id="quiz-2">
+        <div class="quiz-title">✅ Checkpoint — Section 3 (3 Questions)</div>
+        <div id="questions-2"></div>
+        <button class="quiz-reset" onclick="resetQuiz(2)">↺ Reset Quiz</button>
+        <div class="score-badge" id="score-2"></div>
+      </div>
+    </div><!-- /panel-2 -->
+
+
+    <!-- ═══════════ SECTION 4 ═══════════ -->
+    <div class="tab-panel" id="panel-3">
+      <div class="section-label">
+        <span class="num">Section 4</span>
+        <h2>Systems Analysis and Information Systems Design</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📖</span> Theory</div>
+
+        <h3 id="s4-shift">4.1 The Paradigm Shift</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Design Starting Point</th><th>Typical Outcome</th></tr>
+            <tr><td><strong>Data-first</strong> — What fields do we have?</td><td>Information dump. Users manually filter and decide with no system support.</td></tr>
+            <tr><td><strong>Screen-first</strong> — What pages do we need?</td><td>Beautiful mockup, broken workflow. UI looks good but doesn't match how users work.</td></tr>
+            <tr><td><strong>Stakeholder-first</strong> — Who uses this and what do they need to accomplish?</td><td>Systems that reduce cognitive load, support decisions, and align with real processes.</td></tr>
+          </table>
+        </div>
+        <div class="callout green">
+          <strong>Core Principle:</strong> Stakeholders use systems to achieve goals — not to admire interfaces.
+        </div>
+
+        <h3 id="s4-audit">4.2 The 9-Level Systems Design Audit</h3>
+        <p>Apply this audit to every screen, dashboard, and workflow you design. It separates information dumps from high-impact systems.</p>
+
+        <div class="audit-grid">
+          <div class="level-card">
+            <div class="lnum">Level 1</div>
+            <h4>Start with the Stakeholder</h4>
+            <p>Identify who uses the system. Different roles need different workspaces. Student ≠ Instructor ≠ Admin.</p>
+          </div>
+          <div class="level-card">
+            <div class="lnum">Level 2</div>
+            <h4>Goals Before Features</h4>
+            <p>Stakeholder → Goals → Tasks → Information Needed → Interface. Every feature must trace to a goal.</p>
+          </div>
+          <div class="level-card">
+            <div class="lnum">Level 3</div>
+            <h4>Process Before Screen</h4>
+            <p>Map workflows first. Identify bottlenecks, delays, redundancies, and automation opportunities.</p>
+          </div>
+          <div class="level-card">
+            <div class="lnum">Level 4</div>
+            <h4>Define the Core Inquiry</h4>
+            <p>Every component must answer a specific question. If you can't state it, remove the component.</p>
+          </div>
+          <div class="level-card">
+            <div class="lnum">Level 5</div>
+            <h4>Appropriate Support Level</h4>
+            <p>TPS (transactions) · MIS (monitoring) · DSS (decisions) · EIS (strategic). Match level to role.</p>
+          </div>
+          <div class="level-card">
+            <div class="lnum">Level 6</div>
+            <h4>Attention Density</h4>
+            <p>Classify: Necessary · Helpful but Optional · Redundant. Remove redundant components immediately.</p>
+          </div>
+          <div class="level-card">
+            <div class="lnum">Level 7</div>
+            <h4>Visual Hierarchy</h4>
+            <p>Primary concern visible within seconds. Hero section answers the single most important question.</p>
+          </div>
+          <div class="level-card">
+            <div class="lnum">Level 8</div>
+            <h4>Eliminate Redundancy</h4>
+            <p>Removal test: if removing a component leaves the user with the same ability — remove it.</p>
+          </div>
+          <div class="level-card">
+            <div class="lnum">Level 9</div>
+            <h4>Feasibility + Actionable Insight</h4>
+            <p>Verify every metric has a real data source. Transform: Data → Information → Knowledge → Action.</p>
+          </div>
+        </div>
+
+        <div class="subsection">Information Transformation Chain (Level 9)</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Stage</th><th>Transformation</th><th>Example</th><th>Cognitive Load</th></tr>
+            <tr><td><strong>Data</strong></td><td>Raw Fact</td><td>Student Grade = 72</td><td>HIGH — user decides alone</td></tr>
+            <tr><td><strong>Information</strong></td><td>Contextualized Fact</td><td>Grade below 75% passing threshold</td><td>MEDIUM — problem identified</td></tr>
+            <tr><td><strong>Knowledge</strong></td><td>Aggregated Impact</td><td>Underperforming in 3 prerequisite courses</td><td>LOW — pattern and severity clear</td></tr>
+            <tr><td><strong>Action</strong></td><td>Empowered Resolution</td><td>Notify instructor; recommend intervention</td><td>MINIMAL — system prescribes next step</td></tr>
+          </table>
+        </div>
+
+        <div class="subsection">Support Levels (Level 5)</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Level</th><th>Purpose</th><th>Typical User</th><th>Example</th></tr>
+            <tr><td><span class="tag tag-blue">TPS</span></td><td>Routine, repetitive tasks</td><td>Students, clerks</td><td>Registration forms, attendance entry</td></tr>
+            <tr><td><span class="tag tag-green">MIS</span></td><td>Monitoring and structured reporting</td><td>Instructors, dept. heads</td><td>Progress dashboards, grade reports</td></tr>
+            <tr><td><span class="tag tag-yellow">DSS</span></td><td>Analysis and semi-structured decisions</td><td>Program chairs</td><td>At-risk prediction, intervention tools</td></tr>
+            <tr><td><span class="tag tag-purple">EIS</span></td><td>Strategic planning and oversight</td><td>Dean, VP Academic Affairs</td><td>Institutional dashboards, accreditation</td></tr>
+          </table>
+        </div>
+
+        <h3 id="s4-examples">4.3 Web Design Audit Examples</h3>
+        <p>Compare the balanced workspace with the poor examples below. Open any image to inspect the full-size design audit.</p>
+        <div class="design-example-gallery">
+          <figure class="design-example">
+            <a href="assets/web-design-examples/example-1.png" target="_blank" rel="noopener noreferrer"><img src="assets/web-design-examples/example-1.png" alt="Example 1: Balanced Workspace, a good inventory dashboard design" loading="lazy" decoding="async"></a>
+            <figcaption><strong>Example 1:</strong> Balanced Workspace (Good Example)</figcaption>
+          </figure>
+          <figure class="design-example">
+            <a href="assets/web-design-examples/example-2.png" target="_blank" rel="noopener noreferrer"><img src="assets/web-design-examples/example-2.png" alt="Example 2: Information Overload in a faculty dashboard" loading="lazy" decoding="async"></a>
+            <figcaption><strong>Example 2:</strong> Information Overload (Poor Example)</figcaption>
+          </figure>
+          <figure class="design-example">
+            <a href="assets/web-design-examples/example-3.png" target="_blank" rel="noopener noreferrer"><img src="assets/web-design-examples/example-3.png" alt="Example 3: Stakeholder Misalignment in a dean dashboard" loading="lazy" decoding="async"></a>
+            <figcaption><strong>Example 3:</strong> Stakeholder Misalignment (Poor Example)</figcaption>
+          </figure>
+          <figure class="design-example">
+            <a href="assets/web-design-examples/example-4.png" target="_blank" rel="noopener noreferrer"><img src="assets/web-design-examples/example-4.png" alt="Example 4: Redundant Information in a purchase orders dashboard" loading="lazy" decoding="async"></a>
+            <figcaption><strong>Example 4:</strong> Redundant Information (Poor Example)</figcaption>
+          </figure>
+          <figure class="design-example">
+            <a href="assets/web-design-examples/example-5.png" target="_blank" rel="noopener noreferrer"><img src="assets/web-design-examples/example-5.png" alt="Example 5: Missing Hero Component in a patient dashboard" loading="lazy" decoding="async"></a>
+            <figcaption><strong>Example 5:</strong> Missing Hero Component (Poor Example)</figcaption>
+          </figure>
+          <figure class="design-example">
+            <a href="assets/web-design-examples/example-6.png" target="_blank" rel="noopener noreferrer"><img src="assets/web-design-examples/example-6.png" alt="Example 6: Decorative but Useless Design on an ecommerce homepage" loading="lazy" decoding="async"></a>
+            <figcaption><strong>Example 6:</strong> Decorative but Useless Design (Poor Example)</figcaption>
+          </figure>
+          <figure class="design-example">
+            <a href="assets/web-design-examples/example-7.png" target="_blank" rel="noopener noreferrer"><img src="assets/web-design-examples/example-7.png" alt="Example 7: Information Without Action in an inventory dashboard" loading="lazy" decoding="async"></a>
+            <figcaption><strong>Example 7:</strong> Information Without Action (Poor Example)</figcaption>
+          </figure>
+          <figure class="design-example">
+            <a href="assets/web-design-examples/example-8.png" target="_blank" rel="noopener noreferrer"><img src="assets/web-design-examples/example-8.png" alt="Example 8: Excessive Navigation in an HR dashboard" loading="lazy" decoding="async"></a>
+            <figcaption><strong>Example 8:</strong> Excessive Navigation (Poor Example)</figcaption>
+          </figure>
+          <figure class="design-example">
+            <a href="assets/web-design-examples/example-9.png" target="_blank" rel="noopener noreferrer"><img src="assets/web-design-examples/example-9.png" alt="Example 9: Hidden Critical Information in a network operations dashboard" loading="lazy" decoding="async"></a>
+            <figcaption><strong>Example 9:</strong> Hidden Critical Information (Poor Example)</figcaption>
+          </figure>
+          <figure class="design-example">
+            <a href="assets/web-design-examples/example-10.png" target="_blank" rel="noopener noreferrer"><img src="assets/web-design-examples/example-10.png" alt="Example 10: Cluttered and Overwhelming Layout in a sales dashboard" loading="lazy" decoding="async"></a>
+            <figcaption><strong>Example 10:</strong> Cluttered and Overwhelming Layout (Poor Example)</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- Demo -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🧪</span> Demo – Applying the 9-Level Audit</div>
+
+        <div class="callout yellow">
+          <strong>Sample Exam Q4:</strong> A dashboard has five widgets: Total Users, Monthly Revenue chart, Revenue by Region pie chart, Revenue by Region table, Latest Transaction list. Apply Levels 4, 6, and 8.
+        </div>
+
+        <div class="subsection">Analysis</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Widget</th><th>Core Inquiry (L4)</th><th>Attention Density (L6)</th><th>Verdict (L8)</th></tr>
+            <tr><td>Total Users</td><td>How many users do we have?</td><td>Necessary (if role monitors growth)</td><td>✅ Keep</td></tr>
+            <tr><td>Monthly Revenue chart</td><td>Is revenue trending up or down?</td><td>Necessary</td><td>✅ Keep</td></tr>
+            <tr><td>Region pie chart</td><td>What proportion is each region?</td><td>Helpful — shows proportions</td><td>⚠ Keep or move to drill-down</td></tr>
+            <tr><td>Region table</td><td>Same as pie chart</td><td>Redundant — same question, same data</td><td>❌ Remove or move to drill-down</td></tr>
+            <tr><td>Latest Transaction</td><td>What happened most recently?</td><td>Optional — only if role monitors activity</td><td>⚠ Secondary panel</td></tr>
+          </table>
+        </div>
+        <div class="callout green">
+          <strong>Recommendation:</strong> Keep the pie chart for proportional comparison (faster to read). Move the table to a click-to-expand drill-down. The pie chart and table answer the same question — showing both is redundant.
+        </div>
+      </div>
+
+      <div class="card practice-card" id="activity-audit">
+        <div class="card-title"><span class="icon">&#128269;</span> Practice - Build an Audit Argument</div>
+        <p class="practice-intro">Evaluate a student progress dashboard by completing the first four audit decisions. The generated statement can guide a class critique.</p>
+        <div class="audit-builder">
+          <div class="audit-row field"><label for="audit-stakeholder">Stakeholder</label><select id="audit-stakeholder"><option>A currently enrolled student</option><option>A course instructor</option><option>A program chair</option></select></div>
+          <div class="audit-row field"><label for="audit-goal">Primary goal</label><select id="audit-goal"><option>Identify the next academic action</option><option>Record a routine transaction</option><option>Compare program-wide performance</option></select></div>
+          <div class="audit-row field"><label for="audit-process">Process stage</label><select id="audit-process"><option>Review evidence, interpret status, then act</option><option>Enter data, validate, then submit</option><option>Aggregate trends, compare, then intervene</option></select></div>
+          <div class="audit-row field"><label for="audit-inquiry">Core inquiry</label><textarea id="audit-inquiry" rows="2">Am I on track, and what should I do next?</textarea></div>
+        </div>
+        <button class="demo-button run" type="button" onclick="buildAuditArgument()">Build audit statement</button>
+        <div class="activity-result" id="audit-result" role="status">Complete the fields to turn a screen idea into a stakeholder-centered design argument.</div>
+        <details class="discussion-box"><summary>Extend to Levels 6-9</summary><ol><li>Which element deserves the most attention?</li><li>What can be removed without losing decision value?</li><li>How will raw data become an actionable recommendation?</li></ol></details>
+      </div>
+
+      <!-- Checkpoint -->
+      <div class="quiz-section" id="quiz-3">
+        <div class="quiz-title">✅ Checkpoint — Section 4 (3 Questions)</div>
+        <div id="questions-3"></div>
+        <button class="quiz-reset" onclick="resetQuiz(3)">↺ Reset Quiz</button>
+        <div class="score-badge" id="score-3"></div>
+      </div>
+    </div><!-- /panel-3 -->
+
+
+    <!-- ═══════════ SECTION 5 ═══════════ -->
+    <div class="tab-panel" id="panel-4">
+      <div class="section-label">
+        <span class="num">Section 5</span>
+        <h2>Laboratory Exercise 1</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📖</span> Overview</div>
+        <div class="callout">
+          <strong>Title:</strong> Responsive and Dynamic Cross-Platform User Interface<br>
+          <strong>Framework Options:</strong> React (web) · React Native with Expo · Flutter
+        </div>
+
+        <h3 id="s5-objective">5.1 Objective</h3>
+        <p>Develop a fully responsive and interactive UI for your capstone project. Demonstrate mastery of responsive layout, dynamic component rendering, accessible design, and persistent local storage where applicable.</p>
+
+        <h3 id="s5-requirements">5.2 Detailed Requirements</h3>
+
+        <div class="subsection">1. Authentication Interface</div>
+        <ul>
+          <li>Login screen — email/password with client-side validation (required, email format, min password length)</li>
+          <li>Registration screen — password confirmation validation</li>
+          <li>Forgot Password link → static recovery screen</li>
+          <li>Inline error messages — ARIA-announced for screen readers</li>
+        </ul>
+
+        <div class="subsection">2. Dashboard Interface</div>
+        <ul>
+          <li>At least three data categories (activity, stats, notifications, or equivalent)</li>
+          <li>Data from static JSON file or live API call</li>
+          <li>At least one chart (bar, line, or doughnut)</li>
+          <li>Apply at least one 9-Level Audit principle — define the core inquiry for each widget; ensure the hero section answers the primary question</li>
+        </ul>
+
+        <div class="subsection">3. Responsive Navigation</div>
+        <ul>
+          <li><strong>Web:</strong> hamburger drawer (mobile) ↔ persistent sidebar or top nav (desktop)</li>
+          <li><strong>React Native:</strong> bottom tab navigator (mobile); drawer navigator (tablet/desktop)</li>
+          <li>Active route visually indicated; navigation state maintained on resize</li>
+        </ul>
+
+        <div class="subsection">4. Dynamic Components</div>
+        <ul>
+          <li>At least one modal dialog (confirmation, detail view, or form)</li>
+          <li>At least one FlatList (RN) or mapped list/table (React Web) with dynamic data</li>
+          <li>Loading state — skeleton screen or spinner during data fetch</li>
+        </ul>
+
+        <div class="subsection">5. Persistent Storage (React Native)</div>
+        <ul>
+          <li>AsyncStorage to save and load data on app start</li>
+          <li>Add, edit, delete must persist across restarts</li>
+          <li>Toast or Alert confirmation after each mutation</li>
+        </ul>
+
+        <div class="subsection">6. Cross-Platform Compatibility</div>
+        <ul>
+          <li><strong>Web:</strong> renders at 375px, 768px, and 1280px — submit screenshots for all three</li>
+          <li><strong>React Native:</strong> tested on Android emulator and physical device via Expo Go</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📦</span> Deliverables</div>
+        <ul>
+          <li><strong>Source Code</strong> — GitHub repo link or ZIP with README (setup, install, run)</li>
+          <li><strong>Screenshots</strong> — minimum 6: login, registration, dashboard, navigation (mobile &amp; desktop), one dynamic component</li>
+          <li><strong>Technical Documentation</strong> (1–2 pages) — tech stack chosen, component architecture, known issues</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📊</span> Assessment Rubric</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Criterion</th><th>Description</th><th>Points</th></tr>
+            <tr><td>Authentication Interface</td><td>Functional login/registration with client-side validation and accessible errors</td><td><strong>20</strong></td></tr>
+            <tr><td>Dashboard Interface</td><td>Renders dynamic data; applies 9-Level Audit (core inquiry per widget, hero defined)</td><td><strong>20</strong></td></tr>
+            <tr><td>Responsive Navigation</td><td>Adapts correctly mobile ↔ desktop; active route indicated</td><td><strong>20</strong></td></tr>
+            <tr><td>Dynamic Components + Storage</td><td>Modal, list, loading indicator; AsyncStorage persistence (RN track)</td><td><strong>20</strong></td></tr>
+            <tr><td>Technical Documentation</td><td>Organized source; README present; covers stack, architecture, issues</td><td><strong>20</strong></td></tr>
+            <tr><td colspan="2"><strong>TOTAL</strong></td><td><strong>100</strong></td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Demo -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🧪</span> Demo – Starter Code Snippets</div>
+
+        <div class="subsection">Client-Side Form Validation (React)</div>
+<pre><span class="k">const</span> <span class="fn">validate</span> = (email, password) =&gt; {
+  <span class="k">const</span> errors = {};
+  <span class="k">if</span> (!email) errors.email = <span class="s">'Email is required'</span>;
+  <span class="k">else if</span> (!/\S+@\S+\.\S+/.<span class="fn">test</span>(email))
+    errors.email = <span class="s">'Invalid email format'</span>;
+  <span class="k">if</span> (!password) errors.password = <span class="s">'Password is required'</span>;
+  <span class="k">else if</span> (password.length &lt; 8)
+    errors.password = <span class="s">'Minimum 8 characters'</span>;
+  <span class="k">return</span> errors;
+};
+
+<span class="cm">// Accessible error rendering</span>
+{errors.email &amp;&amp; (
+  &lt;span role=<span class="s">"alert"</span> aria-live=<span class="s">"polite"</span> className=<span class="s">"error"</span>&gt;
+    {errors.email}
+  &lt;/span&gt;
+)}</pre>
+
+        <div class="subsection">Loading State with Conditional Rendering</div>
+<pre><span class="k">const</span> [loading, setLoading] = <span class="fn">useState</span>(<span class="k">true</span>);
+<span class="k">const</span> [data, setData]       = <span class="fn">useState</span>([]);
+
+<span class="fn">useEffect</span>(() =&gt; {
+  <span class="fn">fetch</span>(<span class="s">'/api/dashboard'</span>)
+    .then(r =&gt; r.<span class="fn">json</span>())
+    .then(d =&gt; { <span class="fn">setData</span>(d); <span class="fn">setLoading</span>(<span class="k">false</span>); });
+}, []);
+
+<span class="k">return</span> loading
+  ? &lt;Spinner /&gt;                    <span class="cm">// loading state</span>
+  : &lt;Dashboard data={data} /&gt;;     <span class="cm">// data ready</span></pre>
+
+        <div class="subsection">Responsive Navigation (CSS)</div>
+<pre><span class="cm">/* Mobile — hamburger hidden, sidebar hidden */</span>
+.sidebar { display: none; }
+.hamburger { display: flex; }
+
+<span class="cm">/* Desktop — sidebar visible, hamburger hidden */</span>
+@media (min-width: 1025px) {
+  .sidebar   { display: flex; }
+  .hamburger { display: none; }
+}</pre>
+      </div>
+
+      <div class="card practice-card" id="activity-lab-plan">
+        <div class="card-title"><span class="icon">&#10003;</span> Student Lab Readiness Plan</div>
+        <p class="practice-intro">Use this checklist before coding. Progress is stored only in this browser so you can return to the page later.</p>
+        <ul class="checklist" id="lab-checklist">
+          <li><label><input type="checkbox" value="stakeholder"> I identified the stakeholder, goal, process, and core inquiry.</label></li>
+          <li><label><input type="checkbox" value="data"> I prepared JSON or API data instead of hardcoding dashboard values.</label></li>
+          <li><label><input type="checkbox" value="responsive"> I defined mobile, tablet, and desktop behavior before implementation.</label></li>
+          <li><label><input type="checkbox" value="accessible"> I planned labels, keyboard access, contrast, focus, and text errors.</label></li>
+          <li><label><input type="checkbox" value="evidence"> I listed the six required screenshots and README evidence.</label></li>
+        </ul>
+        <div class="activity-result" id="lab-plan-result" role="status">0 of 5 planning checks complete.</div>
+        <details class="discussion-box"><summary>Before-lab discussion</summary><p>Which rubric criterion is most likely to fail if it is postponed until the end? Explain what evidence you will capture while building.</p></details>
+      </div>
+
+      <!-- Checkpoint -->
+      <div class="quiz-section" id="quiz-4">
+        <div class="quiz-title">✅ Checkpoint — Section 5 (3 Questions)</div>
+        <div id="questions-4"></div>
+        <button class="quiz-reset" onclick="resetQuiz(4)">↺ Reset Quiz</button>
+        <div class="score-badge" id="score-4"></div>
+      </div>
+    </div><!-- /panel-4 -->
+
+  </main>
+</div><!-- /layout -->
+
+<script>
+// ── Quiz Data ───────────────────────────────────────────────
+const quizData = [
+  // Section 1
+  [
+    {
+      q: "Which of the following best describes what makes React a 'library' rather than a 'framework'?",
+      opts: [
+        "React requires a strict folder structure and dictates the entire application flow.",
+        "React's code calls your code via Inversion of Control.",
+        "Your code calls React when needed; React does not control the overall application flow.",
+        "React can only be used with TypeScript, limiting its flexibility."
+      ],
+      correct: 2,
+      feedback: "React is a library because your code remains in control — you call React's functions when needed. A framework uses Inversion of Control (IoC), where the framework calls your code. React is specifically a UI (View-layer) library."
+    },
+    {
+      q: "A developer wants to fetch user data from an API when a component first appears on screen, and clean up any subscriptions when the component is removed. Which hook and configuration is most appropriate?",
+      opts: [
+        "useState with an initial value of null",
+        "useEffect with an empty dependency array [] and a cleanup function returned",
+        "useRef with the API endpoint stored as the initial value",
+        "useMemo to cache the fetch result permanently"
+      ],
+      correct: 1,
+      feedback: "useEffect with [] runs once on mount (component appears) — perfect for initial data fetching. The cleanup function returned from useEffect runs on unmount, canceling subscriptions or timers. useState stores the result, but the fetch itself belongs in useEffect."
+    },
+    {
+      q: "What is the key difference between React JS and React Native regarding UI output?",
+      opts: [
+        "React JS uses TypeScript exclusively while React Native uses JavaScript.",
+        "React JS renders real native widgets like UIView and ViewGroup on iOS and Android.",
+        "React JS produces HTML/CSS DOM elements for browsers; React Native renders real native platform components.",
+        "Both React JS and React Native render identical HTML elements, just styled differently."
+      ],
+      correct: 2,
+      feedback: "React JS targets web browsers and produces HTML/CSS DOM elements. React Native bridges JavaScript to real native platform components (UIView on iOS, ViewGroup on Android) — it does NOT render HTML in a WebView, which is the key distinction from Cordova/Ionic."
+    }
+  ],
+  // Section 2
+  [
+    {
+      q: "According to WCAG 2.1 AA standards, what is the minimum color contrast ratio required for normal body text?",
+      opts: [
+        "2:1 ratio (barely distinguishable from background)",
+        "3:1 ratio (required only for large text ≥ 18px bold)",
+        "4.5:1 ratio (AA requirement for normal text)",
+        "7:1 ratio (AAA requirement, rarely mandated)"
+      ],
+      correct: 2,
+      feedback: "WCAG 2.1 AA requires a 4.5:1 contrast ratio for normal text. Large text (≥ 18px regular or ≥ 14px bold) only needs 3:1. The 7:1 ratio is the AAA level. Use tools like WebAIM Contrast Checker to audit color pairs."
+    },
+    {
+      q: "A developer is building a responsive interface using a mobile-first approach. Which CSS media query correctly adds styles only for tablet-sized screens and above?",
+      opts: [
+        "@media (max-width: 768px) { .sidebar { display: flex; } }",
+        "@media (min-width: 768px) { .sidebar { display: flex; } }",
+        "@media screen { .sidebar { display: none; } }",
+        "@media (width: 768px) { .sidebar { display: flex; } }"
+      ],
+      correct: 1,
+      feedback: "Mobile-first means writing base styles for mobile, then using min-width queries to progressively enhance for larger screens. @media (min-width: 768px) applies styles when the viewport is 768px OR WIDER — targeting tablets and desktops. max-width would override mobile and narrow the target."
+    },
+    {
+      q: "Which of the following is a component of a Design System but NOT a part of accessibility guidelines?",
+      opts: [
+        "Color contrast ratios for text legibility",
+        "ARIA roles and labels for screen reader compatibility",
+        "Design Tokens — named variables like primary-color and spacing-unit",
+        "Keyboard navigation requirements for interactive elements"
+      ],
+      correct: 2,
+      feedback: "Design Tokens (named variables encoding color, spacing, typography decisions) are a Design System concept — they are the 'atoms' of the design language. The other three options (contrast ratios, ARIA, keyboard navigation) are all WCAG accessibility requirements, not Design System concepts specifically."
+    }
+  ],
+  // Section 3
+  [
+    {
+      q: "A developer has a dropdown's open/close state, and the current authenticated user's profile. In which state category does each belong?",
+      opts: [
+        "Both are UI State (ephemeral) since both are temporary.",
+        "Dropdown open = UI State; user profile = Application State (shared).",
+        "Both are Application State since both are needed across components.",
+        "Dropdown open = Server State; user profile = URL State."
+      ],
+      correct: 1,
+      feedback: "UI State (ephemeral) is transient and local — a dropdown's open/close status is a perfect example; it doesn't need to persist or be shared. The authenticated user profile is Application State — it must be shared across multiple screens and components (navbar, profile page, dashboard)."
+    },
+    {
+      q: "A team is building a mobile app in Flutter with rigorous unit-testing requirements, where the UI must be fully testable without launching a simulator. Which architectural pattern is most suitable?",
+      opts: [
+        "MVC — because controllers are easy to test without UI dependencies.",
+        "MVVM — because the ViewModel is fully testable without any UI dependencies.",
+        "Micro-frontend — because it splits the app into independent deployable modules.",
+        "Clean Architecture — but only if the app has more than 5 screens."
+      ],
+      correct: 1,
+      feedback: "MVVM (Model-View-ViewModel) is preferred for mobile apps (Flutter with BLoC/Provider, Android Jetpack) precisely because the ViewModel contains no UI dependencies — it can be unit-tested with plain Dart/Kotlin/Swift without launching a device or simulator. MVC can lead to fat controllers in complex apps."
+    },
+    {
+      q: "Which horizontal scaling strategy requires that application servers be stateless, with session data externalized?",
+      opts: [
+        "Vertical scaling — adding more CPU to the existing server.",
+        "Database replication — adding read replicas for query performance.",
+        "Load-balanced horizontal scaling — adding more server instances behind a load balancer.",
+        "Caching with Redis — reducing database load for frequent reads."
+      ],
+      correct: 2,
+      feedback: "Horizontal scaling (adding more server instances behind a load balancer) requires stateless application design — the server cannot store session data in memory because any request might go to any instance. Session state must be externalized to a shared store like Redis. Vertical scaling adds resources to one server and doesn't require statelessness."
+    }
+  ],
+  // Section 4
+  [
+    {
+      q: "In the 9-Level Systems Design Audit, a student presents a student portal dashboard that shows a counter: '12 courses enrolled'. A classmate points out that a degree-progress pie chart showing 40 of 120 required units completed is already on the same screen. Under Level 8, what should happen to the course count?",
+      opts: [
+        "Keep both — the count is a quicker read than the pie chart.",
+        "Remove the count — it answers the same question as the pie chart and adds no new insight.",
+        "Keep both but move the pie chart to a drill-down view.",
+        "Replace both with a table listing every enrolled course."
+      ],
+      correct: 1,
+      feedback: "Level 8 (Eliminate Visual Redundancy) says: if removing a component leaves the user with the same information and decision-making ability, remove it. The degree-progress pie chart already shows enrollment progress — the separate count adds no new perspective, new insight, or new available action. Remove it."
+    },
+    {
+      q: "According to Level 5 of the 9-Level Audit, which support level is most appropriate for a Program Chair reviewing which subjects have class averages below the program threshold?",
+      opts: [
+        "TPS (Transaction Processing System) — because the chair processes enrollment forms.",
+        "MIS (Management Information System) — because the chair needs a summary report.",
+        "DSS (Decision Support System) — because the chair must analyze data and make semi-structured intervention decisions.",
+        "EIS (Executive Information System) — because program chairs are executives."
+      ],
+      correct: 2,
+      feedback: "Reviewing which subjects are underperforming and deciding on interventions is a semi-structured decision — the classic domain of DSS (Decision Support Systems). TPS handles routine transactions (enrollment, attendance entry). MIS provides summaries to instructors and section advisers. EIS supports strategic oversight at the Dean/VP level."
+    },
+    {
+      q: "A system displays a student's raw quiz score of 68/100 and nothing else. According to Level 9's Information Transformation Chain, at what stage is this data?",
+      opts: [
+        "Information — it has been contextualized within the grading scale.",
+        "Knowledge — the system has identified a pattern of underperformance.",
+        "Data — it is a raw fact with no context, comparison, or actionable direction.",
+        "Action — the score itself guides what the student should do next."
+      ],
+      correct: 2,
+      feedback: "A raw score with no context (no comparison to the passing mark, no trend, no recommendation) is pure Data — the lowest stage in the chain. To become Information, the system should flag it against the passing threshold (e.g., 'Below the 75% passing mark'). Knowledge would aggregate across subjects. Action would prescribe a remedial step."
+    }
+  ],
+  // Section 5
+  [
+    {
+      q: "According to the Laboratory Exercise rubric, what must the Dashboard Interface demonstrate to earn full marks in that criterion?",
+      opts: [
+        "At least five charts with real-time API data and a dark mode toggle.",
+        "Dynamic data rendering AND at least one 9-Level Audit principle applied — with core inquiry defined per widget and a hero section established.",
+        "Three separate dashboards, one for each breakpoint (mobile, tablet, desktop).",
+        "A FlatList rendering 50+ items with pagination, plus an AsyncStorage backup."
+      ],
+      correct: 1,
+      feedback: "The rubric states: 'Renders dynamic data; applies 9-Level Audit (core inquiry per widget, hero section defined).' This means data must come from a JSON file or API (not hardcoded), AND the design must show evidence of Levels 4 and 7 of the 9-Level Audit — each widget has an articulable question, and the hero section addresses the most important question for this user role."
+    },
+    {
+      q: "For the Persistent Storage requirement (React Native track), which combination correctly describes the AsyncStorage pattern?",
+      opts: [
+        "Store JS objects directly with AsyncStorage.setObject(); retrieve with AsyncStorage.getObject().",
+        "Save with JSON.stringify on write; retrieve with JSON.parse on read; call load in useEffect([]) on mount.",
+        "Use AsyncStorage only inside Redux reducers to avoid race conditions.",
+        "AsyncStorage is synchronous — no await is needed when calling setItem or getItem."
+      ],
+      correct: 1,
+      feedback: "AsyncStorage only stores strings. The pattern is: JSON.stringify(data) before setItem, and JSON.parse(raw) after getItem. loadNotes() must be called inside useEffect(() => { loadNotes(); }, []) so data is restored on mount. Every mutation (add/edit/delete) must also call save so storage stays synchronized. AsyncStorage is Promise-based — always await."
+    },
+    {
+      q: "The deliverables require a minimum of 6 screenshots. Which set correctly satisfies this requirement?",
+      opts: [
+        "Two screenshots of the login page — one with errors, one without.",
+        "Login, Registration, Dashboard, Navigation on mobile, Navigation on desktop/device, and one Dynamic Component (modal or list).",
+        "One screenshot per rubric criterion: Authentication, Dashboard, Navigation, Dynamic Components, Documentation.",
+        "Six screenshots of the mobile view only — tablet and desktop screenshots are optional."
+      ],
+      correct: 1,
+      feedback: "The spec says: 'minimum 6 — login, registration, dashboard, navigation (mobile and desktop/device), and at least one dynamic component.' This ensures coverage of authentication, data rendering, responsive layout at both breakpoints, and at least one interactive component (modal, list, or loading state)."
+    }
+  ]
+];
+
+// ── Sidebar content per tab ─────────────────────────────────
+const sidebarLinks = [
+  [
+    ['1.1 Cross-Platform Introduction','#s1-intro'],
+    ['1.2 Native vs Cross-Platform','#s1-native'],
+    ['1.3 Modern Frameworks','#s1-frameworks'],
+    ['1.4 React & Hooks','#s1-react'],
+    ['1.5 React Native','#s1-react-native'],
+    ['1.6 App Architecture','#s1-architecture'],
+    ['Practice - Framework Choice','#activity-framework'],
+    ['Checkpoint','#quiz-0']
+  ],
+  [
+    ['2.1 UI vs UX','#s2-uiux'],
+    ['2.2 Responsive Design','#s2-responsive'],
+    ['2.3 Accessibility (a11y)','#s2-accessibility'],
+    ['2.4 Design Systems','#s2-design-systems'],
+    ['Practice - A11y Triage','#activity-accessibility'],
+    ['Checkpoint','#quiz-1']
+  ],
+  [
+    ['3.1 State Types','#s3-state'],
+    ['3.2 Client vs Server','#s3-processing'],
+    ['3.3 MVC vs MVVM','#s3-patterns'],
+    ['3.4 Scalability','#s3-scalability'],
+    ['Practice - State Ownership','#activity-state'],
+    ['Checkpoint','#quiz-2']
+  ],
+  [
+    ['4.1 Paradigm Shift','#s4-shift'],
+    ['4.2 The 9-Level Audit','#s4-audit'],
+    ['Practice - Audit Argument','#activity-audit'],
+    ['Checkpoint','#quiz-3']
+  ],
+  [
+    ['5.1 Objective','#s5-objective'],
+    ['5.2 Requirements','#s5-requirements'],
+    ['Lab Readiness Plan','#activity-lab-plan'],
+    ['Checkpoint','#quiz-4']
+  ]
+];
+
+// ── State ───────────────────────────────────────────────────
+let currentTab = 0;
+let scrollSpyFrame = null;
+const answered = [
+  [null,null,null],
+  [null,null,null],
+  [null,null,null],
+  [null,null,null],
+  [null,null,null]
+];
+
+// ── Tab switching ───────────────────────────────────────────
+function switchTab(idx, scrollToTop = true) {
+  currentTab = idx;
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    b.classList.toggle('active', i===idx);
+    b.setAttribute('aria-selected', i===idx ? 'true' : 'false');
+    b.tabIndex = i===idx ? 0 : -1;
+  });
+  document.querySelectorAll('.tab-panel').forEach((p,i) => p.classList.toggle('active', i===idx));
+  renderSidebar(idx);
+  if (scrollToTop) window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── Sidebar rendering ───────────────────────────────────────
+function renderSidebar(idx) {
+  const sb = document.getElementById('sidebar');
+  const links = sidebarLinks[idx];
+  sb.innerHTML = `<div class="sidebar-title">On this page</div>` +
+    links.map(([label, href], i) =>
+      `<a href="${href}" class="${i===0?'active':''}" ${i===0?'aria-current="location"':''}><span class="dot"></span>${label}</a>`
+    ).join('');
+}
+
+function setActiveSidebarLink(id) {
+  document.querySelectorAll('#sidebar a').forEach(link => {
+    const isActive = link.hash === `#${id}`;
+    link.classList.toggle('active', isActive);
+    if (isActive) link.setAttribute('aria-current', 'location');
+    else link.removeAttribute('aria-current');
+  });
+}
+
+function updateSidebarFromScroll() {
+  scrollSpyFrame = null;
+  if (window.matchMedia('(max-width: 768px)').matches) return;
+
+  const targets = sidebarLinks[currentTab]
+    .map(([, href]) => document.getElementById(href.slice(1)))
+    .filter(Boolean);
+  if (!targets.length) return;
+
+  const activationLine = 120;
+  let activeTarget = targets[0];
+  for (const target of targets) {
+    if (target.getBoundingClientRect().top <= activationLine) activeTarget = target;
+    else break;
+  }
+  setActiveSidebarLink(activeTarget.id);
+}
+
+function requestSidebarUpdate() {
+  if (scrollSpyFrame === null) scrollSpyFrame = requestAnimationFrame(updateSidebarFromScroll);
+}
+
+document.getElementById('sidebar').addEventListener('click', event => {
+  const link = event.target.closest('a');
+  if (!link) return;
+
+  const target = document.getElementById(link.hash.slice(1));
+  if (!target) return;
+  event.preventDefault();
+  setActiveSidebarLink(target.id);
+  history.pushState(null, '', link.hash);
+  target.scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+window.addEventListener('scroll', requestSidebarUpdate, {passive:true});
+window.addEventListener('resize', requestSidebarUpdate);
+
+// ── Hook tabs ───────────────────────────────────────────────
+function switchHook(el, panelId) {
+  document.querySelectorAll('.htab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.hpanel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+// Lifecycle concept playground (implemented in plain JavaScript)
+let lifecycleMounted = false;
+let lifecycleSequence = 0;
+let lifecycleRenderCount = 0;
+
+function writeLifecycleLog(phase, message) {
+  const log = document.getElementById('lifecycle-log');
+  if (lifecycleSequence === 0) log.innerHTML = '';
+  lifecycleSequence += 1;
+  const item = document.createElement('li');
+  item.className = `phase-${phase.toLowerCase()}`;
+  item.textContent = `${lifecycleSequence}. ${phase.toUpperCase()} - ${message}`;
+  log.appendChild(item);
+  log.scrollTop = log.scrollHeight;
+}
+
+function setLifecycleMountedState(isMounted) {
+  const status = document.getElementById('lifecycle-status');
+  status.textContent = isMounted ? 'Component mounted' : 'Not mounted';
+  status.classList.toggle('running', isMounted);
+  document.getElementById('lifecycle-unmount').disabled = !isMounted;
+}
+
+function runLifecycleDemo() {
+  const container = document.getElementById('lifecycle-root');
+  if (lifecycleMounted) {
+    writeLifecycleLog('unmount', 'previous component cleanup ran before remounting');
+  }
+  lifecycleMounted = true;
+  lifecycleRenderCount = 1;
+  container.innerHTML = `<div class="lifecycle-component">
+    <label for="lifecycle-test-input">Test state value</label>
+    <input id="lifecycle-test-input" value="Hello, React!" placeholder="Type to trigger an update" autocomplete="off">
+    <button class="demo-button" id="lifecycle-update" type="button">Update state</button>
+    <div class="lifecycle-value" id="lifecycle-value">Rendered value: Hello, React! | Render count: 1</div>
+  </div>`;
+  writeLifecycleLog('render', 'render #1 committed');
+  writeLifecycleLog('mount', 'useEffect(..., []) would run after the first render');
+  const input = document.getElementById('lifecycle-test-input');
+  const updateState = value => {
+    if (!lifecycleMounted) return;
+    lifecycleRenderCount += 1;
+    const renderedValue = value || '(empty)';
+    document.getElementById('lifecycle-value').textContent = `Rendered value: ${renderedValue} | Render count: ${lifecycleRenderCount}`;
+    writeLifecycleLog('update', `state changed to "${value}"`);
+    writeLifecycleLog('render', `render #${lifecycleRenderCount} committed`);
+  };
+  input.addEventListener('input', event => updateState(event.target.value));
+  document.getElementById('lifecycle-update').addEventListener('click', () => {
+    input.value = `Updated ${lifecycleRenderCount}`;
+    updateState(input.value);
+  });
+  setLifecycleMountedState(true);
+}
+
+function unmountLifecycleDemo() {
+  if (!lifecycleMounted) return;
+  lifecycleMounted = false;
+  writeLifecycleLog('unmount', 'effect cleanup would run and the component is removed');
+  document.getElementById('lifecycle-root').innerHTML =
+    '<div class="lifecycle-empty">The test component was unmounted. Click Run to mount it again.</div>';
+  setLifecycleMountedState(false);
+}
+
+function clearLifecycleLog() {
+  lifecycleSequence = 0;
+  document.getElementById('lifecycle-log').innerHTML = '<li>Log cleared.</li>';
+}
+
+// -- Student practice activities -------------------------------------
+const progressKey = 'it331-module-1-2-progress';
+let activityProgress = JSON.parse(localStorage.getItem(progressKey) || '{}');
+
+function completeActivity(id) {
+  activityProgress[id] = true;
+  localStorage.setItem(progressKey, JSON.stringify(activityProgress));
+  updateProgress();
+}
+
+function resetLearningProgress() {
+  localStorage.removeItem(progressKey);
+  localStorage.removeItem('it331-module-1-2-lab-checks');
+  location.reload();
+}
+
+function updateProgress() {
+  const completed = ['framework','accessibility','state','audit','lab'].filter(id => activityProgress[id]).length;
+  document.getElementById('progress-label').textContent = `${completed} of 5 activities completed`;
+  document.getElementById('progress-fill').style.width = `${completed * 20}%`;
+  const track = document.querySelector('.progress-track');
+  track.setAttribute('aria-valuenow', completed);
+}
+
+function recommendApproach() {
+  const skill = document.getElementById('team-skill').value;
+  const priority = document.getElementById('project-priority').value;
+  let recommendation = 'React Native';
+  let reason = 'It reuses JavaScript skills while producing native mobile components from one shared codebase.';
+  if (priority === 'performance' && skill === 'native') {
+    recommendation = 'Native development';
+    reason = 'The team already has platform expertise and maximum device performance is the dominant constraint.';
+  } else if (priority === 'visual' || skill === 'dart') {
+    recommendation = 'Flutter';
+    reason = 'Its widget tree and AOT compilation suit highly customized, consistent interfaces.';
+  } else if (priority === 'webfirst') {
+    recommendation = 'Progressive Web App';
+    reason = 'Browser delivery, installability, and the existing web skill set make a PWA the smallest viable solution.';
+  } else if (skill === 'csharp') {
+    recommendation = '.NET MAUI';
+    reason = 'It preserves the team\'s C# investment while targeting mobile and desktop from one codebase.';
+  }
+  document.getElementById('framework-result').innerHTML = `<strong>${recommendation}</strong>: ${reason} This is a starting decision; validate device APIs, deployment targets, and maintenance constraints.`;
+  completeActivity('framework');
+}
+
+const a11yExplanations = {
+  contrast: 'Contrast is foundational for reading, but it does not repair missing names or keyboard access.',
+  labels: 'Persistent labels give every user stable context and provide an accessible name when correctly associated.',
+  keyboard: 'Native buttons restore keyboard operation, focus behavior, and built-in semantics before custom ARIA is considered.',
+  errors: 'Text errors ensure the problem is not communicated by color alone and aria-describedby connects it to the field.'
+};
+document.querySelectorAll('#a11y-choices button').forEach(button => button.addEventListener('click', () => {
+  document.querySelectorAll('#a11y-choices button').forEach(item => item.classList.remove('selected'));
+  button.classList.add('selected');
+  document.getElementById('a11y-result').innerHTML = `<strong>Defensible priority:</strong> ${a11yExplanations[button.dataset.answer]} A complete correction must still address all four barriers.`;
+  completeActivity('accessibility');
+}));
+
+function checkStateClassification() {
+  const example = document.getElementById('state-example').value;
+  const choice = document.getElementById('state-category').value;
+  const answers = { modal:'ui', profile:'application', products:'server', filter:'url', draft:'form' };
+  const names = { ui:'UI state', application:'application state', server:'server state', url:'URL state', form:'form state' };
+  const correct = answers[example];
+  document.getElementById('state-result').innerHTML = choice === correct
+    ? `<strong>Correct.</strong> ${names[correct]} is the clearest source of truth for this example.`
+    : `<strong>Reconsider the owner.</strong> This belongs to ${names[correct]}, not ${names[choice]}. Ask who creates it, who must share it, and how long it must survive.`;
+  completeActivity('state');
+}
+
+function buildAuditArgument() {
+  const stakeholder = document.getElementById('audit-stakeholder').value;
+  const goal = document.getElementById('audit-goal').value.toLowerCase();
+  const process = document.getElementById('audit-process').value.toLowerCase();
+  const inquiry = document.getElementById('audit-inquiry').value.trim() || 'No core inquiry defined';
+  document.getElementById('audit-result').innerHTML = `<strong>Audit statement:</strong> For ${stakeholder.toLowerCase()}, the screen must help them ${goal}. The interface should follow the process: ${process}. Every primary element must help answer: "${inquiry}" Elements that do not support this inquiry should be removed or demoted.`;
+  completeActivity('audit');
+}
+
+const labChecks = [...document.querySelectorAll('#lab-checklist input')];
+const savedLabChecks = JSON.parse(localStorage.getItem('it331-module-1-2-lab-checks') || '[]');
+labChecks.forEach(check => {
+  check.checked = savedLabChecks.includes(check.value);
+  check.addEventListener('change', updateLabChecklist);
+});
+
+function updateLabChecklist() {
+  const checked = labChecks.filter(item => item.checked).map(item => item.value);
+  localStorage.setItem('it331-module-1-2-lab-checks', JSON.stringify(checked));
+  document.getElementById('lab-plan-result').innerHTML = `<strong>${checked.length} of 5</strong> planning checks complete.${checked.length === 5 ? ' You have a defensible plan; verify each item with evidence during implementation.' : ' Complete the remaining planning decisions before implementation.'}`;
+  activityProgress.lab = checked.length === 5;
+  localStorage.setItem(progressKey, JSON.stringify(activityProgress));
+  updateProgress();
+}
+
+// ── Quiz rendering ──────────────────────────────────────────
+function renderQuiz(tabIdx) {
+  const container = document.getElementById(`questions-${tabIdx}`);
+  const questions = quizData[tabIdx];
+  const state = answered[tabIdx];
+
+  container.innerHTML = questions.map((q, qi) => {
+    const chosen = state[qi];
+    return `
+    <div class="question-block" id="qb-${tabIdx}-${qi}">
+      <div class="question-num">Question ${qi+1} of 3</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options">
+        ${q.opts.map((opt, oi) => {
+          let cls = 'opt';
+          if (chosen !== null) {
+            if (oi === q.correct) cls += ' correct';
+            else if (oi === chosen && oi !== q.correct) cls += ' wrong';
+            else cls += ' disabled';
+          }
+          return `<button type="button" class="${cls}" onclick="answer(${tabIdx},${qi},${oi})" ${chosen !== null ? 'disabled' : ''}>
+            <span class="letter">${String.fromCharCode(65+oi)}</span>
+            <span>${opt}</span>
+          </button>`;
+        }).join('')}
+      </div>
+      <div class="feedback ${chosen!==null?'show':''} ${chosen!==null ? (chosen===q.correct?'ok':'err') : ''}">
+        ${chosen!==null ? (chosen===q.correct ? '✓ Correct! ' : '✗ Incorrect. ') + q.feedback : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function answer(tabIdx, qIdx, optIdx) {
+  if (answered[tabIdx][qIdx] !== null) return; // already answered
+  answered[tabIdx][qIdx] = optIdx;
+  renderQuiz(tabIdx);
+
+  // check if all answered
+  if (answered[tabIdx].every(a => a !== null)) {
+    const correct = answered[tabIdx].filter((a,i) => a === quizData[tabIdx][i].correct).length;
+    const badge = document.getElementById(`score-${tabIdx}`);
+    badge.classList.add('show');
+    if (correct === 3) {
+      badge.className = 'score-badge show full';
+      badge.textContent = `🎉 Perfect Score! 3/3 — Excellent work!`;
+    } else if (correct === 2) {
+      badge.className = 'score-badge show partial';
+      badge.textContent = `👍 2/3 Correct — Review the missed concept and try again.`;
+    } else {
+      badge.className = 'score-badge show low';
+      badge.textContent = `📖 ${correct}/3 Correct — Re-read the theory section and reset to retry.`;
+    }
+  }
+}
+
+function resetQuiz(tabIdx) {
+  answered[tabIdx] = [null,null,null];
+  const badge = document.getElementById(`score-${tabIdx}`);
+  badge.classList.remove('show');
+  renderQuiz(tabIdx);
+}
+
+// ── Init ────────────────────────────────────────────────────
+for (let i = 0; i < 5; i++) renderQuiz(i);
+updateLabChecklist();
+updateProgress();
+const initialTarget = location.hash ? document.getElementById(location.hash.slice(1)) : null;
+const initialPanel = initialTarget?.closest('.tab-panel');
+const initialTab = initialPanel ? [...document.querySelectorAll('.tab-panel')].indexOf(initialPanel) : 0;
+switchTab(initialTab, false);
+if (initialTarget) {
+  requestAnimationFrame(() => {
+    initialTarget.scrollIntoView({block:'start'});
+    setActiveSidebarLink(initialTarget.id);
+  });
+} else {
+  requestSidebarUpdate();
+}
+document.querySelectorAll('.tab-btn').forEach((button, index, buttons) => {
+  button.addEventListener('keydown', event => {
+    if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+    event.preventDefault();
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + buttons.length) % buttons.length;
+    switchTab(next);
+    buttons[next].focus();
+  });
+});
+</script>
+</body>
+</html>

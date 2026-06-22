@@ -780,7 +780,7 @@
     <span class="tab-num">1</span> Cross-Platform Dev
   </button>
   <button class="tab-btn" onclick="switchTab(1)" role="tab">
-    <span class="tab-num">2</span> UI / UX Design
+    <span class="tab-num">2</span> React &amp; React Native II
   </button>
   <button class="tab-btn" onclick="switchTab(2)" role="tab">
     <span class="tab-num">3</span> State Management
@@ -853,6 +853,7 @@
         </div>
 
         <h3 id="s1-react">1.4 React – A JavaScript Library for UI</h3>
+        <div class="subsection">1.4.1 Libraries vs. Frameworks</div>
         <div class="compare-row">
           <div class="compare-col left">
             <div class="col-head">Library (React)</div>
@@ -874,7 +875,8 @@
           </div>
         </div>
 
-        <div class="subsection">React Core Principles</div>
+        <div class="subsection">1.4.2 React – Origin and Philosophy</div>
+        <p>React was created at Meta (Facebook) in 2011 and open-sourced in 2013 to support large interfaces whose data changes frequently.</p>
         <ul>
           <li><strong>Component-Based Architecture</strong> — Self-contained, reusable UI blocks (like Lego bricks)</li>
           <li><strong>Declarative Programming</strong> — Describe <em>what</em> the UI should look like; React decides <em>how</em> to update</li>
@@ -882,7 +884,7 @@
           <li><strong>Automatic Re-rendering</strong> — React handles UI updates when state changes</li>
         </ul>
 
-        <div class="subsection">Virtual DOM – Reconciliation Flow</div>
+        <div class="subsection">1.4.3 Virtual DOM – Reconciliation Process</div>
         <div class="flow-steps">
           <div class="flow-step"><div class="box">① State Change</div><span class="flow-arrow">→</span></div>
           <div class="flow-step"><div class="box">② New Virtual Tree</div><span class="flow-arrow">→</span></div>
@@ -891,7 +893,7 @@
           <div class="flow-step"><div class="box">⑤ Batch DOM Update</div></div>
         </div>
 
-        <div class="subsection">React Hooks</div>
+        <div class="subsection">1.4.5 React Hooks – Managing State and Side Effects</div>
         <div class="table-wrap">
           <table>
             <tr><th>Hook</th><th>Purpose</th><th>Triggers Re-render?</th></tr>
@@ -904,7 +906,8 @@
           </table>
         </div>
 
-        <div class="subsection" id="s1-react-native">1.5 React Native – Key Differences from React JS</div>
+        <div class="subsection" id="s1-react-native">1.5 React Native – Building Native Mobile Applications</div>
+        <div class="subsection">1.5.2 React JS vs React Native</div>
         <div class="table-wrap">
           <table>
             <tr><th>Aspect</th><th>React JS (Web)</th><th>React Native (Mobile)</th></tr>
@@ -1002,7 +1005,7 @@
           </div>
         </div>
 
-        <div class="subsection">React Functional Component Lifecycle</div>
+        <div class="subsection">1.4.8 React Functional Component Lifecycle</div>
         <div class="table-wrap">
           <table>
             <tr><th>Phase</th><th>Description</th><th>Hook Used</th></tr>
@@ -1030,7 +1033,7 @@
           </ol>
         </div>
 
-        <div class="subsection">Setting Up a React Project</div>
+        <div class="subsection">1.4.9 Setting Up a React Web Project</div>
 <pre><span class="cm"># Option A – Vite (Recommended for modern apps)</span>
 <span class="n">npm</span> create vite@latest my-react-app
 <span class="cm"># Choose: Framework → React, Variant → JavaScript</span>
@@ -1073,143 +1076,176 @@
     </div><!-- /panel-0 -->
 
 
-    <!-- ═══════════ SECTION 2 ═══════════ -->
+    <!-- React and React Native continuation -->
     <div class="tab-panel" id="panel-1">
       <div class="section-label">
-        <span class="num">Section 2</span>
-        <h2>User Interface and User Experience Design</h2>
+        <span class="num">Topics 1.4.4-1.5.5</span>
+        <h2>React and React Native: Components to Persistence</h2>
       </div>
 
       <div class="card">
-        <div class="card-title"><span class="icon">📖</span> Theory</div>
-
-        <h3 id="s2-uiux">2.1 UI vs UX Fundamentals</h3>
-        <div class="compare-row">
-          <div class="compare-col left">
-            <div class="col-head">UI Design (Visual Surface)</div>
-            <ul>
-              <li>Visual Hierarchy — guide the eye</li>
-              <li>Layout and Spacing — grids, gutters, whitespace</li>
-              <li>Color and Typography — brand identity</li>
-              <li>Component Design — buttons, forms, cards</li>
-            </ul>
-          </div>
-          <div class="compare-col right">
-            <div class="col-head">UX Design (Full Journey)</div>
-            <ul>
-              <li>User Research — interviews, usability tests</li>
-              <li>Information Architecture — mental models</li>
-              <li>Journey Mapping — every touchpoint</li>
-              <li>Prototyping and Testing — Figma → feedback</li>
-            </ul>
-          </div>
-        </div>
-
-        <h3 id="s2-responsive">2.2 Responsive Design Principles</h3>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Device</th><th>Width Range</th><th>Layout</th><th>Common Components</th></tr>
-            <tr><td>Mobile</td><td>&lt; 768px</td><td>Single-column stack</td><td>Bottom nav, hamburger menu</td></tr>
-            <tr><td>Tablet</td><td>768 – 1024px</td><td>Two-column grid</td><td>Sidebar, collapsible panels</td></tr>
-            <tr><td>Desktop</td><td>1025 – 1440px</td><td>Multi-column grid</td><td>Full navbar, dashboards</td></tr>
-            <tr><td>Large Desktop</td><td>&gt; 1440px</td><td>Wide-layout content</td><td>Fixed sidebars, data grids</td></tr>
-          </table>
-        </div>
-        <div class="callout">
-          <strong>Mobile-First Strategy:</strong> Design the mobile layout first, then progressively add complexity for larger screens. This keeps code lean and ensures core functionality works everywhere.
-        </div>
-        <div class="callout yellow">
-          <strong>Essential Viewport Tag:</strong> Every HTML document must include <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code>
-        </div>
-
-        <h3 id="s2-accessibility">2.3 Accessibility and Inclusive Design</h3>
-        <p>Accessibility <strong>(a11y)</strong> is governed by <strong>WCAG 2.1</strong> (W3C) with three conformance levels: A, AA, and AAA. In the Philippines, RA 7277 (Magna Carta for Disabled Persons) mandates accessible digital services.</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Concern</th><th>Requirement</th></tr>
-            <tr><td>Color Contrast</td><td>WCAG AA: 4.5:1 ratio for normal text; 3:1 for large text</td></tr>
-            <tr><td>Keyboard Navigation</td><td>All interactive elements must be keyboard-reachable with visible focus indicators</td></tr>
-            <tr><td>Alternative Text</td><td>Informative images need descriptive <code>alt</code>; decorative images use <code>alt=""</code></td></tr>
-            <tr><td>ARIA Roles</td><td><code>role</code>, <code>aria-label</code>, <code>aria-describedby</code> communicate meaning to screen readers</td></tr>
-            <tr><td>Typography</td><td>Body text ≥ 16px, line-height ≥ 1.5, line length 50–75 chars</td></tr>
-            <tr><td>Error Identification</td><td>Errors described in text (not color only); associated via <code>aria-describedby</code></td></tr>
-          </table>
-        </div>
-
-        <h3 id="s2-design-systems">2.4 Design Systems and Reusable Components</h3>
-        <p>A design system is a <strong>single source of truth</strong> for a product's visual language. It combines a component library, style guide, and documentation.</p>
-        <ul>
-          <li><strong>Design Tokens</strong> — Named variables: <code>primary-color: #2E75B6</code>, <code>spacing-unit: 8px</code></li>
-          <li><strong>Component Library</strong> — Pre-built, documented UI components with state variants</li>
-          <li><strong>Layout Patterns</strong> — Approved grid systems and page templates</li>
-          <li><strong>Documentation &amp; Governance</strong> — Guidelines on when and how to use components</li>
-        </ul>
+        <div class="card-title"><span class="icon">&#128214;</span> Coverage Guide</div>
+        <p>Tab 1 already introduces <strong>libraries vs. frameworks, React's philosophy, the Virtual DOM, hooks, lifecycle phases, and project setup</strong>. This continuation develops the parts that were previously missing or too brief.</p>
         <div class="chip-row">
-          <span class="chip chip-blue">Material UI (MUI)</span>
-          <span class="chip chip-green">Tailwind CSS</span>
-          <span class="chip chip-purple">shadcn/ui</span>
-          <span class="chip chip-yellow">Flutter Widget Catalog</span>
+          <span class="chip chip-blue">Component anatomy + JSX</span>
+          <span class="chip chip-green">React JavaScript syntax</span>
+          <span class="chip chip-purple">To-Do progression</span>
+          <span class="chip chip-yellow">Native bridge + JSI</span>
+          <span class="chip chip-blue">Core components</span>
+          <span class="chip chip-green">AsyncStorage</span>
         </div>
       </div>
 
-      <!-- Demo -->
       <div class="card">
-        <div class="card-title"><span class="icon">🧪</span> Demo – Responsive Breakpoints in CSS</div>
-<pre><span class="cm">/* Mobile-first approach */</span>
-.container {
-  display: flex;
-  flex-direction: column;  <span class="cm">/* stacked on mobile */</span>
-  padding: 16px;
-}
-
-<span class="cm">/* Tablet — 768px and above */</span>
-@media (min-width: 768px) {
-  .container {
-    flex-direction: row;
-    padding: 24px;
-  }
-}
-
-<span class="cm">/* Desktop — 1025px and above */</span>
-@media (min-width: 1025px) {
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 32px;
-  }
+        <div class="card-title"><span class="icon">&lt;/&gt;</span> React Web Foundations</div>
+        <h3 id="s2-jsx">1.4.4 React Component Structure and JSX</h3>
+        <p>A React interface is a tree of reusable functions called <strong>components</strong>, with <code>&lt;App /&gt;</code> at the root. A component receives <strong>props</strong>, may own <strong>state</strong>, and returns a description of the UI.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>JSX Form</th><th>Meaning</th><th>Rule</th></tr>
+            <tr><td><code>&lt;Header /&gt;</code></td><td>A custom component</td><td>Component names begin with a capital letter</td></tr>
+            <tr><td><code>{expression}</code></td><td>Embeds JavaScript in markup</td><td>Expressions only, not statements such as <code>if</code></td></tr>
+            <tr><td><code>className</code></td><td>Maps to the HTML <code>class</code> attribute</td><td>JSX uses the DOM property name</td></tr>
+            <tr><td><code>items.map(...)</code></td><td>Transforms data into elements</td><td>Each sibling needs a stable, unique <code>key</code></td></tr>
+            <tr><td><code>onClick={handler}</code></td><td>Passes a function reference</td><td>Do not call it during render with <code>handler()</code></td></tr>
+          </table>
+        </div>
+<pre><span class="k">function</span> <span class="fn">TaskList</span>({ tasks, onToggle }) {
+  <span class="k">return</span> (
+    &lt;ul className=<span class="s">"task-list"</span>&gt;
+      {tasks.<span class="fn">map</span>(task =&gt; (
+        &lt;li key={task.id}&gt;
+          &lt;button onClick={() =&gt; onToggle(task.id)}&gt;
+            {task.done ? <span class="s">'Undo'</span> : <span class="s">'Complete'</span>}
+          &lt;/button&gt;
+          {task.title}
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
 }</pre>
+        <div class="callout"><strong>Compilation:</strong> JSX is developer-friendly syntax, not browser-native HTML. Vite transforms it into JavaScript calls that create React elements.</div>
 
-        <div class="subsection">Accessible Button Example</div>
-<pre><span class="cm">/* ❌ BAD — non-descriptive, WCAG failure */</span>
-&lt;button onClick={submit}&gt;Click here&lt;/button&gt;
+        <h3 id="s2-syntax">1.4.6 JavaScript Symbols and Syntax Used in React</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Syntax</th><th>React Use</th><th>Example</th></tr>
+            <tr><td><code>{}</code></td><td>Objects, destructuring, JSX expressions</td><td><code>const { name } = user</code></td></tr>
+            <tr><td><code>[]</code></td><td>Arrays and hook tuple destructuring</td><td><code>const [count, setCount] = useState(0)</code></td></tr>
+            <tr><td><code>...</code></td><td>Immutable array/object updates</td><td><code>[...tasks, newTask]</code></td></tr>
+            <tr><td><code>=&gt;</code></td><td>Concise callbacks and handlers</td><td><code>tasks.filter(t =&gt; !t.done)</code></td></tr>
+            <tr><td><code>?:</code></td><td>Choose one rendered value</td><td><code>loading ? &lt;Spinner /&gt; : &lt;List /&gt;</code></td></tr>
+            <tr><td><code>&amp;&amp;</code></td><td>Render only when truthy</td><td><code>error &amp;&amp; &lt;Error /&gt;</code></td></tr>
+            <tr><td><code>??</code></td><td>Fallback only for null/undefined</td><td><code>name ?? 'Guest'</code></td></tr>
+            <tr><td><code>===</code></td><td>Strict comparison without coercion</td><td><code>status === 'done'</code></td></tr>
+          </table>
+        </div>
+        <div class="callout red"><strong>Avoid loose equality:</strong> <code>'5' == 5</code> is true after type coercion, while <code>'5' === 5</code> is false. Prefer strict equality for predictable conditions.</div>
 
-<span class="cm">/* ✅ GOOD — self-describing, screen reader friendly */</span>
-&lt;button onClick={submit} aria-label=<span class="s">"Submit grade appeal"</span>&gt;
-  Submit Grade Appeal
-&lt;/button&gt;
-
-<span class="cm">/* ✅ Icon-only button with aria-label */</span>
-&lt;button aria-label=<span class="s">"Delete task"</span>&gt;
-  &lt;TrashIcon /&gt;
-&lt;/button&gt;</pre>
+        <h3 id="s2-todo">1.4.7 To-Do List App: Progressive Complexity</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Stage</th><th>Feature</th><th>Concept Introduced</th></tr>
+            <tr><td>1</td><td>Static task component</td><td>JSX, props, component tree</td></tr>
+            <tr><td>2</td><td>Add and display tasks</td><td>Controlled input, <code>useState</code>, <code>map</code>, keys</td></tr>
+            <tr><td>3</td><td>Toggle completion</td><td>Immutable array updates and conditional classes</td></tr>
+            <tr><td>4</td><td>Fetch mock API tasks</td><td><code>useEffect</code>, async/await, loading and error states</td></tr>
+            <tr><td>5</td><td>Split into components</td><td>Composition, lifting state, custom <code>useTasks</code> hook</td></tr>
+            <tr><td>6</td><td>Delete confirmation</td><td>Modal, event propagation, focus management</td></tr>
+            <tr><td>7</td><td>Completion toast</td><td>Timers, effect cleanup, timer ref</td></tr>
+            <tr><td>8</td><td>Icons and accessibility</td><td>ARIA labels, keyboard handlers, meaningful controls</td></tr>
+          </table>
+        </div>
       </div>
 
-      <div class="card practice-card" id="activity-accessibility">
-        <div class="card-title"><span class="icon">A11Y</span> Practice - Accessibility Triage</div>
-        <p class="practice-intro">A form uses light-gray text, placeholder-only labels, mouse-only clickable cards, and red borders as its only error signal. Choose the first correction you would make and explain why.</p>
-        <div class="choice-grid" id="a11y-choices">
-          <button class="demo-button choice-btn" type="button" data-answer="contrast">Increase text contrast to at least 4.5:1</button>
-          <button class="demo-button choice-btn" type="button" data-answer="labels">Add persistent programmatic labels</button>
-          <button class="demo-button choice-btn" type="button" data-answer="keyboard">Use keyboard-operable native buttons</button>
-          <button class="demo-button choice-btn" type="button" data-answer="errors">Add text errors linked with aria-describedby</button>
+      <div class="card">
+        <div class="card-title"><span class="icon">&#128241;</span> React Native Foundations</div>
+        <h3 id="s2-native">1.5.1 What Does Native Mean?</h3>
+        <p>A native interface uses the operating system's real controls and device APIs. React Native does <strong>not</strong> place an HTML website inside a WebView: JavaScript descriptions become platform widgets such as <code>UIView</code>/<code>UILabel</code> on iOS and <code>ViewGroup</code>/<code>TextView</code> on Android.</p>
+
+        <h3 id="s2-bridge">1.5.3 Bridge Architecture and Benefits</h3>
+        <div class="flow-steps" aria-label="React Native rendering pipeline">
+          <div class="flow-step"><div class="box">React / JSX</div><span class="flow-arrow">&rarr;</span></div>
+          <div class="flow-step"><div class="box">JS Logic + State</div><span class="flow-arrow">&rarr;</span></div>
+          <div class="flow-step"><div class="box">Bridge or JSI</div><span class="flow-arrow">&rarr;</span></div>
+          <div class="flow-step"><div class="box">Native Components</div><span class="flow-arrow">&rarr;</span></div>
+          <div class="flow-step"><div class="box">Device APIs</div></div>
         </div>
-        <div class="activity-result" id="a11y-result" role="status">Choose a correction. All four are required; your task is to defend the priority.</div>
-        <details class="discussion-box"><summary>Discussion prompt: accessible by design</summary><p>Why is responsive design not automatically accessible design? Give one example where an interface adapts to mobile width but still excludes a user.</p></details>
+        <ul>
+          <li><strong>Classic bridge:</strong> serializes asynchronous messages between the JavaScript and native threads.</li>
+          <li><strong>New Architecture / JSI:</strong> enables more direct communication and reduces bridge overhead.</li>
+          <li><strong>Shared value:</strong> business logic, API calls, and much UI code remain common across iOS and Android.</li>
+          <li><strong>Native access:</strong> camera, GPS, Bluetooth, notifications, and files are exposed through native modules.</li>
+        </ul>
+
+        <h3 id="s2-cli">1.5.4 Expo CLI vs React Native CLI</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Decision</th><th>Expo</th><th>React Native CLI / Bare</th></tr>
+            <tr><td>Setup</td><td>Fast; Expo Go can run without local native IDE setup</td><td>Requires Android Studio/Xcode and SDK configuration</td></tr>
+            <tr><td>Native modules</td><td>Expo SDK; custom code uses development builds/prebuild</td><td>Full native project and module control</td></tr>
+            <tr><td>Best fit</td><td>Learning, prototypes, capstones, most common apps</td><td>Proprietary SDKs or deep native integration</td></tr>
+            <tr><td>Updates</td><td>Expo Updates supported</td><td>Requires a separately configured update solution</td></tr>
+          </table>
+        </div>
+
+        <h3 id="s2-core">1.5.5 Setup, Core Components, and AsyncStorage</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>React Native API</th><th>Purpose</th><th>Important Rule</th></tr>
+            <tr><td><code>View</code></td><td>Layout container</td><td>Replaces a web <code>div</code></td></tr>
+            <tr><td><code>Text</code></td><td>Displays text</td><td>All raw text must be wrapped in <code>Text</code></td></tr>
+            <tr><td><code>TextInput</code></td><td>Keyboard input</td><td>Uses <code>value</code> and <code>onChangeText</code></td></tr>
+            <tr><td><code>FlatList</code></td><td>Virtualized long lists</td><td>Provide <code>data</code>, <code>keyExtractor</code>, and <code>renderItem</code></td></tr>
+            <tr><td><code>ScrollView</code></td><td>Short scrollable content</td><td>Renders all children; avoid for large lists</td></tr>
+            <tr><td><code>Modal</code></td><td>Overlay content</td><td>Handle Android's <code>onRequestClose</code></td></tr>
+            <tr><td><code>Alert</code></td><td>Native confirmation dialog</td><td>Useful for destructive actions</td></tr>
+            <tr><td><code>SafeAreaView</code></td><td>Protects content from screen edges</td><td>Avoids notches and system bars</td></tr>
+          </table>
+        </div>
+        <div class="callout"><strong>StyleSheet differences:</strong> styles are JavaScript objects; numeric sizes are density-independent pixels; Flexbox defaults to <code>flexDirection: 'column'</code>; styles do not cascade like CSS.</div>
+<pre><span class="cm"># Create and run an Expo project</span>
+<span class="n">npx</span> create-expo-app notes-app
+<span class="k">cd</span> notes-app
+<span class="n">npx</span> expo start
+
+<span class="cm"># Install persistent storage</span>
+<span class="n">npm</span> install @react-native-async-storage/async-storage</pre>
+<pre><span class="k">const</span> STORAGE_KEY = <span class="s">'NOTES_KEY'</span>;
+
+<span class="k">async function</span> <span class="fn">saveNotes</span>(nextNotes) {
+  <span class="k">try</span> {
+    <span class="k">await</span> AsyncStorage.<span class="fn">setItem</span>(STORAGE_KEY, JSON.<span class="fn">stringify</span>(nextNotes));
+  } <span class="k">catch</span> (error) {
+    console.<span class="fn">error</span>(<span class="s">'Could not save notes'</span>, error);
+  }
+}
+
+useEffect(() =&gt; {
+  (<span class="k">async</span> () =&gt; {
+    <span class="k">try</span> {
+      <span class="k">const</span> raw = <span class="k">await</span> AsyncStorage.<span class="fn">getItem</span>(STORAGE_KEY);
+      <span class="k">if</span> (raw) <span class="fn">setNotes</span>(JSON.<span class="fn">parse</span>(raw));
+    } <span class="k">catch</span> (error) {
+      console.<span class="fn">error</span>(<span class="s">'Could not load notes'</span>, error);
+    }
+  })();
+}, []);</pre>
+        <div class="callout yellow"><strong>Persistence contract:</strong> AsyncStorage is asynchronous and stores strings only. Serialize objects, parse on load, use try/catch, and save the updated array after every add, edit, or delete.</div>
+      </div>
+
+      <div class="card practice-card" id="activity-react-path">
+        <div class="card-title"><span class="icon">&#129513;</span> Practice - Build the To-Do App in the Right Order</div>
+        <p class="practice-intro">Select a development stage to see the new responsibility and the implementation risk that should be discussed before moving forward.</p>
+        <div class="field"><label for="todo-stage">Development stage</label><select id="todo-stage"><option value="1">1 - Static component</option><option value="2">2 - Add and display tasks</option><option value="3">3 - Toggle completion</option><option value="4">4 - Fetch tasks</option><option value="5">5 - Component refactor</option><option value="6">6 - Delete modal</option><option value="7">7 - Toast notification</option><option value="8">8 - Accessibility and icons</option></select></div>
+        <button class="demo-button run" type="button" onclick="explainTodoStage()">Explain this stage</button>
+        <div class="activity-result" id="todo-stage-result" role="status">Choose a stage, then connect the feature to its React concept.</div>
+        <details class="discussion-box"><summary>React Native design discussion</summary><ol><li>When would Expo stop being the appropriate choice?</li><li>Why should a long notes list use FlatList instead of ScrollView?</li><li>What data should never be stored in unencrypted AsyncStorage?</li></ol></details>
       </div>
 
       <!-- Checkpoint -->
       <div class="quiz-section" id="quiz-1">
-        <div class="quiz-title">✅ Checkpoint — Section 2 (3 Questions)</div>
+        <div class="quiz-title">✅ Checkpoint — React and React Native (3 Questions)</div>
         <div id="questions-1"></div>
         <button class="quiz-reset" onclick="resetQuiz(1)">↺ Reset Quiz</button>
         <div class="score-badge" id="score-1"></div>
@@ -1767,37 +1803,37 @@ const quizData = [
   // Section 2
   [
     {
-      q: "According to WCAG 2.1 AA standards, what is the minimum color contrast ratio required for normal body text?",
+      q: "Why does each element produced by tasks.map() need a stable key prop?",
       opts: [
-        "2:1 ratio (barely distinguishable from background)",
-        "3:1 ratio (required only for large text ≥ 18px bold)",
-        "4.5:1 ratio (AA requirement for normal text)",
-        "7:1 ratio (AAA requirement, rarely mandated)"
-      ],
-      correct: 2,
-      feedback: "WCAG 2.1 AA requires a 4.5:1 contrast ratio for normal text. Large text (≥ 18px regular or ≥ 14px bold) only needs 3:1. The 7:1 ratio is the AAA level. Use tools like WebAIM Contrast Checker to audit color pairs."
-    },
-    {
-      q: "A developer is building a responsive interface using a mobile-first approach. Which CSS media query correctly adds styles only for tablet-sized screens and above?",
-      opts: [
-        "@media (max-width: 768px) { .sidebar { display: flex; } }",
-        "@media (min-width: 768px) { .sidebar { display: flex; } }",
-        "@media screen { .sidebar { display: none; } }",
-        "@media (width: 768px) { .sidebar { display: flex; } }"
+        "It applies a CSS class automatically.",
+        "It lets React identify which list item changed, moved, or was removed during reconciliation.",
+        "It makes the array sort itself before rendering.",
+        "It stores each task in localStorage."
       ],
       correct: 1,
-      feedback: "Mobile-first means writing base styles for mobile, then using min-width queries to progressively enhance for larger screens. @media (min-width: 768px) applies styles when the viewport is 768px OR WIDER — targeting tablets and desktops. max-width would override mobile and narrow the target."
+      feedback: "A stable key gives React identity across renders, allowing reconciliation to match the previous and next list elements accurately. Use a real item ID rather than an array index when items can be reordered or deleted."
     },
     {
-      q: "Which of the following is a component of a Design System but NOT a part of accessibility guidelines?",
+      q: "Which statement correctly distinguishes React Native's UI from a WebView-based mobile app?",
       opts: [
-        "Color contrast ratios for text legibility",
-        "ARIA roles and labels for screen reader compatibility",
-        "Design Tokens — named variables like primary-color and spacing-unit",
-        "Keyboard navigation requirements for interactive elements"
+        "React Native renders HTML tags inside an embedded browser.",
+        "React Native converts CSS directly into a responsive website.",
+        "React Native maps its component descriptions to actual iOS and Android platform widgets.",
+        "React Native can only display text and images supplied by Expo."
       ],
       correct: 2,
-      feedback: "Design Tokens (named variables encoding color, spacing, typography decisions) are a Design System concept — they are the 'atoms' of the design language. The other three options (contrast ratios, ARIA, keyboard navigation) are all WCAG accessibility requirements, not Design System concepts specifically."
+      feedback: "React Native produces real native controls such as UIView/UILabel on iOS and ViewGroup/TextView on Android. JavaScript communicates with the platform through the classic bridge or the newer JSI-based architecture."
+    },
+    {
+      q: "Which AsyncStorage implementation is correct for a notes array?",
+      opts: [
+        "Store the array directly because AsyncStorage accepts any JavaScript type.",
+        "Use JSON.stringify when saving, JSON.parse after loading, await each call, and handle failures.",
+        "Load the notes during every render without useEffect.",
+        "Store the notes in a Text component so they survive app restarts."
+      ],
+      correct: 1,
+      feedback: "AsyncStorage is Promise-based string storage. Serialize arrays and objects on write, parse them on read, restore once on mount, catch storage errors, and persist the updated array after every CRUD operation."
     }
   ],
   // Section 3
@@ -1923,11 +1959,14 @@ const sidebarLinks = [
     ['Checkpoint','#quiz-0']
   ],
   [
-    ['2.1 UI vs UX','#s2-uiux'],
-    ['2.2 Responsive Design','#s2-responsive'],
-    ['2.3 Accessibility (a11y)','#s2-accessibility'],
-    ['2.4 Design Systems','#s2-design-systems'],
-    ['Practice - A11y Triage','#activity-accessibility'],
+    ['1.4.4 Components + JSX','#s2-jsx'],
+    ['1.4.6 React JS Syntax','#s2-syntax'],
+    ['1.4.7 To-Do Progression','#s2-todo'],
+    ['1.5.1 Native Meaning','#s2-native'],
+    ['1.5.3 Bridge + JSI','#s2-bridge'],
+    ['1.5.4 Expo vs CLI','#s2-cli'],
+    ['1.5.5 Components + Storage','#s2-core'],
+    ['Practice - To-Do Path','#activity-react-path'],
     ['Checkpoint','#quiz-1']
   ],
   [
@@ -2126,7 +2165,7 @@ function resetLearningProgress() {
 }
 
 function updateProgress() {
-  const completed = ['framework','accessibility','state','audit','lab'].filter(id => activityProgress[id]).length;
+  const completed = ['framework','react','state','audit','lab'].filter(id => activityProgress[id]).length;
   document.getElementById('progress-label').textContent = `${completed} of 5 activities completed`;
   document.getElementById('progress-fill').style.width = `${completed * 20}%`;
   const track = document.querySelector('.progress-track');
@@ -2155,18 +2194,23 @@ function recommendApproach() {
   completeActivity('framework');
 }
 
-const a11yExplanations = {
-  contrast: 'Contrast is foundational for reading, but it does not repair missing names or keyboard access.',
-  labels: 'Persistent labels give every user stable context and provide an accessible name when correctly associated.',
-  keyboard: 'Native buttons restore keyboard operation, focus behavior, and built-in semantics before custom ARIA is considered.',
-  errors: 'Text errors ensure the problem is not communicated by color alone and aria-describedby connects it to the field.'
+const todoStages = {
+  1: ['Static rendering', 'Define the component tree and pass sample tasks through props. Risk: mixing too many responsibilities into App.'],
+  2: ['Dynamic tasks', 'Use a controlled input and useState, render with map(), and assign a stable key. Risk: using array indexes as identity.'],
+  3: ['Immutable updates', 'Create a new array with map or spread when toggling done. Risk: mutating the existing task object so React cannot reason reliably about the change.'],
+  4: ['Asynchronous data', 'Fetch inside useEffect, and represent loading, success, empty, and error states. Risk: updating state after an abandoned request.'],
+  5: ['Component composition', 'Split form, list, and item responsibilities; lift shared state or extract useTasks. Risk: prop drilling without a clear owner.'],
+  6: ['Confirmation modal', 'Track the selected task, stop unintended event propagation, and return focus after closing. Risk: inaccessible keyboard and focus behavior.'],
+  7: ['Timed feedback', 'Store the timer ID in a ref and clear the timeout during effect cleanup. Risk: overlapping timers or updates after unmount.'],
+  8: ['Accessible finish', 'Give icon controls accessible names, preserve keyboard operation, and announce status changes. Risk: decoration replacing understandable actions.']
 };
-document.querySelectorAll('#a11y-choices button').forEach(button => button.addEventListener('click', () => {
-  document.querySelectorAll('#a11y-choices button').forEach(item => item.classList.remove('selected'));
-  button.classList.add('selected');
-  document.getElementById('a11y-result').innerHTML = `<strong>Defensible priority:</strong> ${a11yExplanations[button.dataset.answer]} A complete correction must still address all four barriers.`;
-  completeActivity('accessibility');
-}));
+
+function explainTodoStage() {
+  const stage = document.getElementById('todo-stage').value;
+  const [title, explanation] = todoStages[stage];
+  document.getElementById('todo-stage-result').innerHTML = `<strong>${title}:</strong> ${explanation}`;
+  completeActivity('react');
+}
 
 function checkStateClassification() {
   const example = document.getElementById('state-example').value;
